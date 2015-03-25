@@ -484,6 +484,7 @@
 				47FD43F01AC2C40400C71213 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		47FD43F11AC2C40400C71213 /* Build configuration list for PBXNativeTarget "MathPadTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +493,7 @@
 				47FD43F31AC2C40400C71213 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

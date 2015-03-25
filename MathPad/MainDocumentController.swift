@@ -12,8 +12,15 @@ class MainDocumentController: UITableViewController {
 
 	var detailViewController: DocumentViewController? = nil
 	var objects = [AnyObject]()
+	var activeObject: Int = 0
 
-
+	// gets called to update the object state
+	func updateObject (vc : DocumentViewController?) {
+		objects[activeObject] = vc?.detailItem as String
+		tableView.reloadData()
+	}
+	
+	
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
@@ -41,7 +48,7 @@ class MainDocumentController: UITableViewController {
 	}
 
 	func insertNewObject(sender: AnyObject) {
-		objects.insert(NSDate(), atIndex: 0)
+		objects.insert("e = m c²", atIndex: 0)
 		let indexPath = NSIndexPath(forRow: 0, inSection: 0)
 		self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
 	}
@@ -51,9 +58,11 @@ class MainDocumentController: UITableViewController {
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "showDetail" {
 		    if let indexPath = self.tableView.indexPathForSelectedRow() {
-		        let object = objects[indexPath.row] as NSDate
+				activeObject = indexPath.row
+		        let object = objects[activeObject] as String
 		        let controller = (segue.destinationViewController as UINavigationController).topViewController as DocumentViewController
 		        controller.detailItem = object
+				controller.returnNotification = self.updateObject
 		        controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
 		        controller.navigationItem.leftItemsSupplementBackButton = true
 		    }
@@ -73,8 +82,8 @@ class MainDocumentController: UITableViewController {
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
 
-		let object = objects[indexPath.row] as NSDate
-		cell.textLabel!.text = object.description
+		let object = objects[indexPath.row] as String
+		cell.textLabel!.text = object
 		return cell
 	}
 
