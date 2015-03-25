@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		47FD43D31AC2C40400C71213 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D21AC2C40400C71213 /* AppDelegate.swift */; };
-		47FD43D51AC2C40400C71213 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D41AC2C40400C71213 /* MasterViewController.swift */; };
-		47FD43D71AC2C40400C71213 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D61AC2C40400C71213 /* DetailViewController.swift */; };
+		47FD43D51AC2C40400C71213 /* MainDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D41AC2C40400C71213 /* MainDocumentController.swift */; };
+		47FD43D71AC2C40400C71213 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D61AC2C40400C71213 /* DocumentViewController.swift */; };
 		47FD43DA1AC2C40400C71213 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47FD43D81AC2C40400C71213 /* Main.storyboard */; };
 		47FD43DC1AC2C40400C71213 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47FD43DB1AC2C40400C71213 /* Images.xcassets */; };
 		47FD43DF1AC2C40400C71213 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47FD43DD1AC2C40400C71213 /* LaunchScreen.xib */; };
@@ -40,8 +40,8 @@
 		47FD43CD1AC2C40400C71213 /* MathPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47FD43D11AC2C40400C71213 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		47FD43D21AC2C40400C71213 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		47FD43D41AC2C40400C71213 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
-		47FD43D61AC2C40400C71213 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		47FD43D41AC2C40400C71213 /* MainDocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDocumentController.swift; sourceTree = "<group>"; };
+		47FD43D61AC2C40400C71213 /* DocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentViewController.swift; sourceTree = "<group>"; };
 		47FD43D91AC2C40400C71213 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		47FD43DB1AC2C40400C71213 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		47FD43DE1AC2C40400C71213 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -106,16 +106,10 @@
 			isa = PBXGroup;
 			children = (
 				47FD43D21AC2C40400C71213 /* AppDelegate.swift */,
-				47FD43D41AC2C40400C71213 /* MasterViewController.swift */,
-				47FD43D61AC2C40400C71213 /* DetailViewController.swift */,
+				47FD43D41AC2C40400C71213 /* MainDocumentController.swift */,
+				47FD43D61AC2C40400C71213 /* DocumentViewController.swift */,
 				47FD43D81AC2C40400C71213 /* Main.storyboard */,
-				47FD43DB1AC2C40400C71213 /* Images.xcassets */,
-				47FD43DD1AC2C40400C71213 /* LaunchScreen.xib */,
-				47FD43F51AC2C42F00C71213 /* Functions.swift */,
-				47FD43F61AC2C42F00C71213 /* Variables.swift */,
-				47FD43F71AC2C42F00C71213 /* Scanner.swift */,
-				47FD43F81AC2C42F00C71213 /* State.swift */,
-				47FD43F91AC2C42F00C71213 /* Equation.swift */,
+				47FD44101AC2C82600C71213 /* Equation Model */,
 				47FD440F1AC2C5BB00C71213 /* Extended Numbers */,
 				47FD43D01AC2C40400C71213 /* Supporting Files */,
 			);
@@ -125,6 +119,8 @@
 		47FD43D01AC2C40400C71213 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				47FD43DD1AC2C40400C71213 /* LaunchScreen.xib */,
+				47FD43DB1AC2C40400C71213 /* Images.xcassets */,
 				47FD43D11AC2C40400C71213 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -163,6 +159,18 @@
 				47FD44001AC2C58500C71213 /* MathPad-Bridging-Header.h */,
 			);
 			name = "Extended Numbers";
+			sourceTree = "<group>";
+		};
+		47FD44101AC2C82600C71213 /* Equation Model */ = {
+			isa = PBXGroup;
+			children = (
+				47FD43F51AC2C42F00C71213 /* Functions.swift */,
+				47FD43F61AC2C42F00C71213 /* Variables.swift */,
+				47FD43F71AC2C42F00C71213 /* Scanner.swift */,
+				47FD43F81AC2C42F00C71213 /* State.swift */,
+				47FD43F91AC2C42F00C71213 /* Equation.swift */,
+			);
+			name = "Equation Model";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,13 +273,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47FD43D71AC2C40400C71213 /* DetailViewController.swift in Sources */,
+				47FD43D71AC2C40400C71213 /* DocumentViewController.swift in Sources */,
 				47FD440B1AC2C58600C71213 /* ExComplex.cpp in Sources */,
 				47FD43FA1AC2C42F00C71213 /* xNumber.swift in Sources */,
 				47FD440E1AC2C58600C71213 /* Reals.cpp in Sources */,
 				47FD440D1AC2C58600C71213 /* Real.mm in Sources */,
 				47FD43FF1AC2C42F00C71213 /* Equation.swift in Sources */,
-				47FD43D51AC2C40400C71213 /* MasterViewController.swift in Sources */,
+				47FD43D51AC2C40400C71213 /* MainDocumentController.swift in Sources */,
 				47FD43FC1AC2C42F00C71213 /* Variables.swift in Sources */,
 				47FD43FB1AC2C42F00C71213 /* Functions.swift in Sources */,
 				47FD440C1AC2C58600C71213 /* ExIntegers.cpp in Sources */,
