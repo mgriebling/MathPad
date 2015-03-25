@@ -14,6 +14,12 @@
 		47FD43DC1AC2C40400C71213 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47FD43DB1AC2C40400C71213 /* Images.xcassets */; };
 		47FD43DF1AC2C40400C71213 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47FD43DD1AC2C40400C71213 /* LaunchScreen.xib */; };
 		47FD43EB1AC2C40400C71213 /* MathPadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43EA1AC2C40400C71213 /* MathPadTests.swift */; };
+		47FD43FA1AC2C42F00C71213 /* xNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43F41AC2C42F00C71213 /* xNumber.swift */; };
+		47FD43FB1AC2C42F00C71213 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43F51AC2C42F00C71213 /* Functions.swift */; };
+		47FD43FC1AC2C42F00C71213 /* Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43F61AC2C42F00C71213 /* Variables.swift */; };
+		47FD43FD1AC2C42F00C71213 /* Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43F71AC2C42F00C71213 /* Scanner.swift */; };
+		47FD43FE1AC2C42F00C71213 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43F81AC2C42F00C71213 /* State.swift */; };
+		47FD43FF1AC2C42F00C71213 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43F91AC2C42F00C71213 /* Equation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +44,12 @@
 		47FD43E41AC2C40400C71213 /* MathPadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MathPadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		47FD43E91AC2C40400C71213 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		47FD43EA1AC2C40400C71213 /* MathPadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathPadTests.swift; sourceTree = "<group>"; };
+		47FD43F41AC2C42F00C71213 /* xNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = xNumber.swift; sourceTree = "<group>"; };
+		47FD43F51AC2C42F00C71213 /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		47FD43F61AC2C42F00C71213 /* Variables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Variables.swift; sourceTree = "<group>"; };
+		47FD43F71AC2C42F00C71213 /* Scanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scanner.swift; sourceTree = "<group>"; };
+		47FD43F81AC2C42F00C71213 /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		47FD43F91AC2C42F00C71213 /* Equation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +97,12 @@
 				47FD43D81AC2C40400C71213 /* Main.storyboard */,
 				47FD43DB1AC2C40400C71213 /* Images.xcassets */,
 				47FD43DD1AC2C40400C71213 /* LaunchScreen.xib */,
+				47FD43F41AC2C42F00C71213 /* xNumber.swift */,
+				47FD43F51AC2C42F00C71213 /* Functions.swift */,
+				47FD43F61AC2C42F00C71213 /* Variables.swift */,
+				47FD43F71AC2C42F00C71213 /* Scanner.swift */,
+				47FD43F81AC2C42F00C71213 /* State.swift */,
+				47FD43F91AC2C42F00C71213 /* Equation.swift */,
 				47FD43D01AC2C40400C71213 /* Supporting Files */,
 			);
 			path = MathPad;
@@ -216,8 +234,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				47FD43D71AC2C40400C71213 /* DetailViewController.swift in Sources */,
+				47FD43FA1AC2C42F00C71213 /* xNumber.swift in Sources */,
+				47FD43FF1AC2C42F00C71213 /* Equation.swift in Sources */,
 				47FD43D51AC2C40400C71213 /* MasterViewController.swift in Sources */,
+				47FD43FC1AC2C42F00C71213 /* Variables.swift in Sources */,
+				47FD43FB1AC2C42F00C71213 /* Functions.swift in Sources */,
+				47FD43FD1AC2C42F00C71213 /* Scanner.swift in Sources */,
 				47FD43D31AC2C40400C71213 /* AppDelegate.swift in Sources */,
+				47FD43FE1AC2C42F00C71213 /* State.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
