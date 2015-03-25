@@ -20,6 +20,10 @@
 		47FD43FD1AC2C42F00C71213 /* Scanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43F71AC2C42F00C71213 /* Scanner.swift */; };
 		47FD43FE1AC2C42F00C71213 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43F81AC2C42F00C71213 /* State.swift */; };
 		47FD43FF1AC2C42F00C71213 /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43F91AC2C42F00C71213 /* Equation.swift */; };
+		47FD440B1AC2C58600C71213 /* ExComplex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FD44031AC2C58600C71213 /* ExComplex.cpp */; };
+		47FD440C1AC2C58600C71213 /* ExIntegers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FD44051AC2C58600C71213 /* ExIntegers.cpp */; };
+		47FD440D1AC2C58600C71213 /* Real.mm in Sources */ = {isa = PBXBuildFile; fileRef = 47FD44081AC2C58600C71213 /* Real.mm */; };
+		47FD440E1AC2C58600C71213 /* Reals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 47FD44091AC2C58600C71213 /* Reals.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +54,16 @@
 		47FD43F71AC2C42F00C71213 /* Scanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scanner.swift; sourceTree = "<group>"; };
 		47FD43F81AC2C42F00C71213 /* State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		47FD43F91AC2C42F00C71213 /* Equation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equation.swift; sourceTree = "<group>"; };
+		47FD44001AC2C58500C71213 /* MathPad-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MathPad-Bridging-Header.h"; sourceTree = "<group>"; };
+		47FD44021AC2C58600C71213 /* Errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Errors.h; sourceTree = "<group>"; };
+		47FD44031AC2C58600C71213 /* ExComplex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExComplex.cpp; sourceTree = "<group>"; };
+		47FD44041AC2C58600C71213 /* ExComplex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExComplex.h; sourceTree = "<group>"; };
+		47FD44051AC2C58600C71213 /* ExIntegers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExIntegers.cpp; sourceTree = "<group>"; };
+		47FD44061AC2C58600C71213 /* ExIntegers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExIntegers.h; sourceTree = "<group>"; };
+		47FD44071AC2C58600C71213 /* Real.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Real.h; sourceTree = "<group>"; };
+		47FD44081AC2C58600C71213 /* Real.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Real.mm; sourceTree = "<group>"; };
+		47FD44091AC2C58600C71213 /* Reals.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Reals.cpp; sourceTree = "<group>"; };
+		47FD440A1AC2C58600C71213 /* Reals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reals.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +111,12 @@
 				47FD43D81AC2C40400C71213 /* Main.storyboard */,
 				47FD43DB1AC2C40400C71213 /* Images.xcassets */,
 				47FD43DD1AC2C40400C71213 /* LaunchScreen.xib */,
-				47FD43F41AC2C42F00C71213 /* xNumber.swift */,
 				47FD43F51AC2C42F00C71213 /* Functions.swift */,
 				47FD43F61AC2C42F00C71213 /* Variables.swift */,
 				47FD43F71AC2C42F00C71213 /* Scanner.swift */,
 				47FD43F81AC2C42F00C71213 /* State.swift */,
 				47FD43F91AC2C42F00C71213 /* Equation.swift */,
+				47FD440F1AC2C5BB00C71213 /* Extended Numbers */,
 				47FD43D01AC2C40400C71213 /* Supporting Files */,
 			);
 			path = MathPad;
@@ -131,6 +145,24 @@
 				47FD43E91AC2C40400C71213 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		47FD440F1AC2C5BB00C71213 /* Extended Numbers */ = {
+			isa = PBXGroup;
+			children = (
+				47FD43F41AC2C42F00C71213 /* xNumber.swift */,
+				47FD44021AC2C58600C71213 /* Errors.h */,
+				47FD44031AC2C58600C71213 /* ExComplex.cpp */,
+				47FD44041AC2C58600C71213 /* ExComplex.h */,
+				47FD44051AC2C58600C71213 /* ExIntegers.cpp */,
+				47FD44061AC2C58600C71213 /* ExIntegers.h */,
+				47FD44071AC2C58600C71213 /* Real.h */,
+				47FD44081AC2C58600C71213 /* Real.mm */,
+				47FD44091AC2C58600C71213 /* Reals.cpp */,
+				47FD440A1AC2C58600C71213 /* Reals.h */,
+				47FD44001AC2C58500C71213 /* MathPad-Bridging-Header.h */,
+			);
+			name = "Extended Numbers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,11 +266,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				47FD43D71AC2C40400C71213 /* DetailViewController.swift in Sources */,
+				47FD440B1AC2C58600C71213 /* ExComplex.cpp in Sources */,
 				47FD43FA1AC2C42F00C71213 /* xNumber.swift in Sources */,
+				47FD440E1AC2C58600C71213 /* Reals.cpp in Sources */,
+				47FD440D1AC2C58600C71213 /* Real.mm in Sources */,
 				47FD43FF1AC2C42F00C71213 /* Equation.swift in Sources */,
 				47FD43D51AC2C40400C71213 /* MasterViewController.swift in Sources */,
 				47FD43FC1AC2C42F00C71213 /* Variables.swift in Sources */,
 				47FD43FB1AC2C42F00C71213 /* Functions.swift in Sources */,
+				47FD440C1AC2C58600C71213 /* ExIntegers.cpp in Sources */,
 				47FD43FD1AC2C42F00C71213 /* Scanner.swift in Sources */,
 				47FD43D31AC2C40400C71213 /* AppDelegate.swift in Sources */,
 				47FD43FE1AC2C42F00C71213 /* State.swift in Sources */,
@@ -366,9 +402,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = MathPad/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MathPad/MathPad-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -376,9 +415,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = MathPad/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MathPad/MathPad-Bridging-Header.h";
 			};
 			name = Release;
 		};
