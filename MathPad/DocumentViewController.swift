@@ -54,18 +54,24 @@ class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPre
 	
 	// MARK: - PopoverPresentationControllerDelegate methods
 	func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-		return .OverFullScreen
+		return UIModalPresentationStyle.None  // force PopOver even on iPhones
 	}
 	
+	func createNewItemSelected (vc: SelectItemTableViewController?, selected: Int)  {
+		switch selected {
+			case 0: println ("Adding an equation"); break
+			case 1: println ("Adding a description"); break
+			default: println ("Adding a plot"); break
+		}
+		vc?.dismissViewControllerAnimated(true, completion: nil)
+	}
 	
 	// MARK: - Segues
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "showOptions" {
-			let pop: AnyObject = segue.destinationViewController
-			if segue.destinationViewController.isKindOfClass(UIPresentationController) {
-				let pop = segue.destinationViewController as UIPresentationController
-				pop.delegate = self
-			}
+			let vc = segue.destinationViewController as SelectItemTableViewController
+			vc.popoverPresentationController?.delegate = self
+			vc.rowWasSelected = createNewItemSelected	// call-back
 		}
 	}
 
