@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2FFAB3141AC428860071F6C5 /* EqDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FFAB3131AC428860071F6C5 /* EqDocument.swift */; };
 		47FD43D31AC2C40400C71213 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D21AC2C40400C71213 /* AppDelegate.swift */; };
 		47FD43D51AC2C40400C71213 /* MainDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D41AC2C40400C71213 /* MainDocumentController.swift */; };
 		47FD43D71AC2C40400C71213 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D61AC2C40400C71213 /* DocumentViewController.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2FFAB3131AC428860071F6C5 /* EqDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqDocument.swift; sourceTree = "<group>"; };
 		47FD43CD1AC2C40400C71213 /* MathPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47FD43D11AC2C40400C71213 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		47FD43D21AC2C40400C71213 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				47FD43D61AC2C40400C71213 /* DocumentViewController.swift */,
 				47FD43D81AC2C40400C71213 /* Main.storyboard */,
 				47FD44111AC4187100C71213 /* SelectItemTableViewController.swift */,
+				2FFAB3131AC428860071F6C5 /* EqDocument.swift */,
 				47FD44101AC2C82600C71213 /* Equation Model */,
 				47FD440F1AC2C5BB00C71213 /* Extended Numbers */,
 				47FD43D01AC2C40400C71213 /* Supporting Files */,
@@ -279,6 +282,7 @@
 				47FD43D71AC2C40400C71213 /* DocumentViewController.swift in Sources */,
 				47FD440B1AC2C58600C71213 /* ExComplex.cpp in Sources */,
 				47FD43FA1AC2C42F00C71213 /* xNumber.swift in Sources */,
+				2FFAB3141AC428860071F6C5 /* EqDocument.swift in Sources */,
 				47FD440E1AC2C58600C71213 /* Reals.cpp in Sources */,
 				47FD440D1AC2C58600C71213 /* Real.mm in Sources */,
 				47FD43FF1AC2C42F00C71213 /* Equation.swift in Sources */,

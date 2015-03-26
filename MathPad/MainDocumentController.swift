@@ -10,13 +10,14 @@ import UIKit
 
 class MainDocumentController: UITableViewController {
 
+	let EXTENSION = "mpad"
 	var detailViewController: DocumentViewController? = nil
-	var objects = [AnyObject]()
+	var objects = [NSURL]()
 	var activeObject: Int = 0
 
 	// gets called to update the object state
 	func updateObject (vc : DocumentViewController?) {
-		objects[activeObject] = vc?.detailItem as String
+//		objects[activeObject] = vc?.detailItem as String
 		tableView.reloadData()
 	}
 	
@@ -48,9 +49,25 @@ class MainDocumentController: UITableViewController {
 	}
 
 	func insertNewObject(sender: AnyObject) {
-		objects.insert("e = m c²", atIndex: 0)
+		let number = objects.count+1
+		let appDirs = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+		let path = appDirs[0] as String
+		let fname = path.stringByAppendingPathComponent("Unnamed \(number)").stringByAppendingPathExtension(EXTENSION)
+		let fm =  NSFileManager.defaultManager()
+		let url = NSURL(fileURLWithPath: fname!, isDirectory: false)
+		let doc = EqDocument(fileURL: url!)
+		objects.insert(url!, atIndex: 0)
 		let indexPath = NSIndexPath(forRow: 0, inSection: 0)
 		self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+		if !fm.fileExistsAtPath(fname!) {
+			doc.saveToURL(url!, forSaveOperation: UIDocumentSaveOperation.ForCreating, completionHandler: { (success) -> Void in
+				if success { println("Saved document \(url?.lastPathComponent)") }
+			})
+		} else {
+			doc.openWithCompletionHandler({ (success) -> Void in
+				if success  { println("Opened document \(url?.lastPathComponent)") }
+			})
+		}
 	}
 
 	// MARK: - Segues
@@ -59,7 +76,7 @@ class MainDocumentController: UITableViewController {
 		if segue.identifier == "showDetail" {
 		    if let indexPath = self.tableView.indexPathForSelectedRow() {
 				activeObject = indexPath.row
-		        let object = objects[activeObject] as String
+		        let object = objects[activeObject]
 		        let controller = (segue.destinationViewController as UINavigationController).topViewController as DocumentViewController
 		        controller.detailItem = object
 				controller.returnNotification = self.updateObject
@@ -82,8 +99,8 @@ class MainDocumentController: UITableViewController {
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
 
-		let object = objects[indexPath.row] as String
-		cell.textLabel!.text = object
+		let object = objects[indexPath.row]
+		cell.textLabel!.text = object.lastPathComponent?.stringByDeletingPathExtension
 		return cell
 	}
 

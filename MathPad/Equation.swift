@@ -47,17 +47,17 @@ class Equation : NSCoding {
 		self.Token = .Empty
 		self.LastAnswer = decoder.decodeObject() as xNumber
 		self.CommandLine = decoder.decodeObject() as String
-		nState = NumbState(decoder: decoder)
-		Functions.Load(decoder)
-		Variables.Load(decoder)
+//		nState = NumbState(decoder: decoder)
+//		Functions.Load(decoder)
+//		Variables.Load(decoder)
 	}
 	
 	func encodeWithCoder (encoder: NSCoder) {
 		encoder.encodeObject(self.LastAnswer)
 		encoder.encodeObject(self.CommandLine)
-		nState.Save(encoder)
-		Functions.Save(encoder)
-		Variables.Save(encoder)
+//		nState.Save(encoder)
+//		Functions.Save(encoder)
+//		Variables.Save(encoder)
 	}
 	
 	private func StoreVariable (Location: String, Value : xNumber) {
