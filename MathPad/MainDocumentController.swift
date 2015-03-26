@@ -11,6 +11,12 @@ import UIKit
 class MainDocumentController: UITableViewController {
 
 	let EXTENSION = "mpad"
+	class var path : NSURL {
+		struct dummy {
+			static var staticPath : NSURL = MainDocumentController.getStaticPath()
+		}
+		return dummy.staticPath
+	}
 	var detailViewController: DocumentViewController? = nil
 	var objects = [NSURL]()
 	var activeObject: Int = 0
@@ -41,31 +47,47 @@ class MainDocumentController: UITableViewController {
 		    let controllers = split.viewControllers
 		    self.detailViewController = controllers[controllers.count-1].topViewController as? DocumentViewController
 		}
+		self.getExistingDocuments()   // populate the table with existing documents
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
+	
+	private class func getStaticPath () -> NSURL {
+		let appDirs = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+		let path = appDirs[0] as String
+		return NSURL(fileURLWithPath: path, isDirectory: true)!
+	}
+	
+	func getExistingDocuments () {
+		let fm =  NSFileManager.defaultManager()
+		var error : NSErrorPointer = nil
+		let path = MainDocumentController.path
+		let files = fm.contentsOfDirectoryAtURL(path, includingPropertiesForKeys: nil, options: .allZeros, error: error)!
+		for file in files {
+			objects.append(file as NSURL)
+		}
+		tableView.reloadData()
+	}
 
 	func insertNewObject(sender: AnyObject) {
 		let number = objects.count+1
-		let appDirs = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-		let path = appDirs[0] as String
-		let fname = path.stringByAppendingPathComponent("Unnamed \(number)").stringByAppendingPathExtension(EXTENSION)
+		let url = MainDocumentController.path
+		let fname = url.URLByAppendingPathComponent("Unnamed \(number)").URLByAppendingPathExtension(EXTENSION)
 		let fm =  NSFileManager.defaultManager()
-		let url = NSURL(fileURLWithPath: fname!, isDirectory: false)
-		let doc = EqDocument(fileURL: url!)
-		objects.insert(url!, atIndex: 0)
+		let doc = EqDocument(fileURL: fname)
+		objects.insert(fname, atIndex: 0)
 		let indexPath = NSIndexPath(forRow: 0, inSection: 0)
 		self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-		if !fm.fileExistsAtPath(fname!) {
-			doc.saveToURL(url!, forSaveOperation: UIDocumentSaveOperation.ForCreating, completionHandler: { (success) -> Void in
-				if success { println("Saved document \(url?.lastPathComponent)") }
+		if !fm.fileExistsAtPath(fname.absoluteString!) {
+			doc.saveToURL(fname, forSaveOperation: UIDocumentSaveOperation.ForCreating, completionHandler: { (success) -> Void in
+				if success { println("Saved document \(fname.lastPathComponent)") }
 			})
 		} else {
 			doc.openWithCompletionHandler({ (success) -> Void in
-				if success  { println("Opened document \(url?.lastPathComponent)") }
+				if success  { println("Opened document \(fname.lastPathComponent)") }
 			})
 		}
 	}
@@ -98,7 +120,6 @@ class MainDocumentController: UITableViewController {
 
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-
 		let object = objects[indexPath.row]
 		cell.textLabel!.text = object.lastPathComponent?.stringByDeletingPathExtension
 		return cell
@@ -111,6 +132,10 @@ class MainDocumentController: UITableViewController {
 
 	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
 		if editingStyle == .Delete {
+			let url = objects[indexPath.row]
+			let fm =  NSFileManager.defaultManager()
+			var error : NSErrorPointer = nil
+			fm.removeItemAtURL(url, error: error)
 		    objects.removeAtIndex(indexPath.row)
 		    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
 		} else if editingStyle == .Insert {
