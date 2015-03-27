@@ -8,6 +8,22 @@
 
 import UIKit
 
+class RoundButton: UIButton {
+	@IBInspectable var cornerRadius: CGFloat = 0 {
+		didSet {
+			layer.cornerRadius = cornerRadius
+		}
+	}
+}
+
+class RoundLabel: UILabel {
+	@IBInspectable var cornerRadius: CGFloat = 0 {
+		didSet {
+			layer.cornerRadius = cornerRadius
+		}
+	}
+}
+
 class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPresentationControllerDelegate {
 
 	@IBOutlet weak var equationView: UITextView!
@@ -27,8 +43,12 @@ class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPre
 	
 	@IBAction func addKeyToField(sender: UIButton) {
 		if let key = sender.titleLabel?.text {
-			equationView.text = equationView.text + key
+			equationView.replaceRange(equationView.selectedTextRange!, withText: key)
 		}
+	}
+	
+	@IBAction func backDelete(sender: RoundButton) {
+		equationView.deleteBackward()
 	}
 	
 	@IBAction func dismissKeyboard(sender: UIButton) {
@@ -50,10 +70,6 @@ class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPre
 		let myBundle = NSBundle.mainBundle()
 		var calculatorNib = myBundle.loadNibNamed("Keyboard", owner: self, options: nil)
 		calculatorView = calculatorNib[0] as UIView
-	}
-	
-	func advanceToNextInputMode () {
-		println("Advancing to next mode")
 	}
 
 	override func viewDidLoad() {
