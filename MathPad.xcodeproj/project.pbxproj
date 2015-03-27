@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4717A2D81AC555DC00D90472 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4717A2D71AC555DC00D90472 /* KeyboardViewController.swift */; };
+		4717A2DB1AC555DC00D90472 /* MathKeypad.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 4717A2D31AC555DC00D90472 /* MathKeypad.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4717A2E31AC55FF700D90472 /* Keyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4717A2E21AC55FF700D90472 /* Keyboard.xib */; };
 		47FD43D31AC2C40400C71213 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D21AC2C40400C71213 /* AppDelegate.swift */; };
 		47FD43D51AC2C40400C71213 /* MainDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D41AC2C40400C71213 /* MainDocumentController.swift */; };
 		47FD43D71AC2C40400C71213 /* DocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D61AC2C40400C71213 /* DocumentViewController.swift */; };
@@ -28,6 +31,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4717A2D91AC555DC00D90472 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 47FD43C51AC2C40400C71213 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4717A2D21AC555DC00D90472;
+			remoteInfo = MathKeypad;
+		};
 		47FD43E51AC2C40400C71213 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 47FD43C51AC2C40400C71213 /* Project object */;
@@ -37,7 +47,27 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		4717A2DF1AC555DC00D90472 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				4717A2DB1AC555DC00D90472 /* MathKeypad.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		4717A2D31AC555DC00D90472 /* MathKeypad.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MathKeypad.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4717A2D61AC555DC00D90472 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4717A2D71AC555DC00D90472 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		4717A2E21AC55FF700D90472 /* Keyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Keyboard.xib; sourceTree = "<group>"; };
+		4717A2E41AC5679F00D90472 /* MathKeypad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MathKeypad.entitlements; sourceTree = "<group>"; };
+		4717A2E51AC5680D00D90472 /* MathPad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MathPad.entitlements; sourceTree = "<group>"; };
 		47FD43CD1AC2C40400C71213 /* MathPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47FD43D11AC2C40400C71213 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		47FD43D21AC2C40400C71213 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +99,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4717A2D01AC555DC00D90472 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		47FD43CA1AC2C40400C71213 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -86,11 +123,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4717A2D41AC555DC00D90472 /* MathKeypad */ = {
+			isa = PBXGroup;
+			children = (
+				4717A2E41AC5679F00D90472 /* MathKeypad.entitlements */,
+				4717A2D71AC555DC00D90472 /* KeyboardViewController.swift */,
+				4717A2D51AC555DC00D90472 /* Supporting Files */,
+				4717A2E21AC55FF700D90472 /* Keyboard.xib */,
+			);
+			path = MathKeypad;
+			sourceTree = "<group>";
+		};
+		4717A2D51AC555DC00D90472 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4717A2D61AC555DC00D90472 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		47FD43C41AC2C40400C71213 = {
 			isa = PBXGroup;
 			children = (
 				47FD43CF1AC2C40400C71213 /* MathPad */,
 				47FD43E71AC2C40400C71213 /* MathPadTests */,
+				4717A2D41AC555DC00D90472 /* MathKeypad */,
 				47FD43CE1AC2C40400C71213 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -100,6 +157,7 @@
 			children = (
 				47FD43CD1AC2C40400C71213 /* MathPad.app */,
 				47FD43E41AC2C40400C71213 /* MathPadTests.xctest */,
+				4717A2D31AC555DC00D90472 /* MathKeypad.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -107,6 +165,7 @@
 		47FD43CF1AC2C40400C71213 /* MathPad */ = {
 			isa = PBXGroup;
 			children = (
+				4717A2E51AC5680D00D90472 /* MathPad.entitlements */,
 				47FD43D21AC2C40400C71213 /* AppDelegate.swift */,
 				47FD43D41AC2C40400C71213 /* MainDocumentController.swift */,
 				47FD43D61AC2C40400C71213 /* DocumentViewController.swift */,
@@ -179,6 +238,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		4717A2D21AC555DC00D90472 /* MathKeypad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4717A2DE1AC555DC00D90472 /* Build configuration list for PBXNativeTarget "MathKeypad" */;
+			buildPhases = (
+				4717A2CF1AC555DC00D90472 /* Sources */,
+				4717A2D01AC555DC00D90472 /* Frameworks */,
+				4717A2D11AC555DC00D90472 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MathKeypad;
+			productName = MathKeypad;
+			productReference = 4717A2D31AC555DC00D90472 /* MathKeypad.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		47FD43CC1AC2C40400C71213 /* MathPad */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 47FD43EE1AC2C40400C71213 /* Build configuration list for PBXNativeTarget "MathPad" */;
@@ -186,10 +262,12 @@
 				47FD43C91AC2C40400C71213 /* Sources */,
 				47FD43CA1AC2C40400C71213 /* Frameworks */,
 				47FD43CB1AC2C40400C71213 /* Resources */,
+				4717A2DF1AC555DC00D90472 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4717A2DA1AC555DC00D90472 /* PBXTargetDependency */,
 			);
 			name = MathPad;
 			productName = MathPad;
@@ -223,8 +301,23 @@
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = "Computer Inspirations";
 				TargetAttributes = {
+					4717A2D21AC555DC00D90472 = {
+						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 6389FT2N69;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					47FD43CC1AC2C40400C71213 = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 6389FT2N69;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					47FD43E31AC2C40400C71213 = {
 						CreatedOnToolsVersion = 6.2;
@@ -247,11 +340,20 @@
 			targets = (
 				47FD43CC1AC2C40400C71213 /* MathPad */,
 				47FD43E31AC2C40400C71213 /* MathPadTests */,
+				4717A2D21AC555DC00D90472 /* MathKeypad */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		4717A2D11AC555DC00D90472 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4717A2E31AC55FF700D90472 /* Keyboard.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		47FD43CB1AC2C40400C71213 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -272,6 +374,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4717A2CF1AC555DC00D90472 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4717A2D81AC555DC00D90472 /* KeyboardViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		47FD43C91AC2C40400C71213 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -304,6 +414,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4717A2DA1AC555DC00D90472 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4717A2D21AC555DC00D90472 /* MathKeypad */;
+			targetProxy = 4717A2D91AC555DC00D90472 /* PBXContainerItemProxy */;
+		};
 		47FD43E61AC2C40400C71213 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 47FD43CC1AC2C40400C71213 /* MathPad */;
@@ -331,6 +446,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		4717A2DC1AC555DC00D90472 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MathKeypad/MathKeypad.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = MathKeypad/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		4717A2DD1AC555DC00D90472 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MathKeypad/MathKeypad.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = MathKeypad/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		47FD43EC1AC2C40400C71213 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -415,9 +562,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MathPad/MathPad.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = MathPad/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MathPad/MathPad-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -428,9 +580,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = MathPad/MathPad.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = MathPad/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "MathPad/MathPad-Bridging-Header.h";
 			};
 			name = Release;
@@ -472,6 +629,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4717A2DE1AC555DC00D90472 /* Build configuration list for PBXNativeTarget "MathKeypad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4717A2DC1AC555DC00D90472 /* Debug */,
+				4717A2DD1AC555DC00D90472 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		47FD43C81AC2C40400C71213 /* Build configuration list for PBXProject "MathPad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

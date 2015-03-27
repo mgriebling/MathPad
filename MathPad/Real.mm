@@ -593,7 +593,7 @@ static xNumber * powerRational (Complex::Complex a, long b) {
 	return [xNumber realWithRawComplex:zi];
 }
 
-- (xNumber *) iroot: (NSInteger) n {
+- (xNumber *) iroot: (long) n {
 	Complex::Complex zi;
 	Complex::Root(zi, FixRational(self), n);
 	return [xNumber realWithRawComplex:zi];
