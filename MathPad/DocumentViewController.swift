@@ -10,13 +10,12 @@ import UIKit
 
 class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPresentationControllerDelegate {
 
-
 	@IBOutlet weak var equationView: UITextView!
 	
 	class func dummy (v: DocumentViewController?) { println("Return notification missing") }
 
 	var returnNotification: (DocumentViewController?) -> () = DocumentViewController.dummy
-	
+	var calculatorView: UIView!
 	var detailItem: AnyObject? {
 		didSet {
 		    // Update the view.
@@ -24,6 +23,18 @@ class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPre
 		}
 	}
 
+	// MARK: - Custom keypad methods
+	
+	@IBAction func addKeyToField(sender: UIButton) {
+		if let key = sender.titleLabel?.text {
+			equationView.text = equationView.text + key
+		}
+	}
+	
+	@IBAction func dismissKeyboard(sender: UIButton) {
+		equationView.resignFirstResponder()
+	}
+	
 	func configureView() {
 		// Update the user interface for the detail item.
 		if let detail: AnyObject = self.detailItem {
@@ -32,12 +43,26 @@ class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPre
 		    }
 		}
 	}
+	
+	// MARK: - Controller Life Cycle methods
+	
+	func loadInterface() {
+		let myBundle = NSBundle.mainBundle()
+		var calculatorNib = myBundle.loadNibNamed("Keyboard", owner: self, options: nil)
+		calculatorView = calculatorNib[0] as UIView
+	}
+	
+	func advanceToNextInputMode () {
+		println("Advancing to next mode")
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
 		self.configureView()
+		loadInterface()
 		self.equationView.delegate = self
+		self.equationView.inputView = calculatorView
 	}
 
 	override func didReceiveMemoryWarning() {
@@ -53,6 +78,7 @@ class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPre
 	}
 	
 	// MARK: - PopoverPresentationControllerDelegate methods
+	
 	func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
 		return UIModalPresentationStyle.None  // force PopOver even on iPhones
 	}
