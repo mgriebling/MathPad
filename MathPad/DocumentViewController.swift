@@ -89,8 +89,8 @@ class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPre
 	// MARK: - TextViewDelegate methods
 	
 	func textViewDidChange(textView: UITextView) {
-		detailItem = textView.text
-		returnNotification(self)
+//		detailItem = textView.text
+//		returnNotification(self)
 	}
 	
 	// MARK: - PopoverPresentationControllerDelegate methods
