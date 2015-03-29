@@ -8,6 +8,29 @@
 
 import Foundation
 
+class Description : Equation {
+	// Just a container
+	init() {
+		super.init(command: "")
+	}
+
+	required init(coder decoder: NSCoder) {
+	    super.init(coder: decoder)
+	}
+}
+
+class Plot : Equation {
+	// TBD
+	// Just a container
+	init() {
+		super.init(command: "")
+	}
+	
+	required init(coder decoder: NSCoder) {
+		super.init(coder: decoder)
+	}
+}
+
 class Equation : NSCoding {
 	
  /*
@@ -34,7 +57,7 @@ class Equation : NSCoding {
 	let one = xNumber.one
 	
 	var Token: Scanner.Tokens
-	var CommandLine : String
+	var CommandLine : String = "let e = m c"
 	var LastAnswer: xNumber
 	
 	init (command: String) {

@@ -13,7 +13,7 @@ class EqDocument: UIDocument {
 	// The equation document comprises a set of objects which can either be equations, textual descriptions, or graphical plots
 	// An equation document also implicitly saves the state of all variables, functions, and number formatting options.
 	
-	var objects : [AnyObject] = []
+	var objects : [Equation] = []
 	
 	private let kVersion   = "EqDocument.version"
 	private let kEquations = "EqDocument.objects"
@@ -31,7 +31,7 @@ class EqDocument: UIDocument {
 			let numberOfObjects = reader.decodeIntegerForKey(kNumberOfObjects)
 			self.objects = []
 			for var i = 0; i < numberOfObjects; i++ {
-				if let object: AnyObject = reader.decodeObject() {
+				if let object = reader.decodeObject() as? Equation {
 					self.objects.append(object)
 				}
 			}

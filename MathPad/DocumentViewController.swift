@@ -8,21 +8,7 @@
 
 import UIKit
 
-class RoundButton: UIButton {
-	@IBInspectable var cornerRadius: CGFloat = 0 {
-		didSet {
-			layer.cornerRadius = cornerRadius
-		}
-	}
-}
 
-class RoundLabel: UILabel {
-	@IBInspectable var cornerRadius: CGFloat = 0 {
-		didSet {
-			layer.cornerRadius = cornerRadius
-		}
-	}
-}
 
 class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPresentationControllerDelegate {
 
@@ -32,7 +18,8 @@ class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPre
 
 	var returnNotification: (DocumentViewController?) -> () = DocumentViewController.dummy
 	var calculatorView: UIView!
-	var detailItem: AnyObject? {
+	var accessoryView: UIView!
+	var detailItem: NSURL? {
 		didSet {
 		    // Update the view.
 		    self.configureView()
@@ -51,13 +38,21 @@ class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPre
 		equationView.deleteBackward()
 	}
 	
-	@IBAction func dismissKeyboard(sender: UIButton) {
+	@IBAction func dismissKeyboard(sender: UIBarButtonItem) {
 		equationView.resignFirstResponder()
+	}
+	
+	@IBAction func newKeypad(sender: RoundButton) {
+		if sender.titleLabel?.text == "func" {
+			loadInterface("FunctionKeys")
+		} else if sender.titleLabel?.text == "0...9" {
+			loadInterface("Keyboard")
+		}
 	}
 	
 	func configureView() {
 		// Update the user interface for the detail item.
-		if let detail: AnyObject = self.detailItem {
+		if let detail = self.detailItem {
 		    if let label = self.equationView {
 		        label.text = detail.description
 		    }
@@ -66,19 +61,25 @@ class DocumentViewController: UIViewController, UITextViewDelegate, UIPopoverPre
 	
 	// MARK: - Controller Life Cycle methods
 	
-	func loadInterface() {
+	func loadInterface(name: String) {
 		let myBundle = NSBundle.mainBundle()
-		var calculatorNib = myBundle.loadNibNamed("Keyboard", owner: self, options: nil)
+		let calculatorNib = myBundle.loadNibNamed(name, owner: self, options: nil)
 		calculatorView = calculatorNib[0] as UIView
+		self.equationView.inputView = calculatorView
+		self.equationView.reloadInputViews()
 	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
 		self.configureView()
-		loadInterface()
+		loadInterface("Keyboard")
+
+		// set up the accessory view
+		let accessoryNib = NSBundle.mainBundle().loadNibNamed("Accessory", owner: self, options: nil)
+		accessoryView = accessoryNib[0] as UIView
+		self.equationView.inputAccessoryView = accessoryView
 		self.equationView.delegate = self
-		self.equationView.inputView = calculatorView
 	}
 
 	override func didReceiveMemoryWarning() {
