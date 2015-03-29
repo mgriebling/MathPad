@@ -34,12 +34,32 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9f9-de-AWF" id="4Xp-XQ-fcb">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="e = m c²" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b0Q-5n-56V">
-                                            <rect key="frame" x="8" y="7" width="584" height="30"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="e = m c²" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b0Q-5n-56V">
+                                            <rect key="frame" x="8" y="8" width="584" height="28"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="IrM-bs-NYT"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="IrM-bs-NYT"/>
+                                                </mask>
+                                            </variation>
                                         </textField>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="b0Q-5n-56V" secondAttribute="bottom" id="5oR-oX-unS"/>
+                                        <constraint firstAttribute="centerY" secondItem="b0Q-5n-56V" secondAttribute="centerY" id="OSU-PH-zTk"/>
+                                        <constraint firstItem="b0Q-5n-56V" firstAttribute="top" secondItem="4Xp-XQ-fcb" secondAttribute="topMargin" id="Thn-NU-VCy"/>
+                                        <constraint firstItem="b0Q-5n-56V" firstAttribute="leading" secondItem="4Xp-XQ-fcb" secondAttribute="leadingMargin" id="dXt-hh-TBc"/>
+                                        <constraint firstItem="b0Q-5n-56V" firstAttribute="trailing" secondItem="4Xp-XQ-fcb" secondAttribute="trailingMargin" id="zSl-c8-tfj"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="OSU-PH-zTk"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="equationTextField" destination="b0Q-5n-56V" id="RJO-xr-yHI"/>
@@ -50,12 +70,32 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xfu-vW-ej5" id="iu5-pd-PeJ">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Description" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="AnD-e6-5LU">
-                                            <rect key="frame" x="8" y="7" width="584" height="30"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Description" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="AnD-e6-5LU">
+                                            <rect key="frame" x="8" y="8" width="584" height="28"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="rUl-TG-FoH"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="rUl-TG-FoH"/>
+                                                </mask>
+                                            </variation>
                                         </textField>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="AnD-e6-5LU" secondAttribute="centerY" id="Al2-Mt-oDR"/>
+                                        <constraint firstItem="AnD-e6-5LU" firstAttribute="trailing" secondItem="iu5-pd-PeJ" secondAttribute="trailingMargin" id="K97-dw-NGR"/>
+                                        <constraint firstItem="AnD-e6-5LU" firstAttribute="leading" secondItem="iu5-pd-PeJ" secondAttribute="leadingMargin" id="TeF-OG-vsB"/>
+                                        <constraint firstItem="AnD-e6-5LU" firstAttribute="top" secondItem="iu5-pd-PeJ" secondAttribute="topMargin" id="hpI-EN-6yW"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="AnD-e6-5LU" secondAttribute="bottom" id="l4B-fm-wAO"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="Al2-Mt-oDR"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="descriptionTextField" destination="AnD-e6-5LU" id="t9m-pm-CdM"/>
@@ -69,14 +109,36 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jIu-L5-zNM" customClass="CPTGraphHostingView">
                                             <rect key="frame" x="8" y="8" width="584" height="227"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="227" id="PeF-eo-clq"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="PeF-eo-clq"/>
+                                                </mask>
+                                            </variation>
                                         </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottomMargin" secondItem="jIu-L5-zNM" secondAttribute="bottom" id="ACY-Tt-7Q7"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="jIu-L5-zNM" secondAttribute="trailing" id="NKN-MC-Jg6"/>
+                                        <constraint firstItem="jIu-L5-zNM" firstAttribute="bottom" secondItem="VC0-D7-3HJ" secondAttribute="bottomMargin" id="PGm-t1-0we"/>
+                                        <constraint firstItem="jIu-L5-zNM" firstAttribute="leading" secondItem="VC0-D7-3HJ" secondAttribute="leadingMargin" id="R4O-2f-Qjc"/>
+                                        <constraint firstItem="jIu-L5-zNM" firstAttribute="trailing" secondItem="VC0-D7-3HJ" secondAttribute="trailingMargin" id="Rcx-zG-fbL"/>
+                                        <constraint firstItem="jIu-L5-zNM" firstAttribute="top" secondItem="VC0-D7-3HJ" secondAttribute="topMargin" id="eV7-y8-PgP"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="top" secondItem="VC0-D7-3HJ" secondAttribute="topMargin" id="fII-tP-FcU"/>
+                                        <constraint firstItem="jIu-L5-zNM" firstAttribute="bottom" secondItem="VC0-D7-3HJ" secondAttribute="bottomMargin" id="kfW-pZ-V0b"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="leading" secondItem="VC0-D7-3HJ" secondAttribute="leadingMargin" id="y36-WF-qeo"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="ACY-Tt-7Q7"/>
+                                            <exclude reference="NKN-MC-Jg6"/>
+                                            <exclude reference="R4O-2f-Qjc"/>
+                                            <exclude reference="eV7-y8-PgP"/>
+                                            <exclude reference="kfW-pZ-V0b"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="corePlotView" destination="jIu-L5-zNM" id="4XU-lt-vdz"/>

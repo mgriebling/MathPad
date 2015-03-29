@@ -26,9 +26,9 @@ class RoundLabel: UILabel {
 
 class MathDocTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
 	
-	class func dummy (v: DocumentViewController?) { println("Return notification missing") }
+	class func dummy (v: MathDocTableViewController?) { println("Return notification missing") }
 	
-	var returnNotification: (DocumentViewController?) -> () = DocumentViewController.dummy
+	var returnNotification: (MathDocTableViewController?) -> () = MathDocTableViewController.dummy
 	var calculatorView: UIView!
 	var accessoryView: UIView!
 	var detailItem: NSURL? {
@@ -115,12 +115,21 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
-        return 1
-    }
+//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+//        // #warning Potentially incomplete method implementation.
+//        // Return the number of sections.
+//        return 1
+//    }
 
+	override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+		let object = document?.objects[indexPath.row]
+		if object is Plot {
+			return 250
+		} else {
+			return 44
+		}
+	}
+	
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.

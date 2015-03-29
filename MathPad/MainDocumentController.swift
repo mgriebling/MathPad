@@ -17,12 +17,12 @@ class MainDocumentController: UITableViewController {
 		}
 		return dummy.staticPath
 	}
-	var detailViewController: DocumentViewController? = nil
+	var detailViewController: MathDocTableViewController? = nil
 	var objects = [NSURL]()
 	var activeObject: Int = 0
 
 	// gets called to update the object state
-	func updateObject (vc : DocumentViewController?) {
+	func updateObject (vc : MathDocTableViewController?) {
 //		objects[activeObject] = vc?.detailItem as String
 		tableView.reloadData()
 	}
@@ -45,7 +45,7 @@ class MainDocumentController: UITableViewController {
 		self.navigationItem.rightBarButtonItem = addButton
 		if let split = self.splitViewController {
 		    let controllers = split.viewControllers
-		    self.detailViewController = controllers[controllers.count-1].topViewController as? DocumentViewController
+		    self.detailViewController = controllers[controllers.count-1].topViewController as? MathDocTableViewController
 		}
 		self.getExistingDocuments()   // populate the table with existing documents
 		self.navigationItem.leftBarButtonItem?.enabled = objects.count > 0
