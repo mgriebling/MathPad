@@ -39,7 +39,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="IrM-bs-NYT"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <variation key="default">
                                                 <mask key="constraints">

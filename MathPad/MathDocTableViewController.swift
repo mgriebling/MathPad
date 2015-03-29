@@ -90,6 +90,13 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 //		self.equationView.reloadInputViews()
 	}
 	
+	// MARK: - Helper functions
+	
+	private func enableEdit () {
+		let editButton = self.navigationItem.rightBarButtonItems?[1] as UIBarButtonItem
+		editButton.enabled = document?.objects.count > 0
+	}
+	
 	// MARK: - Controller Life Cycle methods
 
     override func viewDidLoad() {
@@ -99,13 +106,15 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+//        self.navigationItem.rightBarButtonItem = self.editButtonItem()
+		self.navigationItem.rightBarButtonItems?.append(self.editButtonItem())
 		self.configureView()
 		loadInterface("Keyboard")
 		
 		// set up the accessory view
 		let accessoryNib = NSBundle.mainBundle().loadNibNamed("Accessory", owner: self, options: nil)
 		accessoryView = accessoryNib[0] as UIView
+		enableEdit()
     }
 
     override func didReceiveMemoryWarning() {
@@ -114,21 +123,6 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
     }
 
     // MARK: - Table view data source
-
-//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        // #warning Potentially incomplete method implementation.
-//        // Return the number of sections.
-//        return 1
-//    }
-
-	override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-		let object = document?.objects[indexPath.row]
-		if object is Plot {
-			return 250
-		} else {
-			return 44
-		}
-	}
 	
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
@@ -154,31 +148,36 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as EquationCell
 
         // Configure the cell...
-		cell.equationTextField?.text = content
+		if let textField = cell.equationTextField {
+			textField.text = content
+			textField.inputView = calculatorView
+			textField.inputAccessoryView = accessoryView
+		}
 		cell.descriptionTextField?.text = content
-//		cell.corePlotView.
         return cell
     }
 
-    /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return NO if you do not want the specified item to be editable.
-        return true
+		return document?.objects.count > 0
     }
-    */
 
-    /*
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // Delete the row from the data source
+			document?.objects.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+			if document?.objects.count == 0 {
+				// change Edit button back to done
+				self.setEditing(false, animated: true)
+				enableEdit()
+			}
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
 
     /*
     // Override to support rearranging the table view.
@@ -212,6 +211,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		let indexPath = NSIndexPath(forRow: 0, inSection: 0)
 		self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
 		vc?.dismissViewControllerAnimated(true, completion: nil)
+		enableEdit()
 	}
 	
 	// MARK: - Segues
