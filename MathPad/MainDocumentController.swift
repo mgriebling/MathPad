@@ -100,7 +100,7 @@ class MainDocumentController: UITableViewController {
 		let indexPath = NSIndexPath(forRow: 0, inSection: 0)
 		self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
 //		if !fm.fileExistsAtPath(fname.absoluteString!) {
-		doc.saveToURL(fname, forSaveOperation: UIDocumentSaveOperation.ForCreating, completionHandler: { (success) -> Void in
+		doc.saveToURL(fname, forSaveOperation: .ForCreating, completionHandler: { (success) -> Void in
 			if success { println("Saved document \(fname.lastPathComponent)") }
 		})
 		self.navigationItem.leftBarButtonItem?.enabled = objects.count > 0

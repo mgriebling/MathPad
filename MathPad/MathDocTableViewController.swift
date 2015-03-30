@@ -24,13 +24,13 @@ class RoundLabel: UILabel {
 	}
 }
 
-class MathDocTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
+class MathDocTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate {
 	
-	class func dummy (v: MathDocTableViewController?) { println("Return notification missing") }
+	private class func dummy (v: MathDocTableViewController?) { println("Return notification missing") }
 	
 	var returnNotification: (MathDocTableViewController?) -> () = MathDocTableViewController.dummy
-	var calculatorView: UIView!
-	var accessoryView: UIView!
+	private var calculatorView: UIView!
+	private var accessoryView: UIView!
 	var detailItem: NSURL? {
 		didSet {
 			// load the document
@@ -50,22 +50,30 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 			self.configureView()
 		}
 	}
-	var document : EqDocument?
+	private var document : EqDocument?
+	private var activeField : UITextField?
 	
 	// MARK: - Custom keypad methods
 	
 	@IBAction func addKeyToField(sender: UIButton) {
 		if let key = sender.titleLabel?.text {
-//			equationView.replaceRange(equationView.selectedTextRange!, withText: key)
+			if let field = activeField {
+				field.replaceRange(field.selectedTextRange!, withText: key)
+			}
 		}
 	}
 	
 	@IBAction func backDelete(sender: RoundButton) {
-//		equationView.deleteBackward()
+		activeField?.deleteBackward()
 	}
 	
 	@IBAction func dismissKeyboard(sender: UIBarButtonItem) {
-//		equationView.resignFirstResponder()
+		activeField?.resignFirstResponder()
+		
+		// save any changes to the document
+		document?.saveToURL(detailItem!, forSaveOperation: .ForCreating, completionHandler: { (success) -> Void in
+			if success { println("Updated document...") }
+		})
 	}
 	
 	@IBAction func newKeypad(sender: RoundButton) {
@@ -86,8 +94,15 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		let myBundle = NSBundle.mainBundle()
 		let calculatorNib = myBundle.loadNibNamed(name, owner: self, options: nil)
 		calculatorView = calculatorNib[0] as UIView
-//		self.equationView.inputView = calculatorView
-//		self.equationView.reloadInputViews()
+		activeField?.inputView = calculatorView
+		activeField?.reloadInputViews()
+	}
+	
+	// MARK: - Text field delegate
+	
+	func textFieldDidBeginEditing(textField: UITextField) {
+		// keep track of the active text field
+		activeField = textField
 	}
 	
 	// MARK: - Helper functions
@@ -105,8 +120,6 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-//        self.navigationItem.rightBarButtonItem = self.editButtonItem()
 		self.navigationItem.rightBarButtonItems?.append(self.editButtonItem())
 		self.configureView()
 		loadInterface("Keyboard")
@@ -125,7 +138,6 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
     // MARK: - Table view data source
 	
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
         // Return the number of rows in the section.
 		if let doc = self.document {
 			return doc.objects.count
@@ -152,6 +164,8 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 			textField.text = content
 			textField.inputView = calculatorView
 			textField.inputAccessoryView = accessoryView
+			textField.delegate = self
+			textField.reloadInputViews()
 		}
 		cell.descriptionTextField?.text = content
         return cell
