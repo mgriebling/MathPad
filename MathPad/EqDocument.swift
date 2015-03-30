@@ -31,9 +31,8 @@ class EqDocument: UIDocument {
 			let numberOfObjects = reader.decodeIntegerForKey(kNumberOfObjects)
 			self.objects = []
 			for var i = 0; i < numberOfObjects; i++ {
-				if let object = reader.decodeObject() as? Equation {
-					self.objects.append(object)
-				}
+				let object = Equation(coder: reader)
+				self.objects.append(object)
 			}
 			
 			// read the variables, functions, and states
@@ -56,7 +55,7 @@ class EqDocument: UIDocument {
 		// read the equation objects
 		writer.encodeInteger(self.objects.count, forKey: kNumberOfObjects)
 		for object in self.objects {
-			writer.encodeObject(object)
+			object.encodeWithCoder(writer)
 		}
 		
 		// read the variables, functions, and states

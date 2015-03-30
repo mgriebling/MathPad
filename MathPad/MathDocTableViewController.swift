@@ -36,6 +36,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 			// load the document
 			if let url = detailItem {
 				let doc = EqDocument(fileURL: url)
+				self.closeDocument()	// save/close the existing document -- if any
 				doc.openWithCompletionHandler({ (success) -> Void in
 					if success  {
 						println("Opened document \(url.lastPathComponent)")
@@ -46,12 +47,14 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 				})
 			}
 			
-			// Update the view.
-			self.configureView()
+			// Update the view
+			self.tableView.reloadData()
 		}
 	}
 	private var document : EqDocument?
 	private var activeField : UITextField?
+	private var activeIndex : NSIndexPath?
+	private let myBundle = NSBundle.mainBundle()
 	
 	// MARK: - Custom keypad methods
 	
@@ -69,11 +72,6 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	
 	@IBAction func dismissKeyboard(sender: UIBarButtonItem) {
 		activeField?.resignFirstResponder()
-		
-		// save any changes to the document
-		document?.saveToURL(detailItem!, forSaveOperation: .ForCreating, completionHandler: { (success) -> Void in
-			if success { println("Updated document...") }
-		})
 	}
 	
 	@IBAction func newKeypad(sender: RoundButton) {
@@ -84,14 +82,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		}
 	}
 	
-	func configureView() {
-		// Update the user interface for the detail item.
-		// load the document
-		
-	}
-	
 	func loadInterface(name: String) {
-		let myBundle = NSBundle.mainBundle()
 		let calculatorNib = myBundle.loadNibNamed(name, owner: self, options: nil)
 		calculatorView = calculatorNib[0] as UIView
 		activeField?.inputView = calculatorView
@@ -101,8 +92,17 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	// MARK: - Text field delegate
 	
 	func textFieldDidBeginEditing(textField: UITextField) {
-		// keep track of the active text field
+		// keep track of the active text field and its location in the tableview
 		activeField = textField
+		activeIndex = tableView.mdIndexPathForRowContainingView(textField)
+	}
+	
+	func textFieldDidEndEditing(textField: UITextField) {
+		if let doc = document {
+			if let index = activeIndex?.row {
+				doc.objects[index].CommandLine = textField.text
+			}
+		}
 	}
 	
 	// MARK: - Helper functions
@@ -110,6 +110,13 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	private func enableEdit () {
 		let editButton = self.navigationItem.rightBarButtonItems?[1] as UIBarButtonItem
 		editButton.enabled = document?.objects.count > 0
+	}
+	
+	private func closeDocument () {
+		// save any changes to the document and close it
+		document?.closeWithCompletionHandler({ (success) -> Void in
+			if success { self.document = nil; println("Saved & closed document...") }
+		})
 	}
 	
 	// MARK: - Controller Life Cycle methods
@@ -121,7 +128,6 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
         // self.clearsSelectionOnViewWillAppear = false
 
 		self.navigationItem.rightBarButtonItems?.append(self.editButtonItem())
-		self.configureView()
 		loadInterface("Keyboard")
 		
 		// set up the accessory view
@@ -134,6 +140,16 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+	
+	override func viewDidDisappear(animated: Bool) {
+		super.viewDidDisappear(animated)
+		closeDocument()
+	}
+	
+	override func viewDidAppear(animated: Bool) {
+		super.viewDidAppear(animated)
+		tableView.reloadData()		
+	}
 
     // MARK: - Table view data source
 	
