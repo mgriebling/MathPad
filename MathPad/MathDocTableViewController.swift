@@ -33,22 +33,8 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	private var accessoryView: UIView!
 	var detailItem: NSURL? {
 		didSet {
-			// load the document
-			if let url = detailItem {
-				let doc = EqDocument(fileURL: url)
-				self.closeDocument()	// save/close the existing document -- if any
-				doc.openWithCompletionHandler({ (success) -> Void in
-					if success  {
-						println("Opened document \(url.lastPathComponent)")
-						self.document = doc
-					} else {
-						self.document = nil
-					}
-				})
-			}
-			
-			// Update the view
-			self.tableView.reloadData()
+			// create the document when the view is shown
+			document = EqDocument(fileURL: detailItem!)
 		}
 	}
 	private var document : EqDocument?
@@ -115,8 +101,29 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	private func closeDocument () {
 		// save any changes to the document and close it
 		document?.closeWithCompletionHandler({ (success) -> Void in
-			if success { self.document = nil; println("Saved & closed document...") }
+			if success { println("Saved & closed document...") }
 		})
+	}
+	
+	private func createDocument (url: NSURL) {
+		let fm = NSFileManager.defaultManager()
+		if !fm.fileExistsAtPath(url.path!) {
+			document?.saveToURL(url, forSaveOperation: .ForCreating, completionHandler: { (success) -> Void in
+				if success  {
+					println("Created document \(url.lastPathComponent)")
+					self.tableView.reloadData()  // Update the view
+				}
+			})
+		} else {
+			if document?.documentState == UIDocumentState.Closed {
+				document?.openWithCompletionHandler({ (success) -> Void in
+					if success {
+						println("Opened document \(url.lastPathComponent)")
+						self.tableView.reloadData()  // Update the view
+					}
+				})
+			}
+		}
 	}
 	
 	// MARK: - Controller Life Cycle methods
@@ -146,9 +153,9 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		closeDocument()
 	}
 	
-	override func viewDidAppear(animated: Bool) {
-		super.viewDidAppear(animated)
-		tableView.reloadData()		
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		createDocument(detailItem!)
 	}
 
     // MARK: - Table view data source

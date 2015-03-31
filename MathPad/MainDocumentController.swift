@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainDocumentController: UITableViewController {
+class MainDocumentController: UITableViewController, EqDocumentDelegate {
 
 	let EXTENSION = "mpad"
 	class var path : NSURL {
@@ -20,6 +20,11 @@ class MainDocumentController: UITableViewController {
 	var detailViewController: MathDocTableViewController? = nil
 	var objects = [NSURL]()
 	var activeObject: Int = 0
+	
+	// MARK: - EqDocumentDelegate function
+	func eqDocumentContentsUpdated(document: EqDocument) {
+		println("Document changed...")
+	}
 
 	// gets called to update the object state
 	func updateObject (vc : MathDocTableViewController?) {
@@ -94,15 +99,10 @@ class MainDocumentController: UITableViewController {
 
 	func insertNewDocument(sender: AnyObject) {
 		let fname = getUniqueFilename("Unnamed")
-		let fm =  NSFileManager.defaultManager()
-		let doc = EqDocument(fileURL: fname)
 		objects.insert(fname, atIndex: 0)
 		let indexPath = NSIndexPath(forRow: 0, inSection: 0)
 		self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
 //		if !fm.fileExistsAtPath(fname.absoluteString!) {
-		doc.saveToURL(fname, forSaveOperation: .ForCreating, completionHandler: { (success) -> Void in
-			if success { println("Saved document \(fname.lastPathComponent)") }
-		})
 		self.navigationItem.leftBarButtonItem?.enabled = objects.count > 0
 //		} else {
 //			doc.openWithCompletionHandler({ (success) -> Void in

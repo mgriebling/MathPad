@@ -317,7 +317,6 @@
 			isa = PBXGroup;
 			children = (
 				2FAB7CEC1AC58011006F5B82 /* EqDocument.swift */,
-				4717A2E51AC5680D00D90472 /* MathPad.entitlements */,
 				47FD43D21AC2C40400C71213 /* AppDelegate.swift */,
 				47FD43D41AC2C40400C71213 /* MainDocumentController.swift */,
 				47FD43D81AC2C40400C71213 /* Main.storyboard */,
@@ -336,6 +335,7 @@
 		47FD43D01AC2C40400C71213 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4717A2E51AC5680D00D90472 /* MathPad.entitlements */,
 				2F7196D41AC972360079DDEC /* UITableView+MDAdditions.h */,
 				2F7196D51AC972360079DDEC /* UITableView+MDAdditions.m */,
 				4722DE481AC83B53003E6A09 /* libCorePlot-CocoaTouch.a */,

@@ -14,6 +14,7 @@ class EqDocument: UIDocument {
 	// An equation document also implicitly saves the state of all variables, functions, and number formatting options.
 	
 	var objects : [Equation] = []
+	var delegate : EqDocumentDelegate?
 	
 	private let kVersion   = "EqDocument.version"
 	private let kEquations = "EqDocument.objects"
@@ -22,16 +23,18 @@ class EqDocument: UIDocument {
 	// Typical subclasses will implement this method to do reading. UIKit will pass NSData typed contents for flat files and NSFileWrapper typed contents for file packages.
 	// typeName is the UTI of the loaded file.
 	override func loadFromContents(contents: AnyObject, ofType typeName: String, error outError: NSErrorPointer) -> Bool {
-		if let data = contents as? NSData {
-			if data.length == 0 { return false } // corrupted file?
+		if contents.length > 0 {
+			let data = contents as NSData
 			var reader = NSKeyedUnarchiver(forReadingWithData: data)
 			let version = reader.decodeIntegerForKey(kVersion)
 			
 			// read the equation objects
 			let numberOfObjects = reader.decodeIntegerForKey(kNumberOfObjects)
+			println("Reading \(numberOfObjects) objects...")
 			self.objects = []
 			for var i = 0; i < numberOfObjects; i++ {
 				let object = Equation(coder: reader)
+				println("Read \(object.CommandLine)...")
 				self.objects.append(object)
 			}
 			
@@ -39,9 +42,10 @@ class EqDocument: UIDocument {
 			nState = NumbState(decoder: reader)
 			Functions.Load(reader)
 			Variables.Load(reader)
-			return true
+			
+			delegate?.eqDocumentContentsUpdated(self)
 		}
-		return false
+		return true
 	}
 	
 	// Typical subclasses will implement this method and return an NSFileWrapper or NSData encapsulating a snapshot of their data to be written to disk during saving.
@@ -54,8 +58,10 @@ class EqDocument: UIDocument {
 		
 		// read the equation objects
 		writer.encodeInteger(self.objects.count, forKey: kNumberOfObjects)
+		println("Writing \(self.objects.count) objects...")
 		for object in self.objects {
 			object.encodeWithCoder(writer)
+			println("Wrote \(object.CommandLine)...")
 		}
 		
 		// read the variables, functions, and states
@@ -66,4 +72,8 @@ class EqDocument: UIDocument {
 		return data
 	}
 	
+}
+
+protocol EqDocumentDelegate {
+	func eqDocumentContentsUpdated (document: EqDocument)
 }
