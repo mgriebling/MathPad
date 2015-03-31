@@ -87,6 +87,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		if let doc = document {
 			if let index = activeIndex?.row {
 				doc.objects[index].CommandLine = textField.text
+				doc.updateChangeCount(UIDocumentChangeKind.Done)
 			}
 		}
 	}
