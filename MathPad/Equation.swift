@@ -78,7 +78,6 @@ class Equation : NSObject, NSCoding {
 	}
 	
 	 func encodeWithCoder (encoder: NSCoder) {
-		super.encodeWithCoder(encoder)
 		encoder.encodeObject(self.LastAnswer)
 		encoder.encodeObject(self.CommandLine)
 //		nState.Save(encoder)
