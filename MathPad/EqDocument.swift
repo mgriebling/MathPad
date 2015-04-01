@@ -23,8 +23,8 @@ class EqDocument: UIDocument {
 	// Typical subclasses will implement this method to do reading. UIKit will pass NSData typed contents for flat files and NSFileWrapper typed contents for file packages.
 	// typeName is the UTI of the loaded file.
 	override func loadFromContents(contents: AnyObject, ofType typeName: String, error outError: NSErrorPointer) -> Bool {
-		if contents.length > 0 {
-			let data = contents as NSData
+		if var data = contents as? NSData {
+//			var data = contents as NSData
 			var reader = NSKeyedUnarchiver(forReadingWithData: data)
 			let version = reader.decodeIntegerForKey(kVersion)
 			
@@ -33,9 +33,23 @@ class EqDocument: UIDocument {
 			println("Reading \(numberOfObjects) objects...")
 			self.objects = []
 			for var i = 0; i < numberOfObjects; i++ {
-				let object = Equation(coder: reader)
-				println("Read \(object.CommandLine)...")
-				self.objects.append(object)
+				let object: AnyObject? = reader.decodeObject()
+				if object is Description? {
+					if let item = object as? Description {
+						println("Read \(item.CommandLine)...")
+						self.objects.append(item)
+					}
+				} else if object is Plot? {
+					if let item = object as? Plot {
+						println("Read \(item.CommandLine)...")
+						self.objects.append(item)
+					}
+				} else if object is Equation? {
+					if let item = object as? Equation {
+						println("Read \(item.CommandLine)...")
+						self.objects.append(item)
+					}
+				}
 			}
 			
 			// read the variables, functions, and states
@@ -60,7 +74,8 @@ class EqDocument: UIDocument {
 		writer.encodeInteger(self.objects.count, forKey: kNumberOfObjects)
 		println("Writing \(self.objects.count) objects...")
 		for object in self.objects {
-			object.encodeWithCoder(writer)
+			writer.encodeObject(object)
+//			object.encodeWithCoder(writer)
 			println("Wrote \(object.CommandLine)...")
 		}
 		
@@ -69,7 +84,7 @@ class EqDocument: UIDocument {
 		Functions.Save(writer)
 		Variables.Save(writer)
 		writer.finishEncoding()
-		return data
+		return data // NSData(data: data)
 	}
 	
 }

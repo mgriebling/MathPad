@@ -87,7 +87,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		if let doc = document {
 			if let index = activeIndex?.row {
 				doc.objects[index].CommandLine = textField.text
-				doc.updateChangeCount(UIDocumentChangeKind.Done)
+				doc.updateChangeCount(.Done)
 			}
 		}
 	}
@@ -192,6 +192,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 			textField.reloadInputViews()
 		}
 		cell.descriptionTextField?.text = content
+		cell.descriptionTextField?.delegate = self
         return cell
     }
 
@@ -206,6 +207,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
         if editingStyle == .Delete {
             // Delete the row from the data source
 			document?.objects.removeAtIndex(indexPath.row)
+			document?.updateChangeCount(.Done)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
 			if document?.objects.count == 0 {
 				// change Edit button back to done
@@ -246,6 +248,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 			default: item = Plot(); println ("Adding a plot"); break
 		}
 		document?.objects.insert(item, atIndex: 0)
+		document?.updateChangeCount(.Done)
 		let indexPath = NSIndexPath(forRow: 0, inSection: 0)
 		self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
 		vc?.dismissViewControllerAnimated(true, completion: nil)
