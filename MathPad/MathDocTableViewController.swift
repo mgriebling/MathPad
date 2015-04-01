@@ -56,7 +56,15 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		activeField?.deleteBackward()
 	}
 	
+	@IBAction func endOnExit(sender: UITextField) {
+		sender.resignFirstResponder()
+	}
+	
 	@IBAction func dismissKeyboard(sender: UIBarButtonItem) {
+		hideKeyboard()
+	}
+	
+	func hideKeyboard () {
 		activeField?.resignFirstResponder()
 	}
 	
@@ -95,7 +103,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	// MARK: - Helper functions
 	
 	private func enableEdit () {
-		let editButton = self.navigationItem.rightBarButtonItems?[1] as UIBarButtonItem
+		var editButton = self.navigationItem.rightBarButtonItems?[1] as UIBarButtonItem
 		editButton.enabled = document?.objects.count > 0
 	}
 	
@@ -112,6 +120,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 			document?.saveToURL(url, forSaveOperation: .ForCreating, completionHandler: { (success) -> Void in
 				if success  {
 					println("Created document \(url.lastPathComponent)")
+					self.enableEdit()
 					self.tableView.reloadData()  // Update the view
 				}
 			})
@@ -120,6 +129,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 				document?.openWithCompletionHandler({ (success) -> Void in
 					if success {
 						println("Opened document \(url.lastPathComponent)")
+						self.enableEdit()
 						self.tableView.reloadData()  // Update the view
 					}
 				})
@@ -137,6 +147,9 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 
 		self.navigationItem.rightBarButtonItems?.append(self.editButtonItem())
 		loadInterface("Keyboard")
+		
+		let gestureRecognizer = UITapGestureRecognizer(target: self, action: "hideKeyboard")
+		tableView.addGestureRecognizer(gestureRecognizer)
 		
 		// set up the accessory view
 		let accessoryNib = NSBundle.mainBundle().loadNibNamed("Accessory", owner: self, options: nil)
@@ -201,6 +214,11 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
         // Return NO if you do not want the specified item to be editable.
 		return document?.objects.count > 0
     }
+	
+	override func setEditing(editing: Bool, animated: Bool) {
+		hideKeyboard()
+		super.setEditing(editing, animated: animated)
+	}
 
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -219,20 +237,19 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
         }    
     }
 
-    /*
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
+		let object = document?.objects[fromIndexPath.row]
+		document?.objects.removeAtIndex(fromIndexPath.row)
+		document?.objects.insert(object!, atIndex: toIndexPath.row)
     }
-    */
 
-    /*
     // Override to support conditional rearranging of the table view.
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return NO if you do not want the item to be re-orderable.
-        return true
+        return document?.objects.count > 1
     }
-    */
+
 	
 	// MARK: - PopoverPresentationControllerDelegate methods
 	
@@ -243,21 +260,25 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	func createNewItemSelected (vc: SelectItemTableViewController?, selected: Int)  {
 		var item: Equation
 		switch selected {
-			case 0: item = Equation(command: "e = m c²"); println ("Adding an equation"); break
+			case 0: item = Equation(command: ""); println ("Adding an equation"); break
 			case 1: item = Description(); println ("Adding a description"); break
 			default: item = Plot(); println ("Adding a plot"); break
 		}
-		document?.objects.insert(item, atIndex: 0)
-		document?.updateChangeCount(.Done)
-		let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-		self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-		vc?.dismissViewControllerAnimated(true, completion: nil)
+		if let doc = document {
+			doc.objects.append(item)
+			doc.updateChangeCount(.Done)
+			let count = doc.objects.count == 0 ? 0 : doc.objects.count-1
+			let indexPath = NSIndexPath(forRow: count, inSection: 0)
+			self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+			vc?.dismissViewControllerAnimated(true, completion: nil)
+		}
 		enableEdit()
 	}
 	
 	// MARK: - Segues
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "showOptions" {
+			hideKeyboard()
 			let vc = segue.destinationViewController as SelectItemTableViewController
 			vc.popoverPresentationController?.delegate = self
 			vc.rowWasSelected = createNewItemSelected	// call-back
