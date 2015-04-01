@@ -156,7 +156,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
-		createDocument(detailItem!)
+		if detailItem != nil { createDocument(detailItem!) }
 	}
 
     // MARK: - Table view data source

@@ -33,23 +33,9 @@ class EqDocument: UIDocument {
 			println("Reading \(numberOfObjects) objects...")
 			self.objects = []
 			for var i = 0; i < numberOfObjects; i++ {
-				let object: AnyObject? = reader.decodeObject()
-				if object is Description? {
-					if let item = object as? Description {
-						println("Read \(item.CommandLine)...")
-						self.objects.append(item)
-					}
-				} else if object is Plot? {
-					if let item = object as? Plot {
-						println("Read \(item.CommandLine)...")
-						self.objects.append(item)
-					}
-				} else if object is Equation? {
-					if let item = object as? Equation {
-						println("Read \(item.CommandLine)...")
-						self.objects.append(item)
-					}
-				}
+				let object = reader.decodeObject() as Equation
+				if object.respondsToSelector("CommandLine") {  println("Read \(object.CommandLine)...") }
+				self.objects.append(object)
 			}
 			
 			// read the variables, functions, and states

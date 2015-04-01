@@ -67,22 +67,18 @@ class Equation : NSObject, NSCoding {
 		super.init()
 	}
 	
+	// MARK: - NSCoding
+	
 	required init (coder decoder: NSCoder) {
 		self.Token = .Empty
 		self.LastAnswer = decoder.decodeObject() as xNumber
 		self.CommandLine = decoder.decodeObject() as String
 		super.init()
-//		nState = NumbState(decoder: decoder)
-//		Functions.Load(decoder)
-//		Variables.Load(decoder)
 	}
 	
 	 func encodeWithCoder (encoder: NSCoder) {
 		encoder.encodeObject(self.LastAnswer)
 		encoder.encodeObject(self.CommandLine)
-//		nState.Save(encoder)
-//		Functions.Save(encoder)
-//		Variables.Save(encoder)
 	}
 	
 	private func StoreVariable (Location: String, Value : xNumber) {
