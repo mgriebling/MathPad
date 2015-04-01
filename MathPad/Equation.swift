@@ -31,7 +31,7 @@ class Plot : Equation {
 	}
 }
 
-class Equation : NSCoding {
+class Equation : NSObject, NSCoding {
 	
  /*
 	Equations - Equation evaluation.
@@ -64,18 +64,21 @@ class Equation : NSCoding {
 		self.CommandLine = command
 		self.LastAnswer = zero
 		self.Token = .Empty
+		super.init()
 	}
 	
 	required init (coder decoder: NSCoder) {
 		self.Token = .Empty
 		self.LastAnswer = decoder.decodeObject() as xNumber
 		self.CommandLine = decoder.decodeObject() as String
+		super.init()
 //		nState = NumbState(decoder: decoder)
 //		Functions.Load(decoder)
 //		Variables.Load(decoder)
 	}
 	
-	func encodeWithCoder (encoder: NSCoder) {
+	 func encodeWithCoder (encoder: NSCoder) {
+		super.encodeWithCoder(encoder)
 		encoder.encodeObject(self.LastAnswer)
 		encoder.encodeObject(self.CommandLine)
 //		nState.Save(encoder)
