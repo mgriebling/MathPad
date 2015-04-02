@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1066" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -24,7 +24,7 @@
         <scene sceneID="HhA-Is-BYg">
             <objects>
                 <tableViewController id="20C-ku-Fes" customClass="MathDocTableViewController" customModule="MathPad" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="d1K-jM-JRp">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="d1K-jM-JRp" customClass="BVReorderTableView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -40,7 +40,7 @@
                                                 <constraint firstAttribute="height" constant="30" id="IrM-bs-NYT"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="IrM-bs-NYT"/>
@@ -76,7 +76,7 @@
                                                 <constraint firstAttribute="height" constant="30" id="rUl-TG-FoH"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert"/>
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="rUl-TG-FoH"/>
@@ -114,6 +114,7 @@
                                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="227" id="PeF-eo-clq"/>
+                                                <constraint firstAttribute="height" constant="229" id="gGh-Mx-zYQ"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
@@ -121,21 +122,26 @@
                                                 </mask>
                                             </variation>
                                         </view>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="f(x) = 2x² + 3x - 10" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="qXz-sO-SpK">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="redraw" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="f(x) = 2x² + 3x - 10" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="qXz-sO-SpK">
                                             <rect key="frame" x="8" y="8" width="584" height="30"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <color key="backgroundColor" red="0.88504221134074079" green="0.97423066450370388" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert"/>
                                         </textField>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="qXz-sO-SpK" firstAttribute="top" secondItem="VC0-D7-3HJ" secondAttribute="topMargin" id="6pr-h8-OHS"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="jIu-L5-zNM" secondAttribute="bottom" id="ACY-Tt-7Q7"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="top" secondItem="qXz-sO-SpK" secondAttribute="bottom" constant="8" symbolic="YES" id="CIS-i7-vn8"/>
+                                        <constraint firstItem="jIu-L5-zNM" firstAttribute="bottom" secondItem="VC0-D7-3HJ" secondAttribute="bottomMargin" id="HGG-W2-jYe"/>
                                         <constraint firstItem="qXz-sO-SpK" firstAttribute="leading" secondItem="VC0-D7-3HJ" secondAttribute="leadingMargin" id="Jvu-TS-sup"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="jIu-L5-zNM" secondAttribute="trailing" id="NKN-MC-Jg6"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="bottom" secondItem="VC0-D7-3HJ" secondAttribute="bottomMargin" id="PGm-t1-0we"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="leading" secondItem="VC0-D7-3HJ" secondAttribute="leadingMargin" id="R4O-2f-Qjc"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="trailing" secondItem="VC0-D7-3HJ" secondAttribute="trailingMargin" id="Rcx-zG-fbL"/>
+                                        <constraint firstItem="jIu-L5-zNM" firstAttribute="leading" secondItem="VC0-D7-3HJ" secondAttribute="leadingMargin" id="WsU-R5-cHM"/>
+                                        <constraint firstItem="jIu-L5-zNM" firstAttribute="trailing" secondItem="VC0-D7-3HJ" secondAttribute="trailingMargin" id="ahj-IE-auU"/>
+                                        <constraint firstItem="jIu-L5-zNM" firstAttribute="top" secondItem="qXz-sO-SpK" secondAttribute="bottom" constant="8" id="dBF-QV-Sd8"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="top" secondItem="VC0-D7-3HJ" secondAttribute="topMargin" id="eV7-y8-PgP"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="top" secondItem="VC0-D7-3HJ" secondAttribute="topMargin" id="fII-tP-FcU"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="bottom" secondItem="VC0-D7-3HJ" secondAttribute="bottomMargin" id="kfW-pZ-V0b"/>
@@ -145,8 +151,12 @@
                                     <variation key="default">
                                         <mask key="constraints">
                                             <exclude reference="ACY-Tt-7Q7"/>
+                                            <exclude reference="HGG-W2-jYe"/>
                                             <exclude reference="NKN-MC-Jg6"/>
                                             <exclude reference="R4O-2f-Qjc"/>
+                                            <exclude reference="WsU-R5-cHM"/>
+                                            <exclude reference="ahj-IE-auU"/>
+                                            <exclude reference="dBF-QV-Sd8"/>
                                             <exclude reference="eV7-y8-PgP"/>
                                             <exclude reference="fII-tP-FcU"/>
                                             <exclude reference="kfW-pZ-V0b"/>

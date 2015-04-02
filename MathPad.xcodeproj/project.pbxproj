@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F6512CE1ACDBE5A00E3D262 /* BVReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6512CD1ACDBE5A00E3D262 /* BVReorderTableView.m */; };
+		2F6512D21ACDD75900E3D262 /* graphObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F6512D11ACDD75900E3D262 /* graphObject.m */; };
 		2F7196D61AC972360079DDEC /* UITableView+MDAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7196D51AC972360079DDEC /* UITableView+MDAdditions.m */; };
 		2FAB7CED1AC58011006F5B82 /* EqDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAB7CEC1AC58011006F5B82 /* EqDocument.swift */; };
 		2FAB7CEE1AC58EA2006F5B82 /* Keyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4717A2E21AC55FF700D90472 /* Keyboard.xib */; };
@@ -61,6 +63,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2F6512CC1ACDBE5A00E3D262 /* BVReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BVReorderTableView.h; sourceTree = "<group>"; };
+		2F6512CD1ACDBE5A00E3D262 /* BVReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BVReorderTableView.m; sourceTree = "<group>"; };
+		2F6512D01ACDD75900E3D262 /* graphObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphObject.h; sourceTree = "<group>"; };
+		2F6512D11ACDD75900E3D262 /* graphObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = graphObject.m; sourceTree = "<group>"; };
 		2F7196D41AC972360079DDEC /* UITableView+MDAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+MDAdditions.h"; sourceTree = "<group>"; };
 		2F7196D51AC972360079DDEC /* UITableView+MDAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+MDAdditions.m"; sourceTree = "<group>"; };
 		2FAB7CEC1AC58011006F5B82 /* EqDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqDocument.swift; sourceTree = "<group>"; };
@@ -337,6 +343,9 @@
 		47FD43D01AC2C40400C71213 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				47FD44001AC2C58500C71213 /* MathPad-Bridging-Header.h */,
+				2F6512CC1ACDBE5A00E3D262 /* BVReorderTableView.h */,
+				2F6512CD1ACDBE5A00E3D262 /* BVReorderTableView.m */,
 				47FD43D21AC2C40400C71213 /* AppDelegate.swift */,
 				4717A2E51AC5680D00D90472 /* MathPad.entitlements */,
 				2F7196D41AC972360079DDEC /* UITableView+MDAdditions.h */,
@@ -381,7 +390,6 @@
 				47FD44081AC2C58600C71213 /* Real.mm */,
 				47FD44091AC2C58600C71213 /* Reals.cpp */,
 				47FD440A1AC2C58600C71213 /* Reals.h */,
-				47FD44001AC2C58500C71213 /* MathPad-Bridging-Header.h */,
 			);
 			name = "Extended Numbers";
 			sourceTree = "<group>";
@@ -394,6 +402,8 @@
 				47FD43F71AC2C42F00C71213 /* Scanner.swift */,
 				47FD43F81AC2C42F00C71213 /* State.swift */,
 				47FD43F91AC2C42F00C71213 /* Equation.swift */,
+				2F6512D01ACDD75900E3D262 /* graphObject.h */,
+				2F6512D11ACDD75900E3D262 /* graphObject.m */,
 			);
 			name = "Equation Model";
 			sourceTree = "<group>";
@@ -512,6 +522,7 @@
 				2FAB7CED1AC58011006F5B82 /* EqDocument.swift in Sources */,
 				4722DE251AC822B9003E6A09 /* MathDocTableViewController.swift in Sources */,
 				47FD440E1AC2C58600C71213 /* Reals.cpp in Sources */,
+				2F6512D21ACDD75900E3D262 /* graphObject.m in Sources */,
 				47FD440D1AC2C58600C71213 /* Real.mm in Sources */,
 				47FD43FF1AC2C42F00C71213 /* Equation.swift in Sources */,
 				47FD44121AC4187100C71213 /* SelectItemTableViewController.swift in Sources */,
@@ -524,6 +535,7 @@
 				47FD43D31AC2C40400C71213 /* AppDelegate.swift in Sources */,
 				2F7196D61AC972360079DDEC /* UITableView+MDAdditions.m in Sources */,
 				4722DE271AC825C8003E6A09 /* EquationCell.swift in Sources */,
+				2F6512CE1ACDBE5A00E3D262 /* BVReorderTableView.m in Sources */,
 				47FD43FE1AC2C42F00C71213 /* State.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

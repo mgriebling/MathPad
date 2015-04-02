@@ -20,14 +20,25 @@ class Description : Equation {
 }
 
 class Plot : Equation {
-	// TBD
-	// Just a container
+	
 	init() {
+		hostingView = nil
+		graph = graphObject()
 		super.init(command: "")
 	}
-	
+
 	required init(coder decoder: NSCoder) {
+		hostingView = nil
+		graph = graphObject()
 		super.init(coder: decoder)
+	}
+
+	// manage the plotting variables here
+	var hostingView: CPTGraphHostingView?
+	var graph: graphObject?
+	
+	func updatePlot () {
+		graph?.renderInGraphHostingView(hostingView, withTheme: nil, animated: true)
 	}
 }
 

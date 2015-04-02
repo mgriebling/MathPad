@@ -24,7 +24,7 @@ class RoundLabel: UILabel {
 	}
 }
 
-class MathDocTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate {
+class MathDocTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, ReorderTableViewDelegate {
 	
 	private class func dummy (v: MathDocTableViewController?) { println("Return notification missing") }
 	
@@ -117,6 +117,29 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		activeField?.reloadInputViews()
 	}
 	
+	// MARK: - ReorderTableviewDelegate funcs
+	
+	func saveObjectAndInsertBlankRowAtIndexPath(indexPath: NSIndexPath!) -> AnyObject! {
+		let object = document?.objects[indexPath.row]
+		let blank = Description()
+		blank.CommandLine = "  "
+		document?.objects.removeAtIndex(indexPath.row)
+		document?.objects.insert(blank, atIndex: indexPath.row)
+		return object
+	}
+	
+	func moveRowAtIndexPath(fromIndexPath: NSIndexPath!, toIndexPath: NSIndexPath!) {
+		let object = document?.objects[fromIndexPath.row]
+		document?.objects.removeAtIndex(fromIndexPath.row)
+		document?.objects.insert(object!, atIndex: toIndexPath.row)
+	}
+	
+	func finishReorderingWithObject(object: AnyObject!, atIndexPath indexPath: NSIndexPath!) {
+		document?.objects.removeAtIndex(indexPath.row)
+		document?.objects.insert(object as Equation, atIndex: indexPath.row)
+		document?.updateChangeCount(.Done)
+	}
+	
 	// MARK: - Text field delegate
 	
 	func textFieldDidBeginEditing(textField: UITextField) {
@@ -171,86 +194,6 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		}
 	}
 	
-	private func customSnapshotFromView (inputView: UIView) -> UIView {
-		// make an image of the input view
-		UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0)
-		inputView.layer.renderInContext(UIGraphicsGetCurrentContext())
-		let image = UIGraphicsGetImageFromCurrentImageContext()
-		UIGraphicsEndImageContext()
-		
-		// create an image view
-		var snapshot = UIImageView(image: image)
-		snapshot.layer.masksToBounds = false
-		snapshot.layer.cornerRadius = 0
-		snapshot.layer.shadowOffset = CGSizeMake(-5, 0)
-		snapshot.layer.shadowRadius = 5
-		snapshot.layer.shadowOpacity = 0.4
-		return snapshot
-	}
-	
-	private func longPressAction (longPress: UILongPressGestureRecognizer) {
-		let state = longPress.state
-		let location = longPress.locationInView(tableView)
-		let indexPath = tableView.indexPathForRowAtPoint(location)
-		var snapshot: UIView? = nil
-		var sourceIndexPath = indexPath
-		var cell : UITableViewCell
-		
-		switch (state) {
-		case UIGestureRecognizerState.Began:
-			if indexPath != nil {
-				cell = tableView.cellForRowAtIndexPath(indexPath!)!
-				snapshot = customSnapshotFromView(cell)
-				
-				// add the snapshot as subview, centered at cell's center...
-				var center = cell.center
-				snapshot?.center = center
-				snapshot?.alpha = 0
-				tableView.addSubview(snapshot!)
-				UIView.animateWithDuration(0.25, animations: { () -> Void in
-					// offset for gesture location
-					center.y = location.y
-					snapshot?.center = center
-					snapshot?.transform = CGAffineTransformMakeScale(1.05, 1.05)
-					snapshot?.alpha = 0.98
-					
-					// fade out
-					cell.alpha = 0.0
-				}, completion: { (finished) -> Void in
-					cell.hidden = true
-				})
-			}
-		case UIGestureRecognizerState.Changed:
-			var center = snapshot?.center
-			center?.y = location.y
-			snapshot?.center = center!
-			
-			// is destination path valid and is it different from source?
-			if indexPath != nil && indexPath != sourceIndexPath {
-				let object = document?.objects[sourceIndexPath!.row]
-				document?.objects.removeAtIndex(sourceIndexPath!.row)
-				document?.objects.insert(object!, atIndex: indexPath!.row)
-				tableView.moveRowAtIndexPath(sourceIndexPath!, toIndexPath: indexPath!)
-				sourceIndexPath = indexPath
-			}
-			
-		default:
-			cell = tableView.cellForRowAtIndexPath(sourceIndexPath!)!
-			cell.hidden = false
-			cell.alpha = 0
-			UIView.animateWithDuration(0.25, animations: { () -> Void in
-				snapshot?.center = cell.center
-				snapshot?.transform = CGAffineTransformIdentity
-				snapshot?.alpha = 0
-				cell.alpha = 1
-			}, completion: { (finished) -> Void in
-				sourceIndexPath = nil
-				snapshot?.removeFromSuperview()
-				snapshot = nil
-			})
-		}
-	}
-	
 	// MARK: - Controller Life Cycle methods
 
     override func viewDidLoad() {
@@ -265,10 +208,6 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		// keyboard is hidden when user taps outside the cell
 		let gestureRecognizer = UITapGestureRecognizer(target: self, action: "hideKeyboard")
 		tableView.addGestureRecognizer(gestureRecognizer)
-		
-		// long gesture allows table rows to be moved
-		let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressAction:")
-		tableView.addGestureRecognizer(longPressRecognizer)
 		
 		// set up the accessory view
 		let accessoryNib = NSBundle.mainBundle().loadNibNamed("Accessory", owner: self, options: nil)
@@ -325,6 +264,11 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		}
 		cell.descriptionTextField?.text = content
 		cell.descriptionTextField?.delegate = self
+		if let graph = cell.corePlotView {
+			var object = document?.objects[indexPath.row] as Plot
+			object.hostingView = graph
+			object.updatePlot()
+		}
         return cell
     }
 
