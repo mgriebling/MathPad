@@ -91,10 +91,11 @@ class MainDocumentController: UITableViewController, EqDocumentDelegate, UITextF
 		let fm = NSFileManager.defaultManager()
 		var exists: Bool
 		do {
-			number++
-			fname = url.URLByAppendingPathComponent("\(name) \(number)").URLByAppendingPathExtension(EXTENSION)
+			let uniqueName = number == 0 ? name : "\(name) \(number)"
+			fname = url.URLByAppendingPathComponent(uniqueName).URLByAppendingPathExtension(EXTENSION)
 			let lname = fname.path
 			exists = fm.fileExistsAtPath(lname!)
+			number++
 		} while exists
 		return fname
 	}
@@ -177,7 +178,18 @@ class MainDocumentController: UITableViewController, EqDocumentDelegate, UITextF
 	
 	func textFieldShouldReturn(textField: UITextField) -> Bool {
 		let newName = textField.text
-		// TBD - rename the file here
+		let pos = tableView.mdIndexPathForRowContainingView(textField)
+		let oldfile = objects[pos.row]
+		
+		// get a valid filename with number extension if needed
+		let filename = getUniqueFilename(newName)
+		if oldfile != filename {
+			objects[pos.row] = filename
+			let fm = NSFileManager.defaultManager()
+			var error: NSErrorPointer = nil
+			fm.moveItemAtURL(oldfile, toURL: filename, error: error)
+		}
+		
 		textField.resignFirstResponder()
 		return true
 	}
