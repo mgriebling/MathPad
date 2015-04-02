@@ -44,12 +44,46 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	
 	// MARK: - Custom keypad methods
 	
+	private func addText (text: String) {
+		if let field = activeField {
+			field.replaceRange(field.selectedTextRange!, withText: text)
+		}
+	}
+	
 	@IBAction func addKeyToField(sender: UIButton) {
+		if let key = sender.titleLabel?.text { addText(key) }
+	}
+	
+	@IBAction func addBinaryOp(sender: RoundButton) {
+		if let key = sender.titleLabel?.text { addText(" " + key + " ") }
+	}
+	
+	@IBAction func addOp(sender: UIButton) {
 		if let key = sender.titleLabel?.text {
-			if let field = activeField {
-				field.replaceRange(field.selectedTextRange!, withText: key)
+			if key.hasSuffix("x") {
+				addText(key.stringByReplacingOccurrencesOfString("x", withString: ""))
+			} else {
+				addText(key)
 			}
 		}
+	}
+	
+	@IBAction func addPost(sender: RoundButton) {
+		if let key = sender.titleLabel?.text {
+			if key.hasPrefix("x") {
+				addText(key.stringByReplacingOccurrencesOfString("x", withString: ""))
+			} else {
+				addText(key)
+			}
+		}
+	}
+	
+	@IBAction func addPower(sender: RoundButton) {
+		addText("^")
+	}
+	
+	@IBAction func addExponent(sender: RoundButton) {
+		addText("×10^")
 	}
 	
 	@IBAction func backDelete(sender: RoundButton) {

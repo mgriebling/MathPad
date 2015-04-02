@@ -24,17 +24,14 @@ class EqDocument: UIDocument {
 	// typeName is the UTI of the loaded file.
 	override func loadFromContents(contents: AnyObject, ofType typeName: String, error outError: NSErrorPointer) -> Bool {
 		if var data = contents as? NSData {
-//			var data = contents as NSData
 			var reader = NSKeyedUnarchiver(forReadingWithData: data)
 			let version = reader.decodeIntegerForKey(kVersion)
 			
 			// read the equation objects
 			let numberOfObjects = reader.decodeIntegerForKey(kNumberOfObjects)
-			println("Reading \(numberOfObjects) objects...")
 			self.objects = []
 			for var i = 0; i < numberOfObjects; i++ {
 				let object = reader.decodeObject() as Equation
-				if object.respondsToSelector("CommandLine") {  println("Read \(object.CommandLine)...") }
 				self.objects.append(object)
 			}
 			
@@ -58,11 +55,8 @@ class EqDocument: UIDocument {
 		
 		// read the equation objects
 		writer.encodeInteger(self.objects.count, forKey: kNumberOfObjects)
-		println("Writing \(self.objects.count) objects...")
 		for object in self.objects {
 			writer.encodeObject(object)
-//			object.encodeWithCoder(writer)
-			println("Wrote \(object.CommandLine)...")
 		}
 		
 		// read the variables, functions, and states

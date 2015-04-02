@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1066" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
@@ -24,7 +24,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="bLv-FH-jhA"/>
+                        <action selector="addBinaryOp:" destination="-1" eventType="touchUpInside" id="gJi-yj-iwD"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ObV-3C-s4W" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
@@ -41,7 +41,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="1sG-Ze-nUH"/>
+                        <action selector="addBinaryOp:" destination="-1" eventType="touchUpInside" id="xDv-nz-YFS"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37O-lk-M9C" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
@@ -58,7 +58,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="Bar-QV-8mJ"/>
+                        <action selector="addBinaryOp:" destination="-1" eventType="touchUpInside" id="Foh-Tn-vQQ"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zrr-J5-5YM" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
@@ -75,7 +75,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="dC0-5p-BdV"/>
+                        <action selector="addBinaryOp:" destination="-1" eventType="touchUpInside" id="Be0-E5-NHD"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E1V-aI-SEd" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
@@ -177,7 +177,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="PGQ-4P-hSJ"/>
+                        <action selector="addExponent:" destination="-1" eventType="touchUpInside" id="BJs-uc-tJM"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0FM-hs-rHc" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
@@ -193,6 +193,9 @@
                             <real key="value" value="5"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="x7K-iT-fpd"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZeF-Xa-UuB" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
                     <rect key="frame" x="115" y="20" width="86" height="134"/>
@@ -316,8 +319,8 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cyb-lH-fJg" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
                     <rect key="frame" x="20" y="446" width="87" height="134"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
-                    <state key="normal" title="x²">
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <state key="normal" title="x!">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -327,14 +330,14 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="DaG-zM-j1H"/>
+                        <action selector="addPost:" destination="-1" eventType="touchUpInside" id="IB0-jz-IQY"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tjC-Yg-04k" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
                     <rect key="frame" x="20" y="20" width="87" height="134"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="ℹ︎">
+                    <state key="normal" title="ℯ">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -344,13 +347,13 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="K2n-s6-Nal"/>
+                        <action selector="addOp:" destination="-1" eventType="touchUpInside" id="xdc-aq-pnd"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oLc-Zv-jEE" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
                     <rect key="frame" x="20" y="162" width="87" height="134"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="xⁿ">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -361,13 +364,13 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="oCE-OL-iEp"/>
+                        <action selector="addPower:" destination="-1" eventType="touchUpInside" id="a7R-7L-NU8"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NBU-wb-hDj" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
                     <rect key="frame" x="20" y="304" width="87" height="134"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="x³">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -378,7 +381,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="L9z-XC-c5E"/>
+                        <action selector="addPost:" destination="-1" eventType="touchUpInside" id="xCH-xz-bJz"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="opg-RN-yRm" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
@@ -427,65 +430,6 @@
                     <rect key="frame" x="493" y="162" width="87" height="134"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="sym">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="5"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RqC-eW-Cym" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
-                    <rect key="frame" x="493" y="304" width="87" height="134"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="func">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="5"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="newKeypad:" destination="-1" eventType="touchUpInside" id="SXU-6u-WCY"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZEW-zV-oyL" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
-                    <rect key="frame" x="493" y="446" width="87" height="134"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="a...z">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="5"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l6r-LW-b0q" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
-                    <rect key="frame" x="493" y="20" width="87" height="134"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <state key="normal" title="clr">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="5"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TIv-CI-wBD" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
-                    <rect key="frame" x="20" y="446" width="87" height="134"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
                     <state key="normal" title="√x">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -496,11 +440,29 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="KPa-K1-WFj"/>
+                        <action selector="addOp:" destination="-1" eventType="touchUpInside" id="5Yj-u7-7fU"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hpz-yY-401" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
-                    <rect key="frame" x="20" y="20" width="87" height="134"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RqC-eW-Cym" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
+                    <rect key="frame" x="493" y="304" width="87" height="134"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <state key="normal" title="ℹ︎">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="CnZ-nE-iBa"/>
+                        <action selector="newKeypad:" destination="-1" eventType="touchUpInside" id="SXU-6u-WCY"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZEW-zV-oyL" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
+                    <rect key="frame" x="493" y="446" width="87" height="134"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="π">
@@ -513,13 +475,47 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="Fae-bg-Ymx"/>
+                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="Wmu-Ct-Slx"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l6r-LW-b0q" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
+                    <rect key="frame" x="493" y="20" width="87" height="134"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <state key="normal" title="x²">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="addPost:" destination="-1" eventType="touchUpInside" id="8Fi-3x-sTd"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hpz-yY-401" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
+                    <rect key="frame" x="20" y="20" width="87" height="134"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <state key="normal" title="ln">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="addOp:" destination="-1" eventType="touchUpInside" id="j65-Ud-Iop"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rbv-vf-VwH" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
                     <rect key="frame" x="20" y="162" width="87" height="134"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="ⁿ√">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -530,13 +526,13 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="ASk-t8-Ys8"/>
+                        <action selector="addBinaryOp:" destination="-1" eventType="touchUpInside" id="OEG-A6-gTT"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J6b-Id-gki" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
                     <rect key="frame" x="20" y="304" width="87" height="134"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <state key="normal" title="∛x">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -547,7 +543,24 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="addKeyToField:" destination="-1" eventType="touchUpInside" id="yt4-Dt-Dlt"/>
+                        <action selector="addOp:" destination="-1" eventType="touchUpInside" id="siU-Dt-k6u"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TIv-CI-wBD" customClass="RoundButton" customModule="MathPad" customModuleProvider="target">
+                    <rect key="frame" x="20" y="446" width="87" height="134"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <state key="normal" title="x⁻¹">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="addPost:" destination="-1" eventType="touchUpInside" id="4fo-gL-E9y"/>
                     </connections>
                 </button>
             </subviews>
@@ -811,10 +824,10 @@
                     <exclude reference="tjC-Yg-04k"/>
                     <exclude reference="oLc-Zv-jEE"/>
                     <exclude reference="NBU-wb-hDj"/>
-                    <exclude reference="TIv-CI-wBD"/>
                     <exclude reference="Hpz-yY-401"/>
                     <exclude reference="Rbv-vf-VwH"/>
                     <exclude reference="J6b-Id-gki"/>
+                    <exclude reference="TIv-CI-wBD"/>
                 </mask>
                 <mask key="constraints">
                     <exclude reference="EMc-vH-ETq"/>
@@ -971,10 +984,10 @@
                     <include reference="tjC-Yg-04k"/>
                     <include reference="oLc-Zv-jEE"/>
                     <include reference="NBU-wb-hDj"/>
-                    <include reference="TIv-CI-wBD"/>
                     <include reference="Hpz-yY-401"/>
                     <include reference="Rbv-vf-VwH"/>
                     <include reference="J6b-Id-gki"/>
+                    <include reference="TIv-CI-wBD"/>
                 </mask>
                 <mask key="constraints">
                     <include reference="EMc-vH-ETq"/>
