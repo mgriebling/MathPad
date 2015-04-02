@@ -10,6 +10,7 @@
 		2F7196D61AC972360079DDEC /* UITableView+MDAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7196D51AC972360079DDEC /* UITableView+MDAdditions.m */; };
 		2FAB7CED1AC58011006F5B82 /* EqDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAB7CEC1AC58011006F5B82 /* EqDocument.swift */; };
 		2FAB7CEE1AC58EA2006F5B82 /* Keyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4717A2E21AC55FF700D90472 /* Keyboard.xib */; };
+		47055B511ACD561A0095C770 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47055B501ACD561A0095C770 /* TitleCell.swift */; };
 		4722DE211AC6FBD8003E6A09 /* FunctionKeys.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4722DE201AC6FBD8003E6A09 /* FunctionKeys.xib */; };
 		4722DE231AC70EE6003E6A09 /* Accessory.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4722DE221AC70EE6003E6A09 /* Accessory.xib */; };
 		4722DE251AC822B9003E6A09 /* MathDocTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4722DE241AC822B9003E6A09 /* MathDocTableViewController.swift */; };
@@ -63,6 +64,7 @@
 		2F7196D41AC972360079DDEC /* UITableView+MDAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+MDAdditions.h"; sourceTree = "<group>"; };
 		2F7196D51AC972360079DDEC /* UITableView+MDAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+MDAdditions.m"; sourceTree = "<group>"; };
 		2FAB7CEC1AC58011006F5B82 /* EqDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqDocument.swift; sourceTree = "<group>"; };
+		47055B501ACD561A0095C770 /* TitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
 		4717A2E21AC55FF700D90472 /* Keyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = Keyboard.xib; path = ../MathKeypad/Keyboard.xib; sourceTree = "<group>"; };
 		4717A2E51AC5680D00D90472 /* MathPad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = MathPad.entitlements; sourceTree = "<group>"; };
 		4722DE201AC6FBD8003E6A09 /* FunctionKeys.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FunctionKeys.xib; sourceTree = "<group>"; };
@@ -317,12 +319,12 @@
 			isa = PBXGroup;
 			children = (
 				2FAB7CEC1AC58011006F5B82 /* EqDocument.swift */,
-				47FD43D21AC2C40400C71213 /* AppDelegate.swift */,
 				47FD43D41AC2C40400C71213 /* MainDocumentController.swift */,
-				47FD43D81AC2C40400C71213 /* Main.storyboard */,
 				4722DE241AC822B9003E6A09 /* MathDocTableViewController.swift */,
 				47FD44111AC4187100C71213 /* SelectItemTableViewController.swift */,
 				4722DE261AC825C8003E6A09 /* EquationCell.swift */,
+				47055B501ACD561A0095C770 /* TitleCell.swift */,
+				47FD43D81AC2C40400C71213 /* Main.storyboard */,
 				4722DE4A1AC83B5F003E6A09 /* CorePlotHeaders */,
 				4722DE2C1AC82633003E6A09 /* Keyboards */,
 				47FD44101AC2C82600C71213 /* Equation Model */,
@@ -335,6 +337,7 @@
 		47FD43D01AC2C40400C71213 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				47FD43D21AC2C40400C71213 /* AppDelegate.swift */,
 				4717A2E51AC5680D00D90472 /* MathPad.entitlements */,
 				2F7196D41AC972360079DDEC /* UITableView+MDAdditions.h */,
 				2F7196D51AC972360079DDEC /* UITableView+MDAdditions.m */,
@@ -516,6 +519,7 @@
 				47FD43FC1AC2C42F00C71213 /* Variables.swift in Sources */,
 				47FD43FB1AC2C42F00C71213 /* Functions.swift in Sources */,
 				47FD440C1AC2C58600C71213 /* ExIntegers.cpp in Sources */,
+				47055B511ACD561A0095C770 /* TitleCell.swift in Sources */,
 				47FD43FD1AC2C42F00C71213 /* Scanner.swift in Sources */,
 				47FD43D31AC2C40400C71213 /* AppDelegate.swift in Sources */,
 				2F7196D61AC972360079DDEC /* UITableView+MDAdditions.m in Sources */,

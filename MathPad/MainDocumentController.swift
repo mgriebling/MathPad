@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainDocumentController: UITableViewController, EqDocumentDelegate {
+class MainDocumentController: UITableViewController, EqDocumentDelegate, UITextFieldDelegate {
 
 	let EXTENSION = "mpad"
 	class var path : NSURL {
@@ -20,6 +20,8 @@ class MainDocumentController: UITableViewController, EqDocumentDelegate {
 	var detailViewController: MathDocTableViewController? = nil
 	var objects = [NSURL]()
 	var activeObject: Int = 0
+	
+	private var inEditMode = false
 	
 	// MARK: - EqDocumentDelegate function
 	func eqDocumentContentsUpdated(document: EqDocument) {
@@ -102,15 +104,9 @@ class MainDocumentController: UITableViewController, EqDocumentDelegate {
 		objects.insert(fname, atIndex: 0)
 		let indexPath = NSIndexPath(forRow: 0, inSection: 0)
 		self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-//		if !fm.fileExistsAtPath(fname.absoluteString!) {
 		self.navigationItem.leftBarButtonItem?.enabled = objects.count > 0
-//		} else {
-//			doc.openWithCompletionHandler({ (success) -> Void in
-//				if success  { println("Opened document \(fname.lastPathComponent)") }
-//			})
-//		}
 	}
-
+	
 	// MARK: - Segues
 
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -139,15 +135,24 @@ class MainDocumentController: UITableViewController, EqDocumentDelegate {
 	}
 
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as TitleCell
 		let object = objects[indexPath.row]
-		cell.textLabel!.text = object.lastPathComponent?.stringByDeletingPathExtension
+		cell.docName.text = object.lastPathComponent?.stringByDeletingPathExtension
+		cell.docName.enabled = inEditMode
+		cell.docName.borderStyle = inEditMode ? UITextBorderStyle.RoundedRect : UITextBorderStyle.None
+		cell.docName.delegate = self
 		return cell
 	}
 
 	override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
 		// Return false if you do not want the specified item to be editable.
 		return objects.count > 0
+	}
+	
+	override func setEditing(editing: Bool, animated: Bool) {
+		inEditMode = editing
+		tableView.reloadData()	// allow filenames to be edited as well
+		super.setEditing(editing, animated: animated)
 	}
 
 	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -167,7 +172,15 @@ class MainDocumentController: UITableViewController, EqDocumentDelegate {
 		    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
 		}
 	}
-
+	
+	// MARK: - Text field delegate
+	
+	func textFieldShouldReturn(textField: UITextField) -> Bool {
+		let newName = textField.text
+		// TBD - rename the file here
+		textField.resignFirstResponder()
+		return true
+	}
 
 }
 
