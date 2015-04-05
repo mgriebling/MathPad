@@ -13,6 +13,7 @@ class EquationCell: UITableViewCell {
 	@IBOutlet weak var equationTextField: UITextField?
 	@IBOutlet weak var descriptionTextField: UITextField?
 	@IBOutlet weak var corePlotView: CPTGraphHostingView?
+	@IBOutlet weak var equationView: UITextView?
 	
     override func awakeFromNib() {
         super.awakeFromNib()

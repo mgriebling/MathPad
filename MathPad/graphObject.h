@@ -13,7 +13,11 @@
 
 @property (nonatomic, readwrite, strong) NSString *title;
 @property (nonatomic, readonly) CGFloat titleSize;
+@property (nonatomic, readwrite, strong) NSMutableArray *graphs;
+@property (nonatomic, readwrite, strong) NSMutableSet *dataSources;
 
 -(void)renderInGraphHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme animated:(BOOL)animated;
+-(void)killGraph;
+-(void)reloadData;
 
 @end

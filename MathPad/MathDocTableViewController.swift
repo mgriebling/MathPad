@@ -24,11 +24,8 @@ class RoundLabel: UILabel {
 	}
 }
 
-class MathDocTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, ReorderTableViewDelegate {
-	
-	private class func dummy (v: MathDocTableViewController?) { println("Return notification missing") }
-	
-	var returnNotification: (MathDocTableViewController?) -> () = MathDocTableViewController.dummy
+class MathDocTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, UITextViewDelegate, ReorderTableViewDelegate {
+
 	private var calculatorView: UIView!
 	private var accessoryView: UIView!
 	var detailItem: NSURL? {
@@ -38,14 +35,15 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		}
 	}
 	private var document : EqDocument?
-	private var activeField : UITextField?
+//	private var activeField : UITextField?
+	private var activeView  : UITextView?
 	private var activeIndex : NSIndexPath?
 	private let myBundle = NSBundle.mainBundle()
 	
 	// MARK: - Custom keypad methods
 	
 	private func addText (text: String) {
-		if let field = activeField {
+		if let field = activeView {
 			field.replaceRange(field.selectedTextRange!, withText: text)
 		}
 	}
@@ -87,7 +85,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	}
 	
 	@IBAction func backDelete(sender: RoundButton) {
-		activeField?.deleteBackward()
+		activeView?.deleteBackward()
 	}
 	
 	@IBAction func endOnExit(sender: UITextField) {
@@ -99,7 +97,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	}
 	
 	func hideKeyboard () {
-		activeField?.resignFirstResponder()
+		activeView?.resignFirstResponder()
 	}
 	
 	@IBAction func newKeypad(sender: RoundButton) {
@@ -110,11 +108,24 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		}
 	}
 	
+	@IBAction func selectMode(sender: UIBarButtonItem) {
+		// Test graphic insertion
+		if let field = activeView {
+			var textAttachment = NSTextAttachment()
+			textAttachment.image = UIImage(named: "MyImage")
+			let textImage = NSAttributedString(attachment: textAttachment)
+			var fieldText = NSMutableAttributedString(attributedString: field.attributedText!)
+			let range = textPositionToRange(field.selectedTextRange!, inTextView: field)
+			fieldText.replaceCharactersInRange(range, withAttributedString: textImage)
+			field.attributedText = fieldText
+		}
+	}
+	
 	func loadInterface(name: String) {
 		let calculatorNib = myBundle.loadNibNamed(name, owner: self, options: nil)
 		calculatorView = calculatorNib[0] as UIView
-		activeField?.inputView = calculatorView
-		activeField?.reloadInputViews()
+		activeView?.inputView = calculatorView
+		activeView?.reloadInputViews()
 	}
 	
 	// MARK: - ReorderTableviewDelegate funcs
@@ -142,22 +153,42 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	
 	// MARK: - Text field delegate
 	
-	func textFieldDidBeginEditing(textField: UITextField) {
-		// keep track of the active text field and its location in the tableview
-		activeField = textField
-		activeIndex = tableView.mdIndexPathForRowContainingView(textField)
+	func textViewDidBeginEditing(textView: UITextView) {
+		activeView = textView
+		activeIndex = tableView.mdIndexPathForRowContainingView(textView)
 	}
 	
-	func textFieldDidEndEditing(textField: UITextField) {
+	func textViewDidEndEditing(textView: UITextView) {
 		if let doc = document {
 			if let index = activeIndex?.row {
-				doc.objects[index].CommandLine = textField.text
-				doc.updateChangeCount(.Done)
+//				doc.objects[index].CommandLine = textField.text
+//				doc.updateChangeCount(.Done)
 			}
 		}
 	}
 	
+//	func textFieldDidBeginEditing(textField: UITextField) {
+//		// keep track of the active text field and its location in the tableview
+//		activeField = textField
+//		activeIndex = tableView.mdIndexPathForRowContainingView(textField)
+//	}
+//	
+//	func textFieldDidEndEditing(textField: UITextField) {
+//		if let doc = document {
+//			if let index = activeIndex?.row {
+//				doc.objects[index].CommandLine = textField.text
+//				doc.updateChangeCount(.Done)
+//			}
+//		}
+//	}
+	
 	// MARK: - Helper functions
+	
+	private func textPositionToRange (position: UITextRange, inTextView textView: UITextView) -> NSRange {
+		let startOffset = textView.offsetFromPosition(textView.beginningOfDocument, toPosition: position.start)
+		let endOffset = textView.offsetFromPosition(textView.beginningOfDocument, toPosition: position.end)
+		return NSMakeRange(startOffset, endOffset-startOffset)
+	}
 	
 	private func enableEdit () {
 		var editButton = self.navigationItem.rightBarButtonItems?[1] as UIBarButtonItem
@@ -255,7 +286,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as EquationCell
 
         // Configure the cell...
-		if let textField = cell.equationTextField {
+		if let textField = cell.equationView {
 			textField.text = content
 			textField.inputView = calculatorView
 			textField.inputAccessoryView = accessoryView

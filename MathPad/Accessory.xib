@@ -22,7 +22,11 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem systemItem="flexibleSpace" id="hlm-Fz-MtB"/>
-                        <barButtonItem title="Mode" id="HEF-Q3-iKF"/>
+                        <barButtonItem title="Mode" id="HEF-Q3-iKF">
+                            <connections>
+                                <action selector="selectMode:" destination="-1" id="eEl-T5-1Sy"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="barTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>

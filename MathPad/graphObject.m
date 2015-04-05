@@ -7,14 +7,59 @@
 //
 
 #import "graphObject.h"
+#import "PiNumberFormatter.h"
 
 @implementation graphObject
+
+@dynamic titleSize;
+
+- (CGFloat)titleSize {
+	CGFloat size;
+	
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+	switch ( UI_USER_INTERFACE_IDIOM() ) {
+		case UIUserInterfaceIdiomPad:
+			size = 24.0;
+			break;
+			
+		case UIUserInterfaceIdiomPhone:
+			size = 16.0;
+			break;
+			
+		default:
+			size = 12.0;
+			break;
+	}
+#else
+	size = 24.0;
+#endif
+	
+	return size;
+}
 
 - (id)init {
 	if ((self = [super init])) {
 		self.title   = @"Math Function Plot";
+		self.graphs = [[NSMutableArray alloc] init];
+		self.dataSources = [[NSMutableSet alloc] init];
 	}
 	return self;
+}
+
+-(void)killGraph {
+	[[CPTAnimation sharedInstance] removeAllAnimationOperations];
+	[self.graphs removeAllObjects];
+	[self.dataSources removeAllObjects];
+}
+
+-(void)reloadData {
+	for (CPTGraph *graph in self.graphs) {
+		[graph reloadData];
+	}
+}
+
+-(void)dealloc {
+	[self killGraph];
 }
 
 -(void)renderInGraphHostingView:(CPTGraphHostingView *)hostingView withTheme:(CPTTheme *)theme animated:(BOOL)animated
@@ -22,7 +67,10 @@
 	CGRect bounds = hostingView.bounds;
 	
 	CPTGraph *graph = [[CPTXYGraph alloc] initWithFrame:bounds];
-//	[self addGraph:graph toHostingView:hostingView];
+	if (hostingView) {
+		[self.graphs addObject:graph];
+		hostingView.hostedGraph = graph;
+	}
 //	[self applyTheme:theme toGraph:graph withDefault:[CPTTheme themeNamed:kCPTDarkGradientTheme]];
 	
 	graph.plotAreaFrame.paddingLeft += self.titleSize * CPTFloat(2.25);
@@ -43,15 +91,15 @@
 	minorGridLineStyle.lineColor = [[CPTColor whiteColor] colorWithAlphaComponent:CPTFloat(0.1)];
 	
 	// Axes
-//	PiNumberFormatter *formatter = [[PiNumberFormatter alloc] init];
-//	formatter.multiplier = @4;
+	PiNumberFormatter *formatter = [[PiNumberFormatter alloc] init];
+	formatter.multiplier = @4;
 	
 	// Label x axis with a fixed interval policy
 	CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
 	CPTXYAxis *x          = axisSet.xAxis;
 	x.majorIntervalLength   = CPTDecimalFromDouble(M_PI_4);
 	x.minorTicksPerInterval = 3;
-//	x.labelFormatter        = formatter;
+	x.labelFormatter        = formatter;
 	x.majorGridLineStyle    = majorGridLineStyle;
 	x.minorGridLineStyle    = minorGridLineStyle;
 	x.axisConstraints       = [CPTConstraints constraintWithRelativeOffset:0.5];
@@ -73,7 +121,7 @@
 	y.titleOffset = self.titleSize * CPTFloat(1.25);
 	
 	// Create some function plots
-	for ( NSUInteger plotNum = 0; plotNum < 2; plotNum++ ) {
+	for ( NSUInteger plotNum = 0; plotNum <= 2; plotNum++ ) {
 		NSString *titleString          = nil;
 		CPTDataSourceFunction function = NULL;
 		CPTDataSourceBlock block       = nil;
@@ -148,7 +196,7 @@
 		
 		plotDataSource.resolution = 2.0;
 		
-//		[self.dataSources addObject:plotDataSource];
+		[self.dataSources addObject:plotDataSource];
 		
 		[graph addPlot:linePlot];
 	}
