@@ -112,7 +112,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	
 	func loadInterface(name: String) {
 		let calculatorNib = myBundle.loadNibNamed(name, owner: self, options: nil)
-		calculatorView = calculatorNib[0] as UIView
+		calculatorView = calculatorNib[0] as! UIView
 		activeField?.inputView = calculatorView
 		activeField?.reloadInputViews()
 	}
@@ -136,7 +136,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	
 	func finishReorderingWithObject(object: AnyObject!, atIndexPath indexPath: NSIndexPath!) {
 		document?.objects.removeAtIndex(indexPath.row)
-		document?.objects.insert(object as Equation, atIndex: indexPath.row)
+		document?.objects.insert(object as! Equation, atIndex: indexPath.row)
 		document?.updateChangeCount(.Done)
 	}
 	
@@ -160,7 +160,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	// MARK: - Helper functions
 	
 	private func enableEdit () {
-		var editButton = self.navigationItem.rightBarButtonItems?[1] as UIBarButtonItem
+		var editButton = self.navigationItem.rightBarButtonItems?[1] as! UIBarButtonItem
 		editButton.enabled = document?.objects.count > 0
 	}
 	
@@ -211,7 +211,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		
 		// set up the accessory view
 		let accessoryNib = NSBundle.mainBundle().loadNibNamed("Accessory", owner: self, options: nil)
-		accessoryView = accessoryNib[0] as UIView
+		accessoryView = accessoryNib[0] as! UIView
 		enableEdit()
     }
 
@@ -252,7 +252,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 				identifier = "PlotCell"
 			}
 		}
-        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as EquationCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! EquationCell
 
         // Configure the cell...
 		if let textField = cell.equationTextField {
@@ -265,7 +265,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		cell.descriptionTextField?.text = content
 		cell.descriptionTextField?.delegate = self
 		if let graph = cell.corePlotView {
-			var object = document?.objects[indexPath.row] as Plot
+			var object = document?.objects[indexPath.row] as! Plot
 			object.hostingView = graph
 			object.updatePlot()
 		}
@@ -342,7 +342,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 		if segue.identifier == "showOptions" {
 			hideKeyboard()
-			let vc = segue.destinationViewController as SelectItemTableViewController
+			let vc = segue.destinationViewController as! SelectItemTableViewController
 			vc.popoverPresentationController?.delegate = self
 			vc.rowWasSelected = createNewItemSelected	// call-back
 		}

@@ -31,7 +31,7 @@ class EqDocument: UIDocument {
 			let numberOfObjects = reader.decodeIntegerForKey(kNumberOfObjects)
 			self.objects = []
 			for var i = 0; i < numberOfObjects; i++ {
-				let object = reader.decodeObject() as Equation
+				let object = reader.decodeObject() as! Equation
 				self.objects.append(object)
 			}
 			

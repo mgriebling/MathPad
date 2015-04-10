@@ -1561,14 +1561,14 @@ void Real::Exp(float *b, const float *arg_a)
 	RealToNumbExp(a, t1, n1);
 	t1 *= ipower(2, n1);
 	
-	if((ABS(t1 - Ln2) > invRadix) && (ln2.val == NULL))
+	if ((ABS(t1 - Ln2) > invRadix))
 	{
 		puts("*** Exp: ln2 must be precomputed!");
 		err = errLn2ValueMissing;
 		return;
 	}
 	
-	if(t1 >= 1.0E9)
+	if (t1 >= 1.0E9)
 	{
 		if(t1 > ZERO)
 		{ 
@@ -1583,7 +1583,7 @@ void Real::Exp(float *b, const float *arg_a)
 	nws = curMant;
 	curMant++;
 	
-	if(ABS(t1 - Ln2) > invRadix)
+	if (ABS(t1 - Ln2) > invRadix)
 	{
 	    Div(k0, a, ln2.val);
     	RoundInt(k1, k0);
@@ -1667,7 +1667,7 @@ void Real::Ln(float *b, const float *arg_a)
 	}
 	
 	RealToNumbExp(a, t1, n1);
-	if(((ABS(t1 - 2.0) > 1.0E-3) || (n1 != /* DISABLES CODE */ (0))) && (ln2.val == NULL))
+	if (((ABS(t1 - 2.0) > 1.0E-3) || (n1 != (0))))
 	{
 		puts("*** Ln: Ln(2) must be precomputed!");
 		err = errLn2ValueMissing;

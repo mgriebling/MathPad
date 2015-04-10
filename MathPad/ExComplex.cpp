@@ -4,6 +4,7 @@
 #include <math.h>
 #include <limits.h>
 #include <String.h>
+#include <stdlib.h>
 
 #include "ExComplex.h"
 #include "Reals.h"
@@ -428,7 +429,7 @@ void Complex::xtoi(Complex& Result, const Complex& x, long i)
 	
 	Y = Ex1;
 	negative = (i < 0);
-	i = fabs(i);
+	i = abs((int)i);
 	while(1)
 	{
 		if(i & 1)

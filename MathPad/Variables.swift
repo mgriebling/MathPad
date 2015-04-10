@@ -36,7 +36,7 @@ struct Variables {
 	static let VARKEY = "Variables.fvar"
 	
 	static func Load (decoder: NSCoder) {
-		Var = decoder.decodeObjectForKey(VARKEY) as [String: xNumber]
+		Var = decoder.decodeObjectForKey(VARKEY) as! [String: xNumber]
 	}
 	
 	static func Save (encoder: NSCoder) {
