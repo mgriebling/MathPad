@@ -124,8 +124,8 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	func loadInterface(name: String) {
 		let calculatorNib = myBundle.loadNibNamed(name, owner: self, options: nil)
 		calculatorView = calculatorNib[0] as! UIView
-		activeField?.inputView = calculatorView
-		activeField?.reloadInputViews()
+		activeView?.inputView = calculatorView
+		activeView?.reloadInputViews()
 	}
 	
 	// MARK: - ReorderTableviewDelegate funcs
