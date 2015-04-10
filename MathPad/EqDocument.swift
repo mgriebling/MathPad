@@ -14,7 +14,6 @@ class EqDocument: UIDocument {
 	// An equation document also implicitly saves the state of all variables, functions, and number formatting options.
 	
 	var objects : [Equation] = []
-	var delegate : EqDocumentDelegate?
 	
 	private let kVersion   = "EqDocument.version"
 	private let kEquations = "EqDocument.objects"
@@ -39,8 +38,6 @@ class EqDocument: UIDocument {
 			nState = NumbState(decoder: reader)
 			Functions.Load(reader)
 			Variables.Load(reader)
-			
-			delegate?.eqDocumentContentsUpdated(self)
 		}
 		return true
 	}
@@ -69,6 +66,3 @@ class EqDocument: UIDocument {
 	
 }
 
-protocol EqDocumentDelegate {
-	func eqDocumentContentsUpdated (document: EqDocument)
-}

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainDocumentController: UITableViewController, EqDocumentDelegate, UITextFieldDelegate {
+class MainDocumentController: UITableViewController, UITextFieldDelegate {
 
 	static let EXTENSION = "mpad"
 	static var path : NSURL = MainDocumentController.getStaticPath()
@@ -18,18 +18,6 @@ class MainDocumentController: UITableViewController, EqDocumentDelegate, UITextF
 	var activeObject: Int = 0
 	
 	private var inEditMode = false
-	
-	// MARK: - EqDocumentDelegate function
-	func eqDocumentContentsUpdated(document: EqDocument) {
-		println("Document changed...")
-	}
-
-	// gets called to update the object state
-	func updateObject (vc : MathDocTableViewController?) {
-//		objects[activeObject] = vc?.detailItem as String
-		tableView.reloadData()
-	}
-	
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -45,7 +33,7 @@ class MainDocumentController: UITableViewController, EqDocumentDelegate, UITextF
 		self.navigationItem.leftBarButtonItem = self.editButtonItem()
 
 		let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewDocument:")
-		self.navigationItem.rightBarButtonItem = addButton
+		self.navigationItem.rightBarButtonItems?.append(addButton)
 		if let split = self.splitViewController {
 		    let controllers = split.viewControllers
 		    self.detailViewController = controllers[controllers.count-1].topViewController as? MathDocTableViewController
@@ -114,7 +102,6 @@ class MainDocumentController: UITableViewController, EqDocumentDelegate, UITextF
 		        let controller = (segue.destinationViewController as! UINavigationController).topViewController as! MathDocTableViewController
 		        controller.detailItem = object
 				controller.title = object.lastPathComponent?.stringByDeletingPathExtension
-				controller.returnNotification = self.updateObject
 		        controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
 		        controller.navigationItem.leftItemsSupplementBackButton = true
 		    }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1066" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="H1p-Uh-vWS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -29,40 +29,27 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EquationCell" id="9f9-de-AWF" customClass="EquationCell" customModule="MathPad" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="EquationCell" rowHeight="107" id="9f9-de-AWF" customClass="EquationCell" customModule="MathPad" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9f9-de-AWF" id="4Xp-XQ-fcb">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="e = m c²" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="b0Q-5n-56V">
-                                            <rect key="frame" x="8" y="8" width="584" height="28"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="IrM-bs-NYT"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="IrM-bs-NYT"/>
-                                                </mask>
-                                            </variation>
-                                        </textField>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="e = m c² " translatesAutoresizingMaskIntoConstraints="NO" id="vb4-6c-lWJ">
+                                            <rect key="frame" x="8" y="8" width="584" height="91"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="b0Q-5n-56V" secondAttribute="bottom" id="5oR-oX-unS"/>
-                                        <constraint firstAttribute="centerY" secondItem="b0Q-5n-56V" secondAttribute="centerY" id="OSU-PH-zTk"/>
-                                        <constraint firstItem="b0Q-5n-56V" firstAttribute="top" secondItem="4Xp-XQ-fcb" secondAttribute="topMargin" id="Thn-NU-VCy"/>
-                                        <constraint firstItem="b0Q-5n-56V" firstAttribute="leading" secondItem="4Xp-XQ-fcb" secondAttribute="leadingMargin" id="dXt-hh-TBc"/>
-                                        <constraint firstItem="b0Q-5n-56V" firstAttribute="trailing" secondItem="4Xp-XQ-fcb" secondAttribute="trailingMargin" id="zSl-c8-tfj"/>
+                                        <constraint firstItem="vb4-6c-lWJ" firstAttribute="trailing" secondItem="4Xp-XQ-fcb" secondAttribute="trailingMargin" id="NbM-Ed-nbl"/>
+                                        <constraint firstItem="vb4-6c-lWJ" firstAttribute="top" secondItem="4Xp-XQ-fcb" secondAttribute="topMargin" id="Ns8-cg-0ct"/>
+                                        <constraint firstItem="vb4-6c-lWJ" firstAttribute="leading" secondItem="4Xp-XQ-fcb" secondAttribute="leadingMargin" id="oyT-nG-Osg"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="vb4-6c-lWJ" secondAttribute="bottom" id="skm-kS-fUN"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="OSU-PH-zTk"/>
-                                        </mask>
-                                    </variation>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="equationTextField" destination="b0Q-5n-56V" id="RJO-xr-yHI"/>
+                                    <outlet property="equationView" destination="vb4-6c-lWJ" id="Xch-OA-Fq4"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DescriptionCell" id="xfu-vW-ej5" customClass="EquationCell" customModule="MathPad" customModuleProvider="target">
@@ -106,19 +93,22 @@
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlotCell" rowHeight="283" id="aWT-DU-MH0" customClass="EquationCell" customModule="MathPad" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aWT-DU-MH0" id="VC0-D7-3HJ">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="redraw" tableViewCell="aWT-DU-MH0" id="VC0-D7-3HJ">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jIu-L5-zNM" customClass="CPTGraphHostingView">
+                                        <view contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="jIu-L5-zNM" customClass="CPTGraphHostingView">
                                             <rect key="frame" x="8" y="46" width="584" height="229"/>
-                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
+                                                <constraint firstAttribute="height" constant="229" id="0H7-1y-brQ"/>
                                                 <constraint firstAttribute="height" constant="227" id="PeF-eo-clq"/>
                                                 <constraint firstAttribute="height" constant="229" id="gGh-Mx-zYQ"/>
+                                                <constraint firstAttribute="height" constant="229" id="sVO-Dj-E8z"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="0H7-1y-brQ"/>
                                                     <exclude reference="PeF-eo-clq"/>
+                                                    <exclude reference="gGh-Mx-zYQ"/>
                                                 </mask>
                                             </variation>
                                         </view>
@@ -131,6 +121,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="qXz-sO-SpK" firstAttribute="top" secondItem="VC0-D7-3HJ" secondAttribute="topMargin" id="6pr-h8-OHS"/>
+                                        <constraint firstItem="jIu-L5-zNM" firstAttribute="bottom" secondItem="VC0-D7-3HJ" secondAttribute="bottomMargin" id="94N-Hi-Z42"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="jIu-L5-zNM" secondAttribute="bottom" id="ACY-Tt-7Q7"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="top" secondItem="qXz-sO-SpK" secondAttribute="bottom" constant="8" symbolic="YES" id="CIS-i7-vn8"/>
                                         <constraint firstItem="jIu-L5-zNM" firstAttribute="bottom" secondItem="VC0-D7-3HJ" secondAttribute="bottomMargin" id="HGG-W2-jYe"/>
@@ -153,6 +144,7 @@
                                             <exclude reference="ACY-Tt-7Q7"/>
                                             <exclude reference="HGG-W2-jYe"/>
                                             <exclude reference="NKN-MC-Jg6"/>
+                                            <exclude reference="PGm-t1-0we"/>
                                             <exclude reference="R4O-2f-Qjc"/>
                                             <exclude reference="WsU-R5-cHM"/>
                                             <exclude reference="ahj-IE-auU"/>
@@ -317,11 +309,38 @@
                             <outlet property="delegate" destination="7bK-jq-Zjz" id="RA6-mI-bju"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Math Docs" id="Zdf-7t-Un8"/>
+                    <navigationItem key="navigationItem" title="Math Docs" id="Zdf-7t-Un8">
+                        <barButtonItem key="rightBarButtonItem" title="Graph" id="y1j-me-GFI">
+                            <connections>
+                                <segue destination="os9-ej-XaS" kind="show" id="yVa-6F-DjC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="709" y="-633"/>
+        </scene>
+        <!--Graph View Controller-->
+        <scene sceneID="GDx-8o-tVp">
+            <objects>
+                <viewController id="os9-ej-XaS" customClass="GraphViewController" customModule="MathPad" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wdy-aV-1Pd"/>
+                        <viewControllerLayoutGuide type="bottom" id="9qa-rR-rnW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5by-2g-m53" customClass="CPTGraphHostingView">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="hostView" destination="5by-2g-m53" id="OGR-iV-xVW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="95N-iT-IP9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1388" y="-630"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="r7l-gg-dq7">
