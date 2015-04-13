@@ -1,9 +1,8 @@
 #ifndef REALS_H
 #define REALS_H
 
-// #include <BeBuild.h>
-
 #include "Errors.h"
+#include "tomfloat.h"
 
 /* internally-used error codes */
 typedef enum errType errCodes;
@@ -33,13 +32,13 @@ class Real {
 		Real(void);
 		Real(const Real& x);  	// copy constructor
 		Real(const char *str);
-		Real(double x);
+		Real(long x);
 		~Real(void);
 	
 		/* Overloaded operators */	
 		Real& operator = (const Real& x);
-		float & operator [] (int index);
-		float operator [] (int index) const;
+//		float & operator [] (int index);
+//		float operator [] (int index) const;
 		Real operator + (const Real& x) const;
 		Real operator - (const Real& x) const;
 		Real operator * (const Real& x) const;
@@ -91,16 +90,16 @@ class Real {
 		static Real arcsin(const Real& z);
 		static Real arccos(const Real& z);
 		static Real arctan(const Real& z);
-		static Real arctan2(const Real& xn, const Real& xd);
+//		static Real arctan2(const Real& xn, const Real& xd);
 		static void sinhcosh(const Real& z, Real &sinh, Real &cosh);
 		static Real sinh(const Real& z);
 		static Real cosh(const Real& z);
 		static Real tanh(const Real& z);
 		
 		/* Misc. routines */	
-		static Real factorial(const Real& x);
-		static Real permutations(const Real& n, const Real& r);
-		static Real combinations(const Real& n, const Real& r);
+//		static Real factorial(const Real& x);
+//		static Real permutations(const Real& n, const Real& r);
+//		static Real combinations(const Real& n, const Real& r);
 		static Real random(void);
 		
 		// module-related routines -- apply to class		
@@ -134,14 +133,13 @@ class Real {
 		static const long NIT = 3;
 		
 		// local types
-		typedef double FixedLReal[maxMant+8];
-		typedef float FixedReal[maxMant+8];
-		typedef float Real8[8];
+//		typedef double FixedLReal[maxMant+8];
+//		typedef float FixedReal[maxMant+8];
+//		typedef float Real8[8];
 		
 		// internal number storage
-		float val[maxMant+5];  	// pointer to the actual number
-		int len;				// length of the val[]
-		
+		mp_float val;
+	
 		// internal variables
 		static bool initialized;
 		static short numBits;
@@ -149,7 +147,7 @@ class Real {
 		static Real seed;		
 		
 		// private constructor
-		Real(float *x, int size);
+		Real(mp_float *x);
 		
 		// Private methods
 		static long Sign(float x, float y);
@@ -158,42 +156,42 @@ class Real {
 		static double ipower(double x, short base);
 		static void Reduce(double &a, long &exp);
 		static void OutReal(const Real& n);
-		static char GetDigit(float *frac, long pos, long digs);
+		static char GetDigit(mp_float*frac, long pos, long digs);
 		static void Test(void);
 		
 	protected:
 		/*
 		 * Internal (non-user) routines
-		 */	
-		static void toReal(const char *str, float *b);
-		static void nfactorial(long &prevn, long &currentn, float *Result);
-		static void copy(const float *a, float *b);
-		static void OutRealDesc(const float *n);
-		static void WriteReal(const float *q);
-		static void Round(float *a);
-		static void Normalize(double *d, float *a);
-		static double Short(const float* q);
-		static void RealToNumbExp(const float *a, double &b, long &n);
-		static void NumbExpToReal(double a, long n, float *b);
-		static void Add(float *c, const float *a, const float *b);
-		static void Sub(float *c, const float *a, const float *b);
-		static void Mul(float *c, const float *a, const float *b);
-		static void Muld(float *c, const float *a, double b, long n);
-		static void Div(float *c, const float *a, const float *b);
-		static void Divd(float *c, const float *a, double b, long n);
-		static void Abs(float *z, const float *x);
-		static void IntPower(float *b, const float *a, long n);
-		static long Cmp(const float *a, const float *b);
-		static void Sqrt(float *b, const float *a);
-		static void Root(float *b, const float *a, long n);
-		static void Pi(float *pi);
-		static void Entier(float *b, const float *a);
-		static void RoundInt(float *b, const float *a);
-		static void Exp(float *b, const float *a);
-		static void Ln(float *b, const float *a);
-		static void SinCos(float *sin, float *cos, const float *a);
-		static void SinhCosh(float *sinh, float *cosh, const float *a);
-		static void ATan2(float *a, const float *x, const float *y);		
+		 */
+		static void toReal(const char *str, mp_float *b);
+//		static void nfactorial(long &prevn, long &currentn, float *Result);
+//		static void copy(const float *a, float *b);
+//		static void OutRealDesc(const float *n);
+//		static void WriteReal(const float *q);
+//		static void Round(float *a);
+//		static void Normalize(double *d, float *a);
+//		static double Short(const float* q);
+//		static void RealToNumbExp(const float *a, double &b, long &n);
+//		static void NumbExpToReal(double a, long n, float *b);
+//		static void Add(float *c, const float *a, const float *b);
+//		static void Sub(float *c, const float *a, const float *b);
+//		static void Mul(float *c, const float *a, const float *b);
+//		static void Muld(float *c, const float *a, double b, long n);
+//		static void Div(float *c, const float *a, const float *b);
+//		static void Divd(float *c, const float *a, double b, long n);
+//		static void Abs(float *z, const float *x);
+//		static void IntPower(float *b, const float *a, long n);
+//		static long Cmp(const float *a, const float *b);
+//		static void Sqrt(float *b, const float *a);
+//		static void Root(float *b, const float *a, long n);
+//		static void Pi(float *pi);
+//		static void Entier(float *b, const float *a);
+//		static void RoundInt(float *b, const float *a);
+//		static void Exp(float *b, const float *a);
+//		static void Ln(float *b, const float *a);
+//		static void SinCos(float *sin, float *cos, const float *a);
+//		static void SinhCosh(float *sinh, float *cosh, const float *a);
+//		static void ATan2(float *a, const float *x, const float *y);		
 };
 
 #endif
