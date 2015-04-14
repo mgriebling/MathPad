@@ -15,22 +15,22 @@ class EqDocument: UIDocument {
 	
 	var objects : [Equation] = []
 	
-	private let kVersion   = "EqDocument.version"
-	private let kEquations = "EqDocument.objects"
-	private let kNumberOfObjects = "EqDocument.numberOfObjects"
+	private static let kVersion   = "EqDocument.version"
+	private static let kEquations = "EqDocument.objects"
+	private static let kNumberOfObjects = "EqDocument.numberOfObjects"
 	
 	// Typical subclasses will implement this method to do reading. UIKit will pass NSData typed contents for flat files and NSFileWrapper typed contents for file packages.
 	// typeName is the UTI of the loaded file.
 	override func loadFromContents(contents: AnyObject, ofType typeName: String, error outError: NSErrorPointer) -> Bool {
 		if var data = contents as? NSData {
 			var reader = NSKeyedUnarchiver(forReadingWithData: data)
-			let version = reader.decodeIntegerForKey(kVersion)
+			let version = reader.decodeIntegerForKey(EqDocument.kVersion)
 			
 			// read the equation objects
-			let numberOfObjects = reader.decodeIntegerForKey(kNumberOfObjects)
+			let numberOfObjects = reader.decodeIntegerForKey(EqDocument.kNumberOfObjects)
 			self.objects = []
 			for var i = 0; i < numberOfObjects; i++ {
-				let object = reader.decodeObject() as Equation
+				let object = reader.decodeObject() as! Equation
 				self.objects.append(object)
 			}
 			
@@ -48,10 +48,10 @@ class EqDocument: UIDocument {
 	override func contentsForType(typeName: String, error outError: NSErrorPointer) -> AnyObject? {
 		var data = NSMutableData()
 		var writer = NSKeyedArchiver(forWritingWithMutableData: data)
-		writer.encodeInteger(1, forKey: kVersion)
+		writer.encodeInteger(1, forKey: EqDocument.kVersion)
 		
 		// read the equation objects
-		writer.encodeInteger(self.objects.count, forKey: kNumberOfObjects)
+		writer.encodeInteger(self.objects.count, forKey: EqDocument.kNumberOfObjects)
 		for object in self.objects {
 			writer.encodeObject(object)
 		}

@@ -157,7 +157,7 @@
 		NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:titleString
 																				  attributes:textAttributes];
 		
-		if ( &NSFontAttributeName != NULL ) {
+		if ( NSFontAttributeName != NULL ) {
 			UIFont *italicFont = [UIFont italicSystemFontOfSize:self.titleSize * CPTFloat(0.5)];
 			
 			[title addAttribute:NSFontAttributeName

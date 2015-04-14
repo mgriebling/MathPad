@@ -39,17 +39,17 @@ struct Functions {
 			self.Args = [String]()
 		} // New;
 		
-		let FUNCKEY = "FuncType.Func"
-		let ARGSKEY = "FuncType.Args"
+		static let FUNCKEY = "FuncType.Func"
+		static let ARGSKEY = "FuncType.Args"
 		
 		init (decoder: NSCoder) {
-			Func = decoder.decodeObjectForKey(FUNCKEY) as String
-			Args = decoder.decodeObjectForKey(ARGSKEY) as [String]
+			Func = decoder.decodeObjectForKey(FuncType.FUNCKEY) as! String
+			Args = decoder.decodeObjectForKey(FuncType.ARGSKEY) as! [String]
 		}
 		
 		func Save (encoder: NSCoder) {
-			encoder.encodeObject(Func, forKey: FUNCKEY)
-			encoder.encodeObject(Args, forKey: ARGSKEY)
+			encoder.encodeObject(Func, forKey: FuncType.FUNCKEY)
+			encoder.encodeObject(Args, forKey: FuncType.ARGSKEY)
 		}
 	}
 	
@@ -136,7 +136,7 @@ struct Functions {
 		var cnt : Int
 		Functions.Funcs = [String: FuncType]();
 		for cnt=0; cnt<size; cnt++ {
-			let name : String = decoder.decodeObject() as String
+			let name : String = decoder.decodeObject() as! String
 			let function = FuncType(decoder: decoder)
 			Functions.Funcs[name] = function
 		}

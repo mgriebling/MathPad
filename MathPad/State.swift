@@ -68,9 +68,9 @@ struct NumbState {
 		Notation = NotationType(rawValue: decoder.decodeIntegerForKey(NumbState.NOTATION))!
 		DecPoint =  decoder.decodeIntegerForKey(NumbState.DECPOINT)
 		DegRadFlag = AngularMeasure(rawValue: decoder.decodeIntegerForKey(NumbState.DEGRADFLAG))!
-		let s1 : String = decoder.decodeObjectForKey(NumbState.DIGSEP) as String
+		let s1 : String = decoder.decodeObjectForKey(NumbState.DIGSEP) as! String
 		DigSep = first(s1)!
-		let s2 : String = decoder.decodeObjectForKey(NumbState.FRACSEP) as String
+		let s2 : String = decoder.decodeObjectForKey(NumbState.FRACSEP) as! String
 		FracSep = first(s2)!
 		Rational = decoder.decodeBoolForKey(NumbState.RATIONAL)
 	}

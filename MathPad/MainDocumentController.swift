@@ -10,13 +10,9 @@ import UIKit
 
 class MainDocumentController: UITableViewController, UITextFieldDelegate {
 
-	let EXTENSION = "mpad"
-	class var path : NSURL {
-		struct dummy {
-			static var staticPath : NSURL = MainDocumentController.getStaticPath()
-		}
-		return dummy.staticPath
-	}
+	static let EXTENSION = "mpad"
+	static var path : NSURL = MainDocumentController.getStaticPath()
+	
 	var detailViewController: MathDocTableViewController? = nil
 	var objects = [NSURL]()
 	var activeObject: Int = 0
@@ -55,7 +51,7 @@ class MainDocumentController: UITableViewController, UITextFieldDelegate {
 	
 	private class func getStaticPath () -> NSURL {
 		let appDirs = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-		let path = appDirs[0] as String
+		let path = appDirs[0] as! String
 		return NSURL(fileURLWithPath: path, isDirectory: true)!
 	}
 	
@@ -66,7 +62,7 @@ class MainDocumentController: UITableViewController, UITextFieldDelegate {
 		let files = fm.contentsOfDirectoryAtURL(path, includingPropertiesForKeys: nil, options: .allZeros, error: error)!
 		for file in files  {
 			if let f = file as? NSURL {
-				if f.pathExtension == EXTENSION { objects.append(f) }
+				if f.pathExtension == MainDocumentController.EXTENSION { objects.append(f) }
 			}
 		}
 		tableView.reloadData()
@@ -80,7 +76,7 @@ class MainDocumentController: UITableViewController, UITextFieldDelegate {
 		var exists: Bool
 		do {
 			let uniqueName = number == 0 ? name : "\(name) \(number)"
-			fname = url.URLByAppendingPathComponent(uniqueName).URLByAppendingPathExtension(EXTENSION)
+			fname = url.URLByAppendingPathComponent(uniqueName).URLByAppendingPathExtension(MainDocumentController.EXTENSION)
 			let lname = fname.path
 			exists = fm.fileExistsAtPath(lname!)
 			number++
@@ -103,7 +99,7 @@ class MainDocumentController: UITableViewController, UITextFieldDelegate {
 		    if let indexPath = self.tableView.indexPathForSelectedRow() {
 				activeObject = indexPath.row
 		        let object = objects[activeObject]
-		        let controller = (segue.destinationViewController as UINavigationController).topViewController as MathDocTableViewController
+		        let controller = (segue.destinationViewController as! UINavigationController).topViewController as! MathDocTableViewController
 		        controller.detailItem = object
 				controller.title = object.lastPathComponent?.stringByDeletingPathExtension
 		        controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
@@ -123,7 +119,7 @@ class MainDocumentController: UITableViewController, UITextFieldDelegate {
 	}
 
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as TitleCell
+		let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! TitleCell
 		let object = objects[indexPath.row]
 		cell.docName.text = object.lastPathComponent?.stringByDeletingPathExtension
 		cell.docName.enabled = inEditMode

@@ -82,8 +82,8 @@ class Equation : NSObject, NSCoding {
 	
 	required init (coder decoder: NSCoder) {
 		self.Token = .Empty
-		self.LastAnswer = decoder.decodeObject() as xNumber
-		self.CommandLine = decoder.decodeObject() as String
+		self.LastAnswer = decoder.decodeObject() as! xNumber
+		self.CommandLine = decoder.decodeObject() as! String
 		super.init()
 	}
 	
