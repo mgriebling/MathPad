@@ -37,7 +37,7 @@ class MainDocumentController: UITableViewController, UITextFieldDelegate {
 		self.navigationItem.leftBarButtonItem = self.editButtonItem()
 
 		let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewDocument:")
-		self.navigationItem.rightBarButtonItems?.append(addButton)
+		self.navigationItem.rightBarButtonItem = addButton
 		if let split = self.splitViewController {
 		    let controllers = split.viewControllers
 		    self.detailViewController = controllers[controllers.count-1].topViewController as? MathDocTableViewController

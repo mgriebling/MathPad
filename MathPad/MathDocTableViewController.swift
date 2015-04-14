@@ -35,7 +35,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 		}
 	}
 	private var document : EqDocument?
-//	private var activeField : UITextField?
+	private var activeField : UITextField?
 	private var activeView  : UITextView?
 	private var activeIndex : NSIndexPath?
 	private let myBundle = NSBundle.mainBundle()
@@ -97,6 +97,7 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	}
 	
 	func hideKeyboard () {
+		activeField?.resignFirstResponder()
 		activeView?.resignFirstResponder()
 	}
 	
@@ -161,26 +162,26 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 	func textViewDidEndEditing(textView: UITextView) {
 		if let doc = document {
 			if let index = activeIndex?.row {
-//				doc.objects[index].CommandLine = textField.text
-//				doc.updateChangeCount(.Done)
+				doc.objects[index].CommandLine = textView.text
+				doc.updateChangeCount(.Done)
 			}
 		}
 	}
 	
-//	func textFieldDidBeginEditing(textField: UITextField) {
-//		// keep track of the active text field and its location in the tableview
-//		activeField = textField
-//		activeIndex = tableView.mdIndexPathForRowContainingView(textField)
-//	}
-//	
-//	func textFieldDidEndEditing(textField: UITextField) {
-//		if let doc = document {
-//			if let index = activeIndex?.row {
-//				doc.objects[index].CommandLine = textField.text
-//				doc.updateChangeCount(.Done)
-//			}
-//		}
-//	}
+	func textFieldDidBeginEditing(textField: UITextField) {
+		// keep track of the active text field and its location in the tableview
+		activeField = textField
+		activeIndex = tableView.mdIndexPathForRowContainingView(textField)
+	}
+	
+	func textFieldDidEndEditing(textField: UITextField) {
+		if let doc = document {
+			if let index = activeIndex?.row {
+				doc.objects[index].CommandLine = textField.text
+				doc.updateChangeCount(.Done)
+			}
+		}
+	}
 	
 	// MARK: - Helper functions
 	
@@ -235,6 +236,10 @@ class MathDocTableViewController: UITableViewController, UIPopoverPresentationCo
 
 		self.navigationItem.rightBarButtonItems?.append(self.editButtonItem())
 		loadInterface("Keyboard")
+		
+		// autosizing of table cells
+		tableView.estimatedRowHeight = tableView.rowHeight
+		tableView.rowHeight = UITableViewAutomaticDimension
 		
 		// keyboard is hidden when user taps outside the cell
 		let gestureRecognizer = UITapGestureRecognizer(target: self, action: "hideKeyboard")

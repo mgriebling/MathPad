@@ -20,7 +20,6 @@
 		4722DE411AC8327C003E6A09 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4722DE401AC8327C003E6A09 /* QuartzCore.framework */; };
 		4722DE431AC833F1003E6A09 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4722DE421AC833F1003E6A09 /* Accelerate.framework */; };
 		4722DE491AC83B53003E6A09 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4722DE481AC83B53003E6A09 /* libCorePlot-CocoaTouch.a */; };
-		47BA2FD21ACF38C800E3889E /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47BA2FD11ACF38C800E3889E /* GraphViewController.swift */; };
 		47DF0ABA1AD07E340005267C /* PiNumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 47DF0AB91AD07E340005267C /* PiNumberFormatter.m */; };
 		47FD43D31AC2C40400C71213 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D21AC2C40400C71213 /* AppDelegate.swift */; };
 		47FD43D51AC2C40400C71213 /* MainDocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD43D41AC2C40400C71213 /* MainDocumentController.swift */; };
@@ -160,7 +159,6 @@
 		4722DE961AC83B5F003E6A09 /* NSCoderExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCoderExtensions.h; sourceTree = "<group>"; };
 		4722DE971AC83B5F003E6A09 /* NSDecimalNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDecimalNumberExtensions.h; sourceTree = "<group>"; };
 		4722DE981AC83B5F003E6A09 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
-		47BA2FD11ACF38C800E3889E /* GraphViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		47DF0AB81AD07E340005267C /* PiNumberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PiNumberFormatter.h; sourceTree = "<group>"; };
 		47DF0AB91AD07E340005267C /* PiNumberFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PiNumberFormatter.m; sourceTree = "<group>"; };
 		47FD43CD1AC2C40400C71213 /* MathPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -335,7 +333,6 @@
 				47FD44111AC4187100C71213 /* SelectItemTableViewController.swift */,
 				4722DE261AC825C8003E6A09 /* EquationCell.swift */,
 				47055B501ACD561A0095C770 /* TitleCell.swift */,
-				47BA2FD11ACF38C800E3889E /* GraphViewController.swift */,
 				47FD43D81AC2C40400C71213 /* Main.storyboard */,
 				4722DE4A1AC83B5F003E6A09 /* CorePlotHeaders */,
 				4722DE2C1AC82633003E6A09 /* Keyboards */,
@@ -535,7 +532,6 @@
 				47FD440D1AC2C58600C71213 /* Real.mm in Sources */,
 				47FD43FF1AC2C42F00C71213 /* Equation.swift in Sources */,
 				47FD44121AC4187100C71213 /* SelectItemTableViewController.swift in Sources */,
-				47BA2FD21ACF38C800E3889E /* GraphViewController.swift in Sources */,
 				47FD43D51AC2C40400C71213 /* MainDocumentController.swift in Sources */,
 				47FD43FC1AC2C42F00C71213 /* Variables.swift in Sources */,
 				47FD43FB1AC2C42F00C71213 /* Functions.swift in Sources */,

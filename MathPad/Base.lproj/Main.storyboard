@@ -37,7 +37,7 @@
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="e = m c² " translatesAutoresizingMaskIntoConstraints="NO" id="vb4-6c-lWJ">
                                             <rect key="frame" x="8" y="8" width="584" height="91"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                     </subviews>
@@ -309,38 +309,11 @@
                             <outlet property="delegate" destination="7bK-jq-Zjz" id="RA6-mI-bju"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Math Docs" id="Zdf-7t-Un8">
-                        <barButtonItem key="rightBarButtonItem" title="Graph" id="y1j-me-GFI">
-                            <connections>
-                                <segue destination="os9-ej-XaS" kind="show" id="yVa-6F-DjC"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Math Docs" id="Zdf-7t-Un8"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="709" y="-633"/>
-        </scene>
-        <!--Graph View Controller-->
-        <scene sceneID="GDx-8o-tVp">
-            <objects>
-                <viewController id="os9-ej-XaS" customClass="GraphViewController" customModule="MathPad" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wdy-aV-1Pd"/>
-                        <viewControllerLayoutGuide type="bottom" id="9qa-rR-rnW"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="5by-2g-m53" customClass="CPTGraphHostingView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="hostView" destination="5by-2g-m53" id="OGR-iV-xVW"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="95N-iT-IP9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1388" y="-630"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="r7l-gg-dq7">
