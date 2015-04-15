@@ -33,37 +33,37 @@ public:
 	static void Init(void);
 	
 private:
-	static const long MaxBase2Bits = 671;
-	static const long LogicalSize = MaxBase2Bits / 16;
+//	static const long MaxBase2Bits = 671;
+//	static const long LogicalSize = MaxBase2Bits / 16;
 	static const bool Left = false;
 	static const bool Right = true;
 	
-	typedef unsigned Logical[LogicalSize+1];
+//	typedef unsigned Logical[LogicalSize+1];
 	typedef unsigned (* LogicalProc) (unsigned a, unsigned b);
 	typedef Real (* ExNumbProc) (const Real& a, const Real& b);
 
-	static unsigned LogZero[LogicalSize+1];
+	static mp_int LogZero;
 	static Real One, Two;
 	static Real Zero;
 	static short Cnt;
 	
 	static bool initialized;
 	
-	static unsigned AndSet (unsigned op1, unsigned op2);
-	static unsigned AndNotSet (unsigned op1, unsigned op2);
-	static unsigned OrSet (unsigned op1, unsigned op2);
-	static unsigned XorSet (unsigned op1, unsigned op2);
-	static unsigned NorSet (unsigned op1, unsigned op2);
-	static unsigned NandSet (unsigned op1, unsigned op2);
-	static unsigned NotSet (unsigned op1, unsigned op2 = 0);		
+//	static unsigned AndSet (unsigned op1, unsigned op2);
+//	static unsigned AndNotSet (unsigned op1, unsigned op2);
+//	static unsigned OrSet (unsigned op1, unsigned op2);
+//	static unsigned XorSet (unsigned op1, unsigned op2);
+//	static unsigned NorSet (unsigned op1, unsigned op2);
+//	static unsigned NandSet (unsigned op1, unsigned op2);
+//	static unsigned NotSet (unsigned op1, unsigned op2 = 0);		
 	static bool IsZero (const Real& x);
 	
 	/* Misc. local functions */
 	static Real Max();
 	static int MaxBits();
 	static void ConstrainNum(Real& Number);
-	static void NumToLogical(const Real& Numb, Logical& logical);
-	static void LogicalToNum(const Logical& logical, Real& Numb);
+	static void NumToLogical(const Real& Numb, mp_int& logical);
+	static void LogicalToNum(const mp_int& logical, Real& Numb);
 	static void LOp(Real& Result, const Real& op1, LogicalProc Oper, const Real& op2);
 	static void LOp1(Real& Result, LogicalProc Oper, const Real& op);
 	static void LBit(Real& Result, const Real& number, LogicalProc Oper, short bitnum);

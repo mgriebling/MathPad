@@ -11,7 +11,7 @@
 
 /* Internal inline functions */
 
-static inline long Min(long X, long Y)	{return (X < Y ? X : Y);}
+//static inline long Min(long X, long Y)	{return (X < Y ? X : Y);}
 static inline long Max(long X, long Y)	{return (X > Y ? X : Y);}
 static inline long ABS(long X) {return (X < 0 ? -X : X);}
 //static inline float ABS(float X) {return (X < 0.0 ? -X : X);}
@@ -38,14 +38,13 @@ static inline long MOD(long x, long y) {
 bool Real::initialized = false;
 short Real::numBits;
 Real Real::seed;
-//float Real::xONE[8];
 
 double Real::ZERO = 0.0;
 double Real::ONE = 1.0;
 double Real::HALF = 0.5;
-double Real::invLn2 = 1.4426950408889633;
-double Real::Ln2 = 0.693147180559945309;
-double Real::log2 = 0.301029995663981195;
+double Real::Ln2 = ::log(2.0);
+double Real::invLn2 = 1/Ln2;
+double Real::Ln10 = ::log(10.0);
 
 //double Real::mpbbx = 4096.0;
 //double Real::radix = mpbbx * mpbbx;
@@ -59,8 +58,6 @@ double Real::log2 = 0.301029995663981195;
 int Real::err;
 short Real::sigDigs;
 short Real::debug;
-//double Real::digsPerWord = 7.224719896;  	// number of digits per word
-//short Real::curMant = maxMant + 1;
 Real Real::eps;
 Real Real::ln2;
 Real Real::pi;
@@ -100,6 +97,19 @@ Real::Real(long x)
 Real::Real(double x)
 {
 	NumbExpToReal(x, 0, &val);
+}
+
+Real::Real(mp_int x) {
+	mp_init_copy(&x, &val.mantissa);
+	val.exp = 0;
+	val.radix = mp_count_bits(&x);
+	mpf_normalize(&val);
+}
+
+mp_int Real::Integer(void) {
+	mp_float n;
+	Entier(&n, &val);
+	return n.mantissa;
 }
 
 Real::~Real(void)
@@ -438,11 +448,15 @@ void Real::NumbExpToReal(double a, long n, mp_float *b)
 	mp_float nf;
 	mp_float two;
 	sprintf(nstr, "%f", a);
+	mpf_init_multi(sizeof(double), &nf, &two, b);
 	toReal(nstr, b);
-	err = mpf_const_d(&nf, n);
-	err = mpf_const_d(&two, 2);
-	err = mpf_pow(&two, &nf, &nf);
-	err = mpf_mul(&nf, b, b);
+	if (n != 0) {
+		err = mpf_const_d(&nf, n);
+		err = mpf_const_d(&two, 2);
+		err = mpf_pow(&two, &nf, &nf);
+		err = mpf_mul(&nf, b, b);
+	}
+	mpf_clear_multi(&nf, &two, NULL);
 }
 
 //void Real::Add(float *c, const float *arg_a, const float *arg_b)
@@ -1936,9 +1950,7 @@ Real Real::Long(double x)
 
 Real Real::Copy(const Real& a)
 {
-	mp_float r;
-	err = mpf_init_copy((mp_float *)&a.val, &r);
-	return Real(&r);
+	return Real((mp_float *)&a.val);
 }
 
 static long GetDigit(long *cc, const char *str, bool *isZero)
@@ -1979,7 +1991,8 @@ Real Real::ToReal(const char *str)
 {
 	mp_float x;
 	toReal(str, &x);
-	return Real(&x);
+	Real r(&x); mpf_clear(&x);
+	return r;
 }
 
 int Real::exponent () const
@@ -2084,6 +2097,7 @@ void Real::ToString(const Real& a, char *str, long n, long dp, char mode)
 	if (Real::sign(a) < 0) AddChar('-');
 	digs = a.sigDigs;
 	
+	mpf_init_multi(a.val.radix, &ten, &five, &frac, &scale, NULL);
 	err = mpf_const_d(&ten, 10);
 	err = mpf_const_d(&five, 5);
 	
@@ -2194,6 +2208,7 @@ void Real::ToString(const Real& a, char *str, long n, long dp, char mode)
 		if(str[cnt] == '.')
 			str[cnt] = '\0';
 	}
+	mpf_clear_multi(&ten, &five, &frac, &scale, NULL);
 }
 
 double Real::Short(const mp_float* q)
@@ -2218,7 +2233,8 @@ Real Real::entier(const Real& q)
 {
 	mp_float r;
 	Entier(&r, &q.val);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::fraction(const Real& q)
@@ -2232,7 +2248,8 @@ Real Real::fraction(const Real& q)
 		}
 	}
 	err = mpf_sub((mp_float *)&q.val, &r, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 /*
@@ -2284,42 +2301,48 @@ Real Real::add(const Real& z1, const Real& z2)
 {
 	mp_float r;
 	err = mpf_add((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::sub(const Real& z1, const Real& z2)
 {
 	mp_float r;
 	err = mpf_sub((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::mul(const Real& z1, const Real& z2)
 {
 	mp_float r;
 	err = mpf_mul((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::div(const Real& z1, const Real& z2)
 {
 	mp_float r;
 	err = mpf_div((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::abs(const Real& z)
 {
 	mp_float r;
 	err = mpf_abs((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::negate(const Real& z)
 {
 	mp_float r;
 	err = mpf_neg((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 long Real::sign(const Real& z)
@@ -2351,37 +2374,43 @@ Real Real::power(const Real& x, const Real& exp)
 {
 	mp_float r;
 	err = mpf_pow((mp_float *)&x.val, (mp_float *)&exp.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::root(const Real& z, long n)
 {
 	mp_float r, exp;
+	mpf_init_multi(z.val.radix, &r, &exp, NULL);
 	err = mpf_const_d(&exp, n);
 	err = mpf_inv(&exp, &exp);
 	err = mpf_pow((mp_float *)&z.val, &exp, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear_multi(&r, &exp, NULL);
+	return r2;
 }
 
 Real Real::sqrt(const Real& z)
 {
 	mp_float r;
 	err = mpf_sqrt((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::exp(const Real& z)
 {
 	mp_float r;
 	err = mpf_exp((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::ln(const Real& z)
 {
 	mp_float r;
 	err = mpf_ln((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::log(const Real& z, const Real& base)
@@ -2389,21 +2418,24 @@ Real Real::log(const Real& z, const Real& base)
 	// FIX ME
 	mp_float r;
 	err = mpf_ln((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::sin(const Real& z)
 {
 	mp_float r;
 	err = mpf_sin((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::cos(const Real& z)
 {
 	mp_float r;
 	err = mpf_cos((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 void Real::sincos(const Real& z, Real& sin, Real& cos)
@@ -2416,28 +2448,32 @@ Real Real::tan(const Real& z)
 {
 	mp_float r;
 	err = mpf_tan((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::arcsin(const Real& z)
 {
 	mp_float r;
 	err = mpf_asin((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::arccos(const Real& z)
 {
 	mp_float r;
 	err = mpf_acos((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::arctan(const Real& z)
 {
 	mp_float r;
 	err = mpf_atan((mp_float *)&z.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::arctan2(const Real& xn, const Real& xd)
@@ -2446,7 +2482,8 @@ Real Real::arctan2(const Real& xn, const Real& xd)
 	mp_float r;
 	err = mpf_init(&r, xn.val.radix);
 	err = mpf_div((mp_float *)&xn.val, (mp_float *)&xd.val, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 void Real::sinhcosh(const Real& z, Real& sinh, Real& cosh)
@@ -2456,32 +2493,28 @@ void Real::sinhcosh(const Real& z, Real& sinh, Real& cosh)
 
 Real Real::sinh(const Real& z)
 {
-	mp_float s;
-	mp_float c;
+	mp_float s, c;
 	SinhCosh(&s, &c, &z.val);
-	mpf_clear(&c);
-	return Real(&s);
+	Real r2(&s); mpf_clear_multi(&s, &c, NULL);
+	return r2;
 }
 
 Real Real::cosh(const Real& z)
 {
-	mp_float s;
-	mp_float c;
+	mp_float s, c;
 	SinhCosh(&s, &c, &z.val);
-	mpf_clear(&s);
-	return Real(&c);
+	Real r2(&c); mpf_clear_multi(&s, &c, NULL);
+	return r2;
 }
 
 Real Real::tanh(const Real& z)
 {
-	mp_float s;
-	mp_float c;
-	mp_float r;
+	mp_float s, c, r;
 	err = mpf_init(&r, z.val.radix);
 	SinhCosh(&s, &c, &z.val);
 	err = mpf_div(&s, &c, &r);
-	mpf_clear_multi(&s, &c, 0);
-	return Real(&r);
+	Real r2(&r); mpf_clear_multi(&s, &c, &r, NULL);
+	return r2;
 }
 
 void Real::round(Real& z)
@@ -2514,9 +2547,11 @@ Real Real::factorial(const Real& x)
 		return Long(0);
 	}
 	fact = 0;
+	mpf_init(&r, x.val.radix);
 	err = mpf_const_d(&r, 1);
 	nfactorial(fact, n, &r);
-	return Real(&r);
+	Real r2(&r); mpf_clear(&r);
+	return r2;
 }
 
 Real Real::permutations(const Real& n, const Real& r)
@@ -2526,14 +2561,15 @@ Real Real::permutations(const Real& n, const Real& r)
 
 	ni = ENTIER(Short(n));
 	ri = (long) (ni - ENTIER(Short(r)));
-	if((ni < 0) || (ni > MaxFactorial) || (ri < 0))
-	{
+	if((ni < 0) || (ni > MaxFactorial) || (ri < 0)) {
 		err = errIllegalFactorial;
 		return Long(0);
-	}	
+	}
+	mpf_init(&res, r.val.radix);
 	err = mpf_const_d(&res, 1);
 	nfactorial(ri, ni, &res);
-	return Real(&res);
+	Real r2(&res); mpf_clear(&res);
+	return r2;
 }
 
 Real Real::combinations(const Real& n, const Real& r)
@@ -2541,7 +2577,7 @@ Real Real::combinations(const Real& n, const Real& r)
 	Real res = factorial(r);
 	Real per = permutations(n, r);
 	err = mpf_div(&per.val, &res.val, &res.val);
-	return Real(res);
+	return res;
 }
 
 Real Real::random(void)
@@ -2556,8 +2592,8 @@ Real Real::random(void)
 	Entier(&res, &t);
 	err = mpf_sub(&t, &res, &seed.val);
 	err = mpf_copy(&seed.val, &res);
-	mpf_clear(&t);
-	return Real(&res);
+	Real r2(&res); mpf_clear_multi(&res, &t, NULL);
+	return r2;
 }
 
 /*
@@ -2633,9 +2669,9 @@ void Real::Test()
   printf("1/3="); OutReal(s); puts("");
   printf("1/3+1/3="); OutReal(s + s); puts("");
   printf("1/3*1/3="); OutReal(s * s); puts("");
-//  printf("1/3*3="); OutReal(s * 3); puts("");
+  printf("1/3*3="); OutReal(s * 3l); puts("");
   n = 2.0;
-//  s = power(n, 64);
+  s = power(n, 64l);
   printf("2^64="); OutReal(s); puts("");
   n = "1.010E-10";
   printf("1.010E-10="); OutReal(n); puts("");
@@ -2650,61 +2686,48 @@ void Real::Test()
   sincos(pi, m, n);
   printf("Sin(pi)="); OutReal(m); puts("");
   printf("Cos(pi)="); OutReal(n); puts("");
-//  sincos(pi / 8, m, n);
+  sincos(pi / 8l, m, n);
   printf("Sin(pi/8)="); OutReal(m); puts("");
   printf("Cos(pi/8)="); OutReal(n); puts("");
-//  sincos(1, m, n);
+  sincos(1l, m, n);
   printf("Sin(1)="); OutReal(m); puts("");
   printf("Cos(1)="); OutReal(n); puts("");   
-//  printf("-8^(-1/3)="); OutReal(root(-8, 3)); puts("");
-//  printf("(2^64)^(-1/64)="); OutReal(root(power(2, 64), 64)); puts("");
-//  printf("4*arctan(1)="); OutReal(Long(4) * arctan(1)); puts("");
-//  printf("arcsin(sin(1))="); OutReal(arcsin(sin(1))); puts("");
+  printf("-8^(-1/3)="); OutReal(root(-8l, 3)); puts("");
+  printf("(2^64)^(-1/64)="); OutReal(root(power(2l, 64l), 64)); puts("");
+  printf("4*arctan(1)="); OutReal(Long(4) * arctan(1l)); puts("");
+  printf("arcsin(sin(1))="); OutReal(arcsin(sin(1l))); puts("");
   printf("ENTIER(3.6)="); OutReal(entier(3.6)); puts("");
   printf("ENTIER(-3.6)="); OutReal(entier(-3.6)); puts("");
-//  printf("69!="); OutReal(factorial(69)); puts("");
+  printf("69!="); OutReal(factorial(69l)); puts("");
 }
 
 void Real::Init()
 {
-	typedef float LongFixed[2*(maxMant+4)];
-//	LongFixed t0, t1, t2, t3, t4;
-	
-	if (initialized)
-		return;
+	if (initialized) return;
 
+	SetDigits(maxDigits);
+	mpf_init_multi(numBits, &one.val, &zero.val, &pi.val, &ln2.val, &ln10.val, NULL);
 	err = mpf_const_d(&one.val, 1);
 	err = mpf_const_0(&zero.val);
-	
-	err = errNone;
-	numBits = 22;
+	err = mpf_const_pi(&pi.val);
+	err = mpf_const_le2(&ln2.val);
+	err = mpf_const_ln_d(&ln10.val, 10);
+	err = MP_OKAY;
 	debug = 0;
-
-//	Pi(t1);
-//	NumbExpToReal(2, 0, t0);
-//	Ln(t2, t0);
-//	ln2 = Real((int)(2 * (maxMant + 4)));
-//	copy(t2, ln2.val);
 //	NumbExpToReal(10, 0, t0);
 //	Ln(t3, t0);
 //	IntPower(t4, t0, log10eps);
-	
-	err = mpf_const_pi(&pi.val);
-	err = mpf_const_le2(&ln2.val);
-//	copy(t1, pi.val);
-//	copy(t2, ln2.val);
-//	copy(t3, ln10.val);
 //	copy(t4, eps.val);
 	
 	seed = Long(4);
-	
 	sigDigs = maxDigits;
 	
-	if(DEBUG1)
-		Test();
+	if (DEBUG1) Test();
 }
 
 void Real::SetDigits(long digits)
 {
+	if (digits > maxDigits) return;
 	sigDigs = digits;
+	numBits = digits * Ln10 * invLn2 + 1;
 }

@@ -33,6 +33,7 @@ class Real {
 		Real(const char *str);
 		Real(double x);
 		Real(long x);
+		Real(mp_int x);
 		~Real(void);
 	
 		/* Overloaded operators */	
@@ -47,6 +48,7 @@ class Real {
 		
 		// access the number's characteristics
 		int exponent() const;
+		mp_int Integer(void) const;
 
 		/*
 		 * User routines
@@ -114,7 +116,7 @@ class Real {
 		static double HALF;
 		static double invLn2;
 		static double Ln2;
-		static double log2;
+		static double Ln10;
 		static const long MaxFactorial = 388006;
 		
 		// internal scaling constants

@@ -4,7 +4,7 @@
 #include "ExIntegers.h"
 #include "Reals.h"
 
-unsigned Integer::LogZero[LogicalSize + 1];
+mp_int Integer::LogZero;
 Real Integer::One;
 Real Integer::Two;
 Real Integer::Zero;
@@ -38,49 +38,48 @@ void Integer::Init()
 	Zero = Real(0l);
 	One = Real(1l);
 	Two = Real(2l);
-	
-	for (Cnt = 0; Cnt <= LogicalSize; Cnt++) LogZero[Cnt] = 0;
+	mp_init_set_int(&LogZero, 0);
 }
 
 
 /*
  * Private methods
  */
-inline unsigned Integer::AndSet(unsigned op1, unsigned op2)
-{
-	return op1 & op2;
-}
-
-inline unsigned Integer::NandSet(unsigned op1, unsigned op2)
-{
-	return ~(op1 & op2);
-}
-
-inline unsigned Integer::AndNotSet(unsigned op1, unsigned op2)
-{
-	return op1 & ~op2;
-}
-
-
-inline unsigned Integer::OrSet(unsigned op1, unsigned op2)
-{
-	return op1 | op2;
-}
-
-inline unsigned Integer::NorSet(unsigned op1, unsigned op2)
-{
-	return ~(op1 | op2);
-}
-
-inline unsigned Integer::XorSet(unsigned op1, unsigned op2)
-{
-	return op1 ^ op2;
-}
-
-inline unsigned Integer::NotSet(unsigned op1, unsigned op2)
-{
-	return ~op1;
-}
+//inline unsigned Integer::AndSet(unsigned op1, unsigned op2)
+//{
+//	return op1 & op2;
+//}
+//
+//inline unsigned Integer::NandSet(unsigned op1, unsigned op2)
+//{
+//	return ~(op1 & op2);
+//}
+//
+//inline unsigned Integer::AndNotSet(unsigned op1, unsigned op2)
+//{
+//	return op1 & ~op2;
+//}
+//
+//
+//inline unsigned Integer::OrSet(unsigned op1, unsigned op2)
+//{
+//	return op1 | op2;
+//}
+//
+//inline unsigned Integer::NorSet(unsigned op1, unsigned op2)
+//{
+//	return ~(op1 | op2);
+//}
+//
+//inline unsigned Integer::XorSet(unsigned op1, unsigned op2)
+//{
+//	return op1 ^ op2;
+//}
+//
+//inline unsigned Integer::NotSet(unsigned op1, unsigned op2)
+//{
+//	return ~op1;
+//}
 
 inline bool Integer::IsZero(const Real& x)
 {
@@ -101,80 +100,82 @@ void Integer::ConstrainNum(Real& Number)
 }
 
 
-void Integer::NumToLogical(const Real& Numb, Logical & logical)
+void Integer::NumToLogical(const Real& Numb, mp_int& logical)
 {
-	Real DivScale;
-	Real Scale;
-	Real Temp;
-	Real Temp2;
-	Real iNumb(Numb);
-	short LogCnt;
-	
-	ConstrainNum(iNumb);
-	if (Real::sign(iNumb) < 0) iNumb = Max() + iNumb + One; 
-	
-	Scale = Real::Long(65536);
-	DivScale = Real::div(One, Scale);
-	
-	LogCnt = 0;
-	for (int i = 0; i <= LogicalSize; i++) logical[i] = LogZero[i];
-	while(!IsZero(iNumb))
-	{
-		Temp2 = Real::entier(Real::mul(iNumb, DivScale));
-		Temp = Real::sub(iNumb, Real::mul(Temp2, Scale));
-		if (LogCnt > LogicalSize) return;
-		logical[LogCnt] = (unsigned) Real::Short(Temp);
-		iNumb = Temp2;
-		LogCnt++;
-	}
+	logical = Numb.Integer();
+//	Real DivScale;
+//	Real Scale;
+//	Real Temp;
+//	Real Temp2;
+//	Real iNumb(Numb);
+//	short LogCnt;
+//	
+//	ConstrainNum(iNumb);
+//	if (Real::sign(iNumb) < 0) iNumb = Max() + iNumb + One; 
+//	
+//	Scale = Real::Long(65536);
+//	DivScale = Real::div(One, Scale);
+//	
+//	LogCnt = 0;
+//	for (int i = 0; i <= LogicalSize; i++) logical[i] = LogZero[i];
+//	while(!IsZero(iNumb))
+//	{
+//		Temp2 = Real::entier(Real::mul(iNumb, DivScale));
+//		Temp = Real::sub(iNumb, Real::mul(Temp2, Scale));
+//		if (LogCnt > LogicalSize) return;
+//		logical[LogCnt] = (unsigned) Real::Short(Temp);
+//		iNumb = Temp2;
+//		LogCnt++;
+//	}
 }
 
 
-void Integer::LogicalToNum(const Logical & logical, Real& Numb)
+void Integer::LogicalToNum(const mp_int& logical, Real& Numb)
 {
-	Real Scale(65536.0);
-	short LogCnt;
-	int INumb;
-	
-	// determine the maximum representable bits in current Reals
-	int words = MaxBits() / 16;
-	
-	Numb = Real::Copy(Zero);
-	for (LogCnt = words-1; LogCnt >= 0; LogCnt--) {
-		Numb = Real::mul(Numb, Scale);
-		INumb = logical[LogCnt];
-		if (INumb < 0) INumb += 0x10000;
-		Numb = Real::add(Numb, Real::Long(INumb));
-	}
+//	Real Scale(65536.0);
+//	short LogCnt;
+//	int INumb;
+//	
+//	// determine the maximum representable bits in current Reals
+//	int words = MaxBits() / 16;
+//	
+//	Numb = Real::Copy(Zero);
+//	for (LogCnt = words-1; LogCnt >= 0; LogCnt--) {
+//		Numb = Real::mul(Numb, Scale);
+//		INumb = logical[LogCnt];
+//		if (INumb < 0) INumb += 0x10000;
+//		Numb = Real::add(Numb, Real::Long(INumb));
+//	}
+	Numb = Real(logical);
 }
 
 
-void Integer::LOp(Real& Result, const Real& op1, LogicalProc Oper, const Real& op2)
-{
-	short i;
-	Logical Lop1, Lop2;
-	
-	NumToLogical(op1, Lop1);
-	NumToLogical(op2, Lop2);
-	
-	for(i = 0 ; i <= LogicalSize ; i++)
-		Lop2[i] = Oper(Lop1[i], Lop2[i]);
-		
-	LogicalToNum(Lop2, Result);
-}
-
-void Integer::LOp1(Real& Result, LogicalProc Oper, const Real& op)
-{
-	short i;
-	Logical Lop;
-	
-	NumToLogical(op, Lop);
-	
-	for(i = 0 ; i <= LogicalSize ; i++)
-		Lop[i] = Oper(Lop[i], 0);
-		
-	LogicalToNum(Lop, Result);
-}
+//void Integer::LOp(Real& Result, const Real& op1, LogicalProc Oper, const Real& op2)
+//{
+//	short i;
+//	Logical Lop1, Lop2;
+//	
+//	NumToLogical(op1, Lop1);
+//	NumToLogical(op2, Lop2);
+//	
+//	for(i = 0 ; i <= LogicalSize ; i++)
+//		Lop2[i] = Oper(Lop1[i], Lop2[i]);
+//		
+//	LogicalToNum(Lop2, Result);
+//}
+//
+//void Integer::LOp1(Real& Result, LogicalProc Oper, const Real& op)
+//{
+//	short i;
+//	Logical Lop;
+//	
+//	NumToLogical(op, Lop);
+//	
+//	for(i = 0 ; i <= LogicalSize ; i++)
+//		Lop[i] = Oper(Lop[i], 0);
+//		
+//	LogicalToNum(Lop, Result);
+//}
 
 void Integer::LBit(Real& Result, const Real& number, LogicalProc Oper, short bitnum)
 {
@@ -291,45 +292,59 @@ void Integer::GCD(Real& Result, const Real& op1, const Real& op2)
 
 void Integer::SetBit(Real& Result, const Real& number, short bitnum)
 {
-	LBit(Result, number, OrSet, bitnum);
+//	LBit(Result, number, OrSet, bitnum);
 }
 
 
 void Integer::ClearBit(Real& Result, const Real& number, short bitnum)
 {
-	LBit(Result, number, AndNotSet, bitnum);
+//	LBit(Result, number, AndNotSet, bitnum);
 }
 
 
 void Integer::ToggleBit(Real& Result, const Real& number, short bitnum)
 {
-	LBit(Result, number, XorSet, bitnum);
+//	LBit(Result, number, XorSet, bitnum);
 }
 
 
 void Integer::And(Real& Result, const Real& op1, const Real& op2)
 {
-	LOp(Result, op1, AndSet, op2);
+	mp_int int1, int2, result;
+	int1 = op1.Integer();
+	int2 = op2.Integer();
+	mp_and(&int1, &int2, &result);
+	Result = Real(result);
 }
 
 void Integer::Nand(Real& Result, const Real& op1, const Real& op2)
 {
-	LOp(Result, op1, NandSet, op2);
+	And(Result, op1, op2);
+	// negate output
 }
 
 void Integer::Or(Real& Result, const Real& op1, const Real& op2)
 {
-	LOp(Result, op1, OrSet, op2);
+	mp_int int1, int2, result;
+	int1 = op1.Integer();
+	int2 = op2.Integer();
+	mp_or(&int1, &int2, &result);
+	Result = Real(result);
 }
 
 void Integer::Nor(Real& Result, const Real& op1, const Real& op2)
 {
-	LOp(Result, op1, NorSet, op2);
+	Or(Result, op1, op2);
+	// negate output
 }
 
 void Integer::Xor(Real& Result, const Real& op1, const Real& op2)
 {
-	LOp(Result, op1, XorSet, op2);
+	mp_int int1, int2, result;
+	int1 = op1.Integer();
+	int2 = op2.Integer();
+	mp_xor(&int1, &int2, &result);
+	Result = Real(result);
 }
 
 void Integer::Count(Real& Result, const Real& op1)
