@@ -334,7 +334,7 @@ void Integer::Xor(Real& Result, const Real& op1, const Real& op2)
 
 void Integer::Count(Real& Result, const Real& op1)
 {
-	int bcnt = 0;
+	long bcnt = 0;
 	Real number(op1);
 	Logical lop;
 	

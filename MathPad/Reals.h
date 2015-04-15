@@ -32,6 +32,7 @@ class Real {
 		Real(const Real& x);  	// copy constructor
 		Real(const char *str);
 		Real(double x);
+		Real(long x);
 		~Real(void);
 	
 		/* Overloaded operators */	
@@ -163,7 +164,7 @@ class Real {
 //		static void Round(float *a);
 //		static void Normalize(double *d, float *a);
 //		static double Short(const float* q);
-		static void RealToNumbExp(const float *a, double &b, long &n);
+		static void RealToNumbExp(const mp_float *a, double &b, long &n);
 		static void NumbExpToReal(double a, long n, mp_float *b);
 //		static void Add(float *c, const float *a, const float *b);
 //		static void Sub(float *c, const float *a, const float *b);
@@ -181,9 +182,9 @@ class Real {
 //		static void RoundInt(float *b, const float *a);
 //		static void Exp(float *b, const float *a);
 //		static void Ln(float *b, const float *a);
-//		static void SinCos(float *sin, float *cos, const float *a);
-//		static void SinhCosh(float *sinh, float *cosh, const float *a);
-//		static void ATan2(float *a, const float *x, const float *y);		
+		static void SinCos(mp_float *sin, float *cos, const mp_float *a);
+		static void SinhCosh(mp_float *sinh, mp_float *cosh, const mp_float *a);
+		static void ATan2(mp_float *a, const mp_float *x, const mp_float *y);
 };
 
 #endif

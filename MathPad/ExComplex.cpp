@@ -633,7 +633,7 @@ void Complex::cos(Complex& Result, const Complex& x)
 
 void Complex::tan(Complex& Result, const Complex& x)
 {
-	Real TWO(2), d, s, c, sh, ch;
+	Real TWO(2l), d, s, c, sh, ch;
 	Complex ix = x;
 	ToRadians(ix); 
 	Real::sincos(TWO*ix.re, s, c); Real::sinhcosh(TWO*ix.im, sh, ch);
@@ -643,7 +643,7 @@ void Complex::tan(Complex& Result, const Complex& x)
 
 void Complex::cot(Complex& Result, const Complex& x)
 {
-	Real TWO(2), d, s, c, sh, ch;
+	Real TWO(2l), d, s, c, sh, ch;
 	Complex ix = x;	
 	ToRadians(ix); 
 	Real::sincos(TWO*ix.re, s, c); Real::sinhcosh(TWO*ix.im, sh, ch);
