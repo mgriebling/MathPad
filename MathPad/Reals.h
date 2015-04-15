@@ -17,7 +17,7 @@ class Real {
 		static const long maxMant = (maxDigits*200/722+1)/2+1;	// hardcoded maximum mantissa words
 		static const long maxExp = 2000000;                     // maximum exponent
 	
-		static errCodes err;
+		static int err;
 		static short sigDigs;
 		static short debug;
 		static Real eps;
@@ -118,14 +118,14 @@ class Real {
 		static const long MaxFactorial = 388006;
 		
 		// internal scaling constants
-		static double mpbbx;
-		static double radix;
-		static double mpbx2;
-		static double mprbx;
-		static double invRadix;
-		static double mprx2;
-		static double mprxx;
-		
+//		static double mpbbx;
+//		static double radix;
+//		static double mpbx2;
+//		static double mprbx;
+//		static double invRadix;
+//		static double mprx2;
+//		static double mprxx;
+	
 		// local types
 //		typedef double FixedLReal[maxMant+8];
 //		typedef float FixedReal[maxMant+8];
@@ -157,13 +157,13 @@ class Real {
 		 * Internal (non-user) routines
 		 */
 		static void toReal(const char *str, mp_float *b);
-//		static void nfactorial(long &prevn, long &currentn, float *Result);
+		static void nfactorial(long &prevn, long &currentn, mp_float *Result);
 //		static void copy(const float *a, float *b);
 //		static void OutRealDesc(const float *n);
 //		static void WriteReal(const float *q);
-//		static void Round(float *a);
+		static void Round(mp_float *a);
 //		static void Normalize(double *d, float *a);
-//		static double Short(const float* q);
+		static double Short(const mp_float* q);
 		static void RealToNumbExp(const mp_float *a, double &b, long &n);
 		static void NumbExpToReal(double a, long n, mp_float *b);
 //		static void Add(float *c, const float *a, const float *b);
@@ -178,7 +178,7 @@ class Real {
 //		static void Sqrt(float *b, const float *a);
 //		static void Root(float *b, const float *a, long n);
 //		static void Pi(float *pi);
-//		static void Entier(float *b, const float *a);
+		static void Entier(mp_float *b, const mp_float *a);
 //		static void RoundInt(float *b, const float *a);
 //		static void Exp(float *b, const float *a);
 //		static void Ln(float *b, const float *a);

@@ -16,13 +16,13 @@ static inline long Max(long X, long Y)	{return (X > Y ? X : Y);}
 static inline long ABS(long X) {return (X < 0 ? -X : X);}
 //static inline float ABS(float X) {return (X < 0.0 ? -X : X);}
 //static inline double ABS(double X) {return (X < 0.0 ? -X : X);}
-//static inline bool ODD(long X) {return (X & 0x1);}
+static inline bool ODD(long X) {return (X & 0x1);}
 
-//static inline long ENTIER (double x) {
-//	long v = (long)x;           
-//  	if ((v > x) && (v-1 <= x)) v--;
-//  	return v;
-//} 
+static inline long ENTIER (double x) {
+	long v = (long)x;           
+  	if ((v > x) && (v-1 <= x)) v--;
+  	return v;
+} 
 
 static inline long MOD(long x, long y) {
   	long rem = x % y;
@@ -47,16 +47,16 @@ double Real::invLn2 = 1.4426950408889633;
 double Real::Ln2 = 0.693147180559945309;
 double Real::log2 = 0.301029995663981195;
 
-double Real::mpbbx = 4096.0;
-double Real::radix = mpbbx * mpbbx;
-double Real::mpbx2 = radix * radix;
-double Real::mprbx = ONE / mpbbx;
-double Real::invRadix = mprbx * mprbx;
-double Real::mprx2 = invRadix * invRadix;
-double Real::mprxx = 16 * mprx2;
+//double Real::mpbbx = 4096.0;
+//double Real::radix = mpbbx * mpbbx;
+//double Real::mpbx2 = radix * radix;
+//double Real::mprbx = ONE / mpbbx;
+//double Real::invRadix = mprbx * mprbx;
+//double Real::mprx2 = invRadix * invRadix;
+//double Real::mprxx = 16 * mprx2;
 
 /* Public */
-errCodes Real::err;
+int Real::err;
 short Real::sigDigs;
 short Real::debug;
 //double Real::digsPerWord = 7.224719896;  	// number of digits per word
@@ -74,17 +74,17 @@ Real Real::one;
 
 Real::Real(void)
 {
-	mpf_init(&val, numBits);
+	err = mpf_init(&val, numBits);
 }
 
 Real::Real(mp_float *x)
 {
-	mpf_init_copy(x, &val);
+	err = mpf_init_copy(x, &val);
 }
 
 Real::Real(const Real& x)
 {
-	mpf_init_copy((mp_float *)&x.val, &val);
+	err = mpf_init_copy((mp_float *)&x.val, &val);
 }
 
 Real::Real(const char *str)
@@ -94,7 +94,7 @@ Real::Real(const char *str)
 
 Real::Real(long x)
 {	
-	mpf_const_d(&val, x);
+	err = mpf_const_d(&val, x);
 }
 
 Real::Real(double x)
@@ -117,7 +117,7 @@ Real& Real::operator = (const Real& x)
 	if (this == &x) return *this;
 	
 	// create a new number
-	mpf_copy((mp_float *)&x.val, &this->val);
+	err = mpf_copy((mp_float *)&x.val, &this->val);
 	return *this;
 }
 
@@ -141,28 +141,28 @@ Real& Real::operator = (const Real& x)
 //	return (x < ZERO ? -ENTIER(-x) : ENTIER(x));
 //}
 
-//double Real::ipower(double x, short base) {
-//	double y;
-//	bool neg;
-//	
-//	y = 1;
-//	if (base < 0) {
-//		neg = true;
-//		base = -base;
-//	} else {
-//		neg = false;
-//	}
-//	
-//	while (1) {
-//		if (ODD(base)) y *= x;
-//		base /= 2;
-//		if (base == 0) break;
-//		x *= x;
-//	}
-//
-//	return (neg ? 1 / y : y);
-//}
-//
+double Real::ipower(double x, short base) {
+	double y;
+	bool neg;
+	
+	y = 1;
+	if (base < 0) {
+		neg = true;
+		base = -base;
+	} else {
+		neg = false;
+	}
+	
+	while (1) {
+		if (ODD(base)) y *= x;
+		base /= 2;
+		if (base == 0) break;
+		x *= x;
+	}
+
+	return (neg ? 1 / y : y);
+}
+
 //void Real::Reduce(double &a, long &exp) {
 //	const short maxIterations = 100;
 //	double radix = 10;
@@ -416,39 +416,20 @@ Real& Real::operator = (const Real& x)
 //	Round(a);
 //}
 
-//void Real::RealToNumbExp(const float *a, double &b, long &n)
-//{
-//	double aa;
-//	long na;
-//	
-//	if(err != 0)
-//	{
-//		b = ZERO;
-//		n = 0;
-//		return;
-//	}
-//	
-//	if(a[0] == ZERO)
-//	{
-//		b = ZERO;
-//		n = 0;
-//		return;
-//	}
-//	
-//	na = ENTIER(ABS(a[0]));
-//	aa = a[2];
-//	
-//	if(na >= 2)
-//		aa += invRadix * a[3];
-//	if(na >= 3)
-//		aa += mprx2 * a[4];
-//	if(na >= 4)
-//		aa += invRadix * mprx2 * a[5];
-//		
-//	n = NBT * Int(a[1]);
-//	
-//	b = a[0] < 0 ? -aa : aa;
-//}
+void Real::RealToNumbExp(const mp_float *a, double &b, long &n)
+{
+	char str[256];
+	
+	if (err != MP_OKAY || mpf_iszero(a)) {
+		b = ZERO; n = 0;
+		return;
+	}
+	
+	// speed up later
+	ToString(Real((mp_float *)a), str, 0, 0, 0);
+	b = atof(str);
+	n = 0;
+}
 
 void Real::NumbExpToReal(double a, long n, mp_float *b)
 {
@@ -458,10 +439,10 @@ void Real::NumbExpToReal(double a, long n, mp_float *b)
 	mp_float two;
 	sprintf(nstr, "%f", a);
 	toReal(nstr, b);
-	mpf_const_d(&nf, n);
-	mpf_const_d(&two, 2);
-	mpf_pow(&two, &nf, &nf);
-	mpf_mul(&nf, b, b);
+	err = mpf_const_d(&nf, n);
+	err = mpf_const_d(&two, 2);
+	err = mpf_pow(&two, &nf, &nf);
+	err = mpf_mul(&nf, b, b);
 }
 
 //void Real::Add(float *c, const float *arg_a, const float *arg_b)
@@ -1387,44 +1368,41 @@ void Real::NumbExpToReal(double a, long n, mp_float *b)
 //	Round(pi);
 //}
 
-//void Real::Entier(float *b, const float *arg_a)
-//{
-//	FixedReal a;
+void Real::Entier(mp_float *b, const mp_float *arg_a)
+{
+	mp_float a;
 //	long ia, na, ma, nb, i;
-//	
-//	if(err != 0)
-//	{
-//		Zero(b);
-//		return;
-//	}
-//	
-//	copy(arg_a, a);
-//	
+	
+	if (err != MP_OKAY) {
+		mpf_clear(b);
+		return;
+	}
+	
+	err = mpf_init_copy((mp_float *)arg_a, &a);
+//	ia = a.exp;
+	
+	
+	
 //	ia = Sign(ONE, a[0]);
 //	na = Min(ENTIER(ABS(a[0])), curMant);
 //	ma = Int(a[1]);
 //	
-//	if(na == 0)
-//	{
-//		Zero(b);
+//	if (na == 0) {
+//		mpf_clear(b);
 //		return;
 //	}
 //	
-//	if(ma >= curMant)
-//	{
+//	if (ma >= curMant) {
 //		puts("*** Entier: Argument is too large!");
 //		err = errArgTooLarge;
 //		return;
 //	}
 //	
 //	nb = Min(Max(ma + 1, 0), na);
-//	if(nb == 0)
-//	{
-//		Zero(b);
+//	if(nb == 0) {
+//		mpf_clear(b);
 //		return;
-//	}
-//	else
-//	{
+//	} else {
 //		b[0] = Sign(nb, ia);
 //		b[1] = ma;
 //		b[nb + 2] = ZERO;
@@ -1433,19 +1411,16 @@ void Real::NumbExpToReal(double a, long n, mp_float *b)
 //			b[i] = a[i];
 //	}
 //	
-//	if(ia == -1)
-//	{
-//		for(i = nb + 2 ; i <= na + 1 ; i++)
-//		{
-//			if(a[i] != ZERO)
-//			{
+//	if(ia == -1) {
+//		for(i = nb + 2 ; i <= na + 1 ; i++) {
+//			if(a[i] != ZERO) {
 //				Sub(b, b, xONE);
 //				return;
 //			}
 //		}
 //	}
-//}
-//
+}
+
 //void Real::RoundInt(float *b, const float *arg_a)
 //{
 //	FixedReal a;
@@ -1854,23 +1829,18 @@ void Real::SinhCosh(mp_float *sinh, mp_float *cosh, const mp_float *arg_a)
 {
 	mp_float a;
 	mp_float k0, k1, k2;
-	short nws;
 	
-	mpf_init_copy((mp_float *)arg_a, &a);
-	mpf_init_multi(arg_a->radix, &k0, &k1, &k2, sinh, cosh, 0);
+	err = mpf_init_copy((mp_float *)arg_a, &a);
+	err = mpf_init_multi(arg_a->radix, &k0, &k1, &k2, sinh, cosh, 0);
+	err = mpf_exp(&a, &k0);
+	err = mpf_inv(&k0, &k1);		// k1 = e^-a
+	err = mpf_add(&k0, &k1, &k2);	// k2 = e^-a + e^a
+	err = mpf_div_2(&k2, &k2);		// k2 = (e^-a + e^a)/2
+	err = mpf_copy(&k2, cosh);		// cosh = (e^-a + e^a)/2
+	err = mpf_sub(&k0, &k1, &k2);	// k2 = e^a - e^-a
+	err = mpf_div_2(&k2, &k2);		// k2 = (e^a - e^-a)/2
+	err = mpf_copy(&k2, sinh);		// sinh = (e^-a + e^a)/2
 	
-	Exp(k0, a);
-	Div(k1, xONE, k0);
-  	Add(k2, k0, k1);
-  	Muld(k2, k2, HALF, 0);
-  	copy(k2, cosh);
-  	Sub(k2, k0, k1);
-  	Muld(k2, k2, HALF, 0);
-  	copy(k2, sinh);
-
-	curMant = nws;
-	Round(cosh);
-	Round(sinh);
 	mpf_clear_multi(&k0, &k1, &k2, &a, 0);
 }
 
@@ -1996,66 +1966,60 @@ void Real::SinhCosh(mp_float *sinh, mp_float *cosh, const mp_float *arg_a)
  * User functions
  */
 
-//Real Real::Long(double x)
-//{
-//	float r[maxMant+3];
-//	NumbExpToReal(x, 0, r);
-//	return Real(r, curMant+3);
-//}
-//
-//Real Real::Copy(const Real& a)
-//{
-//	float b[maxMant+3];
-//	copy(a.val, b);
-//	return Real(b, curMant+3);
-//}
+Real Real::Long(double x)
+{
+	mp_float r;
+	NumbExpToReal(x, 0, &r);
+	return Real(&r);
+}
+
+Real Real::Copy(const Real& a)
+{
+	mp_float r;
+	err = mpf_init_copy((mp_float *)&a.val, &r);
+	return Real(&r);
+}
 
 static long GetDigit(long *cc, const char *str, bool *isZero)
 {
 	char ch;
 
 	// SkipBlanks
-	while(str[*cc] == ' ')
-		(*cc)++;
+	while(str[*cc] == ' ') (*cc)++;
 
 	ch = str[*cc];
-	if(isdigit(ch))
-	{
+	if(isdigit(ch)) {
 		(*cc)++;
 		if(ch > '0')
 			*isZero = false;
 		return(ch - '0');
-	}
-	else
+	} else {
 		return -1;
+	}
 }
 
 static long GetSign(long *cc, const char *str)
 {
 	// SkipBlanks
-	while(str[*cc] == ' ')
-		(*cc)++;
+	while(str[*cc] == ' ') (*cc)++;
 
-	if(str[*cc] == '+')
-	{
+	if(str[*cc] == '+') {
 		(*cc)++;
 		return 1;
-	}
-	else if(str[*cc] == '-')
-	{
+	} else if(str[*cc] == '-') {
 		(*cc)++;
 		return -1;
-	}
-	else
+	} else {
 		return 1;
+	}
 }
 
-//Real Real::ToReal(const char *str) 
-//{
-//	FixedReal x;
-//	toReal(str, x);
-//	return Real(x, curMant+4);
-//}
+Real Real::ToReal(const char *str) 
+{
+	mp_float x;
+	toReal(str, &x);
+	return Real(&x);
+}
 
 int Real::exponent () const
 {
@@ -2072,8 +2036,8 @@ void Real::toReal(const char *str, mp_float *b)
 	
 	is = GetSign(&cc, str);
 	
-	mpf_const_0(&s);
-	mpf_const_d(&f, 1);
+	err = mpf_const_0(&s);
+	err = mpf_const_d(&f, 1);
 	
 	isZero = true;
 	while(1) {
@@ -2081,9 +2045,9 @@ void Real::toReal(const char *str, mp_float *b)
 		if(dig < 0)
 			break;
 		if(!isZero)
-			mpf_mul_d(&s, 10, &s);
+			err = mpf_mul_d(&s, 10, &s);
 		if (dig != 0) {
-			mpf_add_d(&s, dig, &s);
+			err = mpf_add_d(&s, dig, &s);
 		}
 	}
 	
@@ -2093,9 +2057,9 @@ void Real::toReal(const char *str, mp_float *b)
 		while(1) {
 			dig = ::GetDigit(&cc, str, &isZero);
 			if(dig < 0) break;
-			mpf_mul_d(&s, 10, &s);
+			err = mpf_mul_d(&s, 10, &s);
 			dp++;
-			mpf_add_d(&s, dig, &s);
+			err = mpf_add_d(&s, dig, &s);
 		}
 	}
 	
@@ -2111,12 +2075,12 @@ void Real::toReal(const char *str, mp_float *b)
 		nexp *= es;
 	}
 	
-	mpf_mul_d(&s, is, &s);	// set the sign
+	err = mpf_mul_d(&s, is, &s);	// set the sign
 	nexp -= dp;
-	mpf_const_d(&f, 10);
-	mpf_const_d(&e, nexp);
-	mpf_pow(&f, &e, b);		// b = 10^nexp
-	mpf_mul(b, &s, b);
+	err = mpf_const_d(&f, 10);
+	err = mpf_const_d(&e, nexp);
+	err = mpf_pow(&f, &e, b);		// b = 10^nexp
+	err = mpf_mul(b, &s, b);
 }
 
 #define AddChar(C)	{ str[pos] = C; pos++; }
@@ -2137,8 +2101,8 @@ char Real::GetDigit(mp_float *frac, long pos, long digs)
 	
 	if (digs == 0) return '0';
 	dig = mp_get_int(&frac->mantissa);
-	mpf_sub_d(frac, dig, frac);
-	mpf_mul_d(frac, 10, frac);
+	err = mpf_sub_d(frac, dig, frac);
+	err = mpf_mul_d(frac, 10, frac);
 	assert(dig < 10);
 	return dig + '0';
 }
@@ -2157,8 +2121,8 @@ void Real::ToString(const Real& a, char *str, long n, long dp, char mode)
 	if (Real::sign(a) < 0) AddChar('-');
 	digs = a.sigDigs;
 	
-	mpf_const_d(&ten, 10);
-	mpf_const_d(&five, 5);
+	err = mpf_const_d(&ten, 10);
+	err = mpf_const_d(&five, 5);
 	
 	FixPoint = (dp != 0);
 	if((dp > sigDigs) || !FixPoint)
@@ -2167,18 +2131,18 @@ void Real::ToString(const Real& a, char *str, long n, long dp, char mode)
 	if (digs != 0) {
 		// extract the exponent and remove exponent from number
 		Aexp = a.exponent();
-		mpf_const_d(&frac, Aexp);
-		mpf_pow(&ten, &frac, &frac);				// frac = 10^Aexp
-		mpf_div((mp_float *)&a.val, &frac, &frac);	// a = a / 10^Aexp
-		mpf_abs(&frac, &frac);
+		err = mpf_const_d(&frac, Aexp);
+		err = mpf_pow(&ten, &frac, &frac);				// frac = 10^Aexp
+		err = mpf_div((mp_float *)&a.val, &frac, &frac);	// a = a / 10^Aexp
+		err = mpf_abs(&frac, &frac);
 		
 		while (mpf_cmp_d(&frac, 1, &res) == MP_OKAY && res == MP_LT) {
 			Aexp--;
-			mpf_mul_d(&frac, 10, &frac);
+			err = mpf_mul_d(&frac, 10, &frac);
 		}
 		while (mpf_cmp_d(&frac, 10, &res) == MP_OKAY && (res == MP_GT || res == MP_EQ)) {
 			Aexp++;
-			mpf_div_d(&frac, 10, &frac);
+			err = mpf_div_d(&frac, 10, &frac);
 		}
 		
 		if (ABS(Aexp) > sigDigs) mode = 1;
@@ -2196,19 +2160,19 @@ void Real::ToString(const Real& a, char *str, long n, long dp, char mode)
 			round = Max(-Aexp - dp - 1, -sigDigs-1);
 		
 		// round up the number
-		mpf_const_d(&scale, round);
-		mpf_pow(&scale, &ten, &scale);	// scale = 1 x 10^round
-		mpf_mul_d(&scale, 5, &scale);	// scale = 5 x 10^round
-		mpf_add(&frac, &scale, &frac);  // frac += 5 x 10^round
+		err = mpf_const_d(&scale, round);
+		err = mpf_pow(&scale, &ten, &scale);	// scale = 1 x 10^round
+		err = mpf_mul_d(&scale, 5, &scale);	// scale = 5 x 10^round
+		err = mpf_add(&frac, &scale, &frac);  // frac += 5 x 10^round
 		
 		// normalize again
 		while (mpf_cmp_d(&frac, 1, &res) == MP_OKAY && res == MP_LT) {
 			Aexp--;
-			mpf_mul_d(&frac, 10, &frac);
+			err = mpf_mul_d(&frac, 10, &frac);
 		}
 		while (mpf_cmp_d(&frac, 10, &res) == MP_OKAY && (res == MP_GT || res == MP_EQ)) {
 			Aexp++;
-			mpf_div_d(&frac, 10, &frac);
+			err = mpf_div_d(&frac, 10, &frac);
 		}
 	} else {
 		Aexp = 0;
@@ -2269,40 +2233,44 @@ void Real::ToString(const Real& a, char *str, long n, long dp, char mode)
 	}
 }
 
-//double Real::Short(const float* q)
-//{
-//	double x;
-//	long exp;
-//	
-//	RealToNumbExp(q, x, exp);
-//	return(x * ipower(2, exp));
-//}
+double Real::Short(const mp_float* q)
+{
+	double x;
+	long exp;
+	
+	RealToNumbExp(q, x, exp);
+	return (x * ipower(2, exp));
+}
 
-//double Real::Short(const Real& q)
-//{
-//	double x;
-//	long exp;
-//	
-//	RealToNumbExp(q.val, x, exp);
-//	return(x * ipower(2, exp));
-//}
-//
-//Real Real::entier(const Real& q)
-//{
-//	FixedReal r;	
-//	Entier(r, q.val);
-//	return Real(r, curMant+4);
-//}
-//
-//Real Real::fraction(const Real& q)
-//{
-//	FixedReal r;
-//	Entier(r, q.val);	
-//	if(q.val[0] < ZERO)
-//		Add(r, q.val, xONE);
-//	Sub(r, q.val, r);
-//	return Real(r, curMant+4);
-//}
+double Real::Short(const Real& q)
+{
+	double x;
+	long exp;
+	
+	RealToNumbExp(&q.val, x, exp);
+	return (x * ipower(2, exp));
+}
+
+Real Real::entier(const Real& q)
+{
+	mp_float r;
+	Entier(&r, &q.val);
+	return Real(&r);
+}
+
+Real Real::fraction(const Real& q)
+{
+	mp_float r;
+	int res;
+	Entier(&r, &q.val);
+	if (mpf_cmp_d((mp_float *)&q.val, 0, &res) == MP_OKAY) {
+		if (res == MP_LT) {
+			err = mpf_add_d((mp_float *)&q.val, 1, &r);
+		}
+	}
+	err = mpf_sub((mp_float *)&q.val, &r, &r);
+	return Real(&r);
+}
 
 /*
  * Basic math routines
@@ -2352,42 +2320,42 @@ Real Real::operator - (void) const
 Real Real::add(const Real& z1, const Real& z2)
 {
 	mp_float r;
-	mpf_add((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
+	err = mpf_add((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
 	return Real(&r);
 }
 
 Real Real::sub(const Real& z1, const Real& z2)
 {
 	mp_float r;
-	mpf_sub((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
+	err = mpf_sub((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
 	return Real(&r);
 }
 
 Real Real::mul(const Real& z1, const Real& z2)
 {
 	mp_float r;
-	mpf_mul((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
+	err = mpf_mul((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
 	return Real(&r);
 }
 
 Real Real::div(const Real& z1, const Real& z2)
 {
 	mp_float r;
-	mpf_div((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
+	err = mpf_div((mp_float *)&z1.val, (mp_float *)&z2.val, &r);
 	return Real(&r);
 }
 
 Real Real::abs(const Real& z)
 {
 	mp_float r;
-	mpf_abs((mp_float *)&z.val, &r);
+	err = mpf_abs((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
 Real Real::negate(const Real& z)
 {
 	mp_float r;
-	mpf_neg((mp_float *)&z.val, &r);
+	err = mpf_neg((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
@@ -2397,7 +2365,7 @@ long Real::sign(const Real& z)
 		return 0;
 	}
 	int res;
-	mpf_cmp_d((mp_float *)&z.val, 0, &res);
+	err = mpf_cmp_d((mp_float *)&z.val, 0, &res);
 	if (res == MP_LT)
 		return -1;
 	else
@@ -2419,37 +2387,37 @@ long Real::cmp(const Real& a, const Real& b)
 Real Real::power(const Real& x, const Real& exp)
 {
 	mp_float r;
-	mpf_pow((mp_float *)&x.val, (mp_float *)&exp.val, &r);
+	err = mpf_pow((mp_float *)&x.val, (mp_float *)&exp.val, &r);
 	return Real(&r);
 }
 
 Real Real::root(const Real& z, long n)
 {
 	mp_float r, exp;
-	mpf_const_d(&exp, n);
-	mpf_inv(&exp, &exp);
-	mpf_pow((mp_float *)&z.val, &exp, &r);
+	err = mpf_const_d(&exp, n);
+	err = mpf_inv(&exp, &exp);
+	err = mpf_pow((mp_float *)&z.val, &exp, &r);
 	return Real(&r);
 }
 
 Real Real::sqrt(const Real& z)
 {
 	mp_float r;
-	mpf_sqrt((mp_float *)&z.val, &r);
+	err = mpf_sqrt((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
 Real Real::exp(const Real& z)
 {
 	mp_float r;
-	mpf_exp((mp_float *)&z.val, &r);
+	err = mpf_exp((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
 Real Real::ln(const Real& z)
 {
 	mp_float r;
-	mpf_ln((mp_float *)&z.val, &r);
+	err = mpf_ln((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
@@ -2457,168 +2425,177 @@ Real Real::log(const Real& z, const Real& base)
 {
 	// FIX ME
 	mp_float r;
-	mpf_ln((mp_float *)&z.val, &r);
+	err = mpf_ln((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
 Real Real::sin(const Real& z)
 {
 	mp_float r;
-	mpf_sin((mp_float *)&z.val, &r);
+	err = mpf_sin((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
 Real Real::cos(const Real& z)
 {
 	mp_float r;
-	mpf_cos((mp_float *)&z.val, &r);
+	err = mpf_cos((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
-//void Real::sincos(const Real& z, Real& sin, Real& cos)
-//{
-// 	sin.len=curMant+4; cos.len=curMant+4;
-//	SinCos(sin.val, cos.val, z.val);
-//}
+void Real::sincos(const Real& z, Real& sin, Real& cos)
+{
+	err = mpf_sin((mp_float *)&z.val, &sin.val);
+	err = mpf_cos((mp_float *)&z.val, &cos.val);
+}
 
 Real Real::tan(const Real& z)
 {
 	mp_float r;
-	mpf_tan((mp_float *)&z.val, &r);
+	err = mpf_tan((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
 Real Real::arcsin(const Real& z)
 {
 	mp_float r;
-	mpf_asin((mp_float *)&z.val, &r);
+	err = mpf_asin((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
 Real Real::arccos(const Real& z)
 {
 	mp_float r;
-	mpf_acos((mp_float *)&z.val, &r);
+	err = mpf_acos((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
 Real Real::arctan(const Real& z)
 {
 	mp_float r;
-	mpf_atan((mp_float *)&z.val, &r);
+	err = mpf_atan((mp_float *)&z.val, &r);
 	return Real(&r);
 }
 
 Real Real::arctan2(const Real& xn, const Real& xd)
 {
-	FixedReal r;
-	ATan2(r, xd.val, xn.val);
-	return Real(r, curMant+4);
+	// FIX ME -- need to implement real arctan2
+	mp_float r;
+	err = mpf_init(&r, xn.val.radix);
+	err = mpf_div((mp_float *)&xn.val, (mp_float *)&xd.val, &r);
+	return Real(&r);
 }
 
 void Real::sinhcosh(const Real& z, Real& sinh, Real& cosh)
 {
-	sinh.len=curMant+4; cosh.len=curMant+4;
-	SinhCosh(sinh.val, cosh.val, z.val);
+	SinhCosh(&sinh.val, &cosh.val, &z.val);
 }
 
 Real Real::sinh(const Real& z)
 {
-	mp_float r;
-	mpf_sinh((mp_float *)&z.val, &r);
-	return Real(&r);
+	mp_float s;
+	mp_float c;
+	SinhCosh(&s, &c, &z.val);
+	mpf_clear(&c);
+	return Real(&s);
 }
 
 Real Real::cosh(const Real& z)
 {
-	FixedReal c, s;	
-	SinhCosh(s, c, z.val);
-	return Real(c, curMant+4);
+	mp_float s;
+	mp_float c;
+	SinhCosh(&s, &c, &z.val);
+	mpf_clear(&s);
+	return Real(&c);
 }
 
 Real Real::tanh(const Real& z)
 {
-	FixedReal r, sinh, cosh;
-	SinhCosh(sinh, cosh, z.val);
-	Div(r, sinh, cosh);
-	return Real(r, curMant+4);
+	mp_float s;
+	mp_float c;
+	mp_float r;
+	err = mpf_init(&r, z.val.radix);
+	SinhCosh(&s, &c, &z.val);
+	err = mpf_div(&s, &c, &r);
+	mpf_clear_multi(&s, &c, 0);
+	return Real(&r);
 }
 
-//void Real::round(Real& z)
-//{
-//	Round(z.val);
-//}
+void Real::round(Real& z)
+{
+	mpf_normalize(&z.val);
+}
 
-//void Real::nfactorial(long& prevn, long& currentn, float *Result)
-//{
-//	long i;
-//	Real8 xi;
-//	
-//	for(i = prevn + 1 ; i <= currentn ; i++)
-//	{
-//		NumbExpToReal(i, 0, xi);
-//		Mul(Result, Result, xi);
-//	}
-//	prevn = currentn;
-//}
+void Real::nfactorial(long& prevn, long& currentn, mp_float *Result)
+{
+	long i;
+	
+	for( i = prevn + 1 ; i <= currentn ; i++) {
+		err = mpf_mul_d(Result, i, Result);
+	}
+	prevn = currentn;
+}
 
 /*
  * Misc. routines
  */
  
-//Real Real::factorial(const Real& x)
-//{
-//	long fact, n;
-//	FixedReal r;
-//	
-//	n = ENTIER(Short(x));
-//	if ((n < 0) || (n > MaxFactorial)) {
-//		err = errIllegalFactorial;
-//		return Long(0);
-//	}
-//	fact = 0;
-//	copy(xONE, r);
-//	nfactorial(fact, n, r);
-//	return Real(r, curMant+4);
-//}
-//
-//Real Real::permutations(const Real& n, const Real& r)
-//{
-//	long ni, ri;
-//	FixedReal res;	
-//
-//	ni = ENTIER(Short(n));
-//	ri = (long) (ni - ENTIER(Short(r)));
-//	if((ni < 0) || (ni > MaxFactorial) || (ri < 0))
-//	{
-//		err = errIllegalFactorial;
-//		return Long(0);
-//	}	
-//	copy(xONE, res);
-//	nfactorial(ri, ni, res);
-//	return Real(res, curMant+4);
-//}
-//
-//Real Real::combinations(const Real& n, const Real& r)
-//{
-//	Real res = factorial(r);
-//	Real per = permutations(n, r);
-//	Div(res.val, per.val, res.val);
-//	return Real(res.val, res.len);
-//}
-//
-//Real Real::random(void)
-//{
-//	Real8 five;
-//	FixedReal res, t;
-//	
-//	NumbExpToReal(5, 0, five);
-//	Add(t, seed.val, pi.val);
-//	Ln(t, t); Mul(t, t, five);
-//	Exp(t, t); Entier(res, t);
-//	Sub(seed.val, t, res); copy(seed.val, res);
-//	return Real(res, maxMant+4);
-//}
+Real Real::factorial(const Real& x)
+{
+	long fact, n;
+	mp_float r;
+	
+	n = ENTIER(Short(x));
+	if ((n < 0) || (n > MaxFactorial)) {
+		err = errIllegalFactorial;
+		return Long(0);
+	}
+	fact = 0;
+	err = mpf_const_d(&r, 1);
+	nfactorial(fact, n, &r);
+	return Real(&r);
+}
+
+Real Real::permutations(const Real& n, const Real& r)
+{
+	long ni, ri;
+	mp_float res;
+
+	ni = ENTIER(Short(n));
+	ri = (long) (ni - ENTIER(Short(r)));
+	if((ni < 0) || (ni > MaxFactorial) || (ri < 0))
+	{
+		err = errIllegalFactorial;
+		return Long(0);
+	}	
+	err = mpf_const_d(&res, 1);
+	nfactorial(ri, ni, &res);
+	return Real(&res);
+}
+
+Real Real::combinations(const Real& n, const Real& r)
+{
+	Real res = factorial(r);
+	Real per = permutations(n, r);
+	err = mpf_div(&per.val, &res.val, &res.val);
+	return Real(res);
+}
+
+Real Real::random(void)
+{
+	mp_float res, t;
+	
+	err = mpf_init_multi(pi.val.radix, &res, &t, 0);
+	err = mpf_add(&seed.val, &pi.val, &t);
+	err = mpf_ln(&t, &t);
+	err = mpf_mul_d(&t, 5, &t);
+	err = mpf_exp(&t, &t);
+	Entier(&res, &t);
+	err = mpf_sub(&t, &res, &seed.val);
+	err = mpf_copy(&seed.val, &res);
+	mpf_clear(&t);
+	return Real(&res);
+}
 
 /*
  *		Read from or write to the preferences file
@@ -2733,8 +2710,8 @@ void Real::Init()
 	if (initialized)
 		return;
 
-	mpf_const_d(&one.val, 1);
-	mpf_const_0(&zero.val);
+	err = mpf_const_d(&one.val, 1);
+	err = mpf_const_0(&zero.val);
 	
 	err = errNone;
 	numBits = 22;
@@ -2749,8 +2726,8 @@ void Real::Init()
 //	Ln(t3, t0);
 //	IntPower(t4, t0, log10eps);
 	
-	mpf_const_pi(&pi.val);
-	mpf_const_le2(&ln2.val);
+	err = mpf_const_pi(&pi.val);
+	err = mpf_const_le2(&ln2.val);
 //	copy(t1, pi.val);
 //	copy(t2, ln2.val);
 //	copy(t3, ln10.val);
