@@ -38,7 +38,7 @@ static inline long MOD(long x, long y) {
 bool Real::initialized = false;
 short Real::numBits;
 Real Real::seed;
-float Real::xONE[8];
+//float Real::xONE[8];
 
 double Real::ZERO = 0.0;
 double Real::ONE = 1.0;
@@ -59,8 +59,8 @@ double Real::mprxx = 16 * mprx2;
 errCodes Real::err;
 short Real::sigDigs;
 short Real::debug;
-double Real::digsPerWord = 7.224719896;  	// number of digits per word
-short Real::curMant = maxMant + 1;
+//double Real::digsPerWord = 7.224719896;  	// number of digits per word
+//short Real::curMant = maxMant + 1;
 Real Real::eps;
 Real Real::ln2;
 Real Real::pi;
@@ -120,79 +120,79 @@ Real& Real::operator = (const Real& x)
  * Internal (non-user) routines
  */
  
-long Real::Sign(float x, float y)
-{
-	if (y<ZERO) return -ENTIER(ABS(x));
-	else return ENTIER(ABS(x));
-}
-
-void Real::Zero(float *x)
-{
-	x[0] = x[1] = ZERO;
-}
-
-long Real::Int(double x)
-{
-	return (x < ZERO ? -ENTIER(-x) : ENTIER(x));
-}
-
-double Real::ipower(double x, short base)
-{
-	double y;
-	bool neg;
-	
-	y = ONE;
-	if(base < 0)
-	{
-		neg = true;
-		base = -base;
-	}
-	else
-		neg = false;
-		
-	while(1)
-	{
-		if(ODD(base))
-			y *= x;
-		base /= 2;
-		if(base == 0)
-			break;
-		x *= x;
-	}
-
-	return (neg ? ONE / y : y);
-}
-
-void Real::Reduce(double &a, long &exp)
-{
-	const short maxIterations = 100;
-	long k;
-	
-	if(a >= radix)
-	{
-		for(k = 1 ; k <= maxIterations ; k++)
-		{
-			a *= invRadix;
-			if(a < radix)
-			{
-				exp += k;
-				return;
-			}
-		}
-	}
-	else if(a < ONE)
-	{
-		for(k = 1 ; k <= maxIterations ; k++)
-		{
-			a *= radix;
-			if(a >= ONE)
-			{
-				exp -= k;
-				return;
-			}
-		}
-	}
-}
+//long Real::Sign(float x, float y)
+//{
+//	if (y<ZERO) return -ENTIER(ABS(x));
+//	else return ENTIER(ABS(x));
+//}
+//
+//void Real::Zero(float *x)
+//{
+//	x[0] = x[1] = ZERO;
+//}
+//
+//long Real::Int(double x)
+//{
+//	return (x < ZERO ? -ENTIER(-x) : ENTIER(x));
+//}
+//
+//double Real::ipower(double x, short base)
+//{
+//	double y;
+//	bool neg;
+//	
+//	y = ONE;
+//	if(base < 0)
+//	{
+//		neg = true;
+//		base = -base;
+//	}
+//	else
+//		neg = false;
+//		
+//	while(1)
+//	{
+//		if(ODD(base))
+//			y *= x;
+//		base /= 2;
+//		if(base == 0)
+//			break;
+//		x *= x;
+//	}
+//
+//	return (neg ? ONE / y : y);
+//}
+//
+//void Real::Reduce(double &a, long &exp)
+//{
+//	const short maxIterations = 100;
+//	long k;
+//	
+//	if(a >= radix)
+//	{
+//		for(k = 1 ; k <= maxIterations ; k++)
+//		{
+//			a *= invRadix;
+//			if(a < radix)
+//			{
+//				exp += k;
+//				return;
+//			}
+//		}
+//	}
+//	else if(a < ONE)
+//	{
+//		for(k = 1 ; k <= maxIterations ; k++)
+//		{
+//			a *= radix;
+//			if(a >= ONE)
+//			{
+//				exp -= k;
+//				return;
+//			}
+//		}
+//	}
+//}
 
 //void Real::copy(const float *a, float *b)
 //{
@@ -457,43 +457,42 @@ void Real::Reduce(double &a, long &exp)
 //	b = a[0] < 0 ? -aa : aa;
 //}
 
-//void Real::NumbExpToReal(double a, long n, float *b)
-//{
-//	double aa;
-//	long n1, n2, i;
-//	
-//	if(a == ZERO)
-//	{
-//		Zero(b);
-//		return;
-//	}
-//	
-//	n1 = Int(n / NBT);
-//	n2 = n - NBT * n1;
-//	aa = ABS(a) * ipower(2.0, n2);
-//	
-//	Reduce(aa, n1);
-//	
-//	b[1] = n1;
-//	b[2] = Int(aa); aa = radix * (aa - b[2]);
-//	b[3] = Int(aa);	aa = radix * (aa - b[3]);
-//	b[4] = Int(aa);	aa = radix * (aa - b[4]);
-//	b[5] = Int(aa);
-//	b[6] = ZERO;
-//	b[7] = ZERO;
-//	
-//	for(i = 5 ; i >= 2 ; i--)
-//	{
-//		if(b[i] != ZERO)
-//		{
-//			b[0] = Sign(i - 1, a);
-//			return;
-//		}
-//	}
-//	
-//	b[0] = ZERO;
-//}
-//
+void Real::NumbExpToReal(double a, long n, mp_float *b)
+{
+	double aa;
+	long n1, n2, i;
+	
+	if (a == ZERO) {
+		mpf_const_0(b);
+		return;
+	}
+	
+	n1 = Int(n / NBT);
+	n2 = n - NBT * n1;
+	aa = ABS(a) * ipower(2.0, n2);
+	
+	Reduce(aa, n1);
+	
+	b[1] = n1;
+	b[2] = Int(aa); aa = radix * (aa - b[2]);
+	b[3] = Int(aa);	aa = radix * (aa - b[3]);
+	b[4] = Int(aa);	aa = radix * (aa - b[4]);
+	b[5] = Int(aa);
+	b[6] = ZERO;
+	b[7] = ZERO;
+	
+	for(i = 5 ; i >= 2 ; i--)
+	{
+		if(b[i] != ZERO)
+		{
+			b[0] = Sign(i - 1, a);
+			return;
+		}
+	}
+	
+	b[0] = ZERO;
+}
+
 //void Real::Add(float *c, const float *arg_a, const float *arg_b)
 //{
 //	FixedReal a, b;

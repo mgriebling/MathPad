@@ -10,16 +10,15 @@ typedef enum errType errCodes;
 class Real {
 	public:
 		/* numeric precision-setting constants */
-		static const long maxDigits = 200;                      		// initial precision level in digits
-		static const long outDigits = 56;                       		// initial output precision level in digits
+		static const long maxDigits = 200;                      // initial precision level in digits
+		static const long outDigits = 56;                       // initial output precision level in digits
 		static const long log10eps = 10-maxDigits;              // log10 of initial eps level
-		static double digsPerWord;  									// number of digits per word
-		static const long maxMant = (maxDigits*200/722+1)/2+1; // hardcoded maximum mantissa words
+		static double digsPerWord;  							// number of digits per word
+		static const long maxMant = (maxDigits*200/722+1)/2+1;	// hardcoded maximum mantissa words
 		static const long maxExp = 2000000;                     // maximum exponent
 	
 		static errCodes err;
 		static short sigDigs;
-		static short curMant;
 		static short debug;
 		static Real eps;
 		static Real ln2;
@@ -32,7 +31,7 @@ class Real {
 		Real(void);
 		Real(const Real& x);  	// copy constructor
 		Real(const char *str);
-		Real(long x);
+		Real(double x);
 		~Real(void);
 	
 		/* Overloaded operators */	
@@ -90,16 +89,16 @@ class Real {
 		static Real arcsin(const Real& z);
 		static Real arccos(const Real& z);
 		static Real arctan(const Real& z);
-//		static Real arctan2(const Real& xn, const Real& xd);
+		static Real arctan2(const Real& xn, const Real& xd);
 		static void sinhcosh(const Real& z, Real &sinh, Real &cosh);
 		static Real sinh(const Real& z);
 		static Real cosh(const Real& z);
 		static Real tanh(const Real& z);
 		
 		/* Misc. routines */	
-//		static Real factorial(const Real& x);
-//		static Real permutations(const Real& n, const Real& r);
-//		static Real combinations(const Real& n, const Real& r);
+		static Real factorial(const Real& x);
+		static Real permutations(const Real& n, const Real& r);
+		static Real combinations(const Real& n, const Real& r);
 		static Real random(void);
 		
 		// module-related routines -- apply to class		
@@ -125,12 +124,6 @@ class Real {
 		static double invRadix;
 		static double mprx2;
 		static double mprxx;
-			
-		// miscellaneous constants
-		static const long NBT = 24;
-		static const long NPR = 32;
-		static const long MPIRD = 1;
-		static const long NIT = 3;
 		
 		// local types
 //		typedef double FixedLReal[maxMant+8];
@@ -143,7 +136,6 @@ class Real {
 		// internal variables
 		static bool initialized;
 		static short numBits;
-		static float xONE[8];
 		static Real seed;		
 		
 		// private constructor
@@ -171,8 +163,8 @@ class Real {
 //		static void Round(float *a);
 //		static void Normalize(double *d, float *a);
 //		static double Short(const float* q);
-//		static void RealToNumbExp(const float *a, double &b, long &n);
-//		static void NumbExpToReal(double a, long n, float *b);
+		static void RealToNumbExp(const float *a, double &b, long &n);
+		static void NumbExpToReal(double a, long n, mp_float *b);
 //		static void Add(float *c, const float *a, const float *b);
 //		static void Sub(float *c, const float *a, const float *b);
 //		static void Mul(float *c, const float *a, const float *b);
