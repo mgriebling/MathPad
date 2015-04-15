@@ -171,6 +171,14 @@
 		2F7196D61AC972360079DDEC /* UITableView+MDAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F7196D51AC972360079DDEC /* UITableView+MDAdditions.m */; };
 		2FAB7CED1AC58011006F5B82 /* EqDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAB7CEC1AC58011006F5B82 /* EqDocument.swift */; };
 		2FAB7CEE1AC58EA2006F5B82 /* Keyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4717A2E21AC55FF700D90472 /* Keyboard.xib */; };
+		2FDD75271ADEC7AC00EB0A1F /* mpf_add_d.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD1CD1ADBF41100B6DD13 /* mpf_add_d.mm */; };
+		2FDD75281ADEC7C600EB0A1F /* mpf_cmp_d.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD1D31ADBF41100B6DD13 /* mpf_cmp_d.mm */; };
+		2FDD75291ADEC7E100EB0A1F /* bn_reverse.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD2A61ADBF4A500B6DD13 /* bn_reverse.c */; };
+		2FDD752A1ADEC7F400EB0A1F /* bn_mp_reduce_is_2k.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD28C1ADBF4A500B6DD13 /* bn_mp_reduce_is_2k.c */; };
+		2FDD752B1ADEC82D00EB0A1F /* bn_prime_tab.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD2A51ADBF4A500B6DD13 /* bn_prime_tab.c */; };
+		2FDD752C1ADEC86400EB0A1F /* bn_mp_mul_d.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD2741ADBF4A500B6DD13 /* bn_mp_mul_d.c */; };
+		2FDD752D1ADEC8A400EB0A1F /* bn_mp_cnt_lsb.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD2491ADBF4A500B6DD13 /* bn_mp_cnt_lsb.c */; };
+		2FDD752E1ADEC8B900EB0A1F /* bn_mp_toom_mul.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD29E1ADBF4A500B6DD13 /* bn_mp_toom_mul.c */; };
 		47055B511ACD561A0095C770 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47055B501ACD561A0095C770 /* TitleCell.swift */; };
 		4722DE211AC6FBD8003E6A09 /* FunctionKeys.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4722DE201AC6FBD8003E6A09 /* FunctionKeys.xib */; };
 		4722DE231AC70EE6003E6A09 /* Accessory.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4722DE221AC70EE6003E6A09 /* Accessory.xib */; };
@@ -1058,8 +1066,10 @@
 				2F5BD3151ADBF4A500B6DD13 /* bn_mp_to_signed_bin.c in Sources */,
 				2F5BD2331ADBF41200B6DD13 /* mpf_sub_d.mm in Sources */,
 				2F5BD2D51ADBF4A500B6DD13 /* bn_mp_gcd.c in Sources */,
+				2FDD75281ADEC7C600EB0A1F /* mpf_cmp_d.mm in Sources */,
 				2F5BD30D1ADBF4A500B6DD13 /* bn_mp_signed_bin_size.c in Sources */,
 				47FD43FA1AC2C42F00C71213 /* xNumber.swift in Sources */,
+				2FDD752C1ADEC86400EB0A1F /* bn_mp_mul_d.c in Sources */,
 				2F5BD2DA1ADBF4A500B6DD13 /* bn_mp_init_set_int.c in Sources */,
 				2F5BD2271ADBF41200B6DD13 /* mpf_iterations.mm in Sources */,
 				2FAB7CED1AC58011006F5B82 /* EqDocument.swift in Sources */,
@@ -1079,6 +1089,7 @@
 				2F5BD2DF1ADBF4A500B6DD13 /* bn_mp_invmod.c in Sources */,
 				2F5BD2121ADBF41200B6DD13 /* mpf_const_l2e.mm in Sources */,
 				2F5BD20E1ADBF41200B6DD13 /* mpf_const_2pi.mm in Sources */,
+				2FDD752A1ADEC7F400EB0A1F /* bn_mp_reduce_is_2k.c in Sources */,
 				2F5BD31C1ADBF4A500B6DD13 /* bn_mp_unsigned_bin_size.c in Sources */,
 				2F5BD2FC1ADBF4A500B6DD13 /* bn_mp_radix_smap.c in Sources */,
 				2F5BD2B41ADBF4A500B6DD13 /* bn_fast_s_mp_mul_digs.c in Sources */,
@@ -1086,6 +1097,8 @@
 				2F5BD2BA1ADBF4A500B6DD13 /* bn_mp_add.c in Sources */,
 				2F5BD2D11ADBF4A500B6DD13 /* bn_mp_exptmod.c in Sources */,
 				2F5BD2291ADBF41200B6DD13 /* mpf_mul_2.mm in Sources */,
+				2FDD75271ADEC7AC00EB0A1F /* mpf_add_d.mm in Sources */,
+				2FDD752B1ADEC82D00EB0A1F /* bn_prime_tab.c in Sources */,
 				2F5BD30F1ADBF4A500B6DD13 /* bn_mp_sqrmod.c in Sources */,
 				2F5BD3161ADBF4A500B6DD13 /* bn_mp_to_unsigned_bin_n.c in Sources */,
 				2F5BD21A1ADBF41200B6DD13 /* mpf_const_sqrt_d.mm in Sources */,
@@ -1148,6 +1161,7 @@
 				2F5BD20F1ADBF41200B6DD13 /* mpf_const_2rpi.mm in Sources */,
 				2F5BD3241ADBF4A500B6DD13 /* bn_s_mp_mul_high_digs.c in Sources */,
 				2F5BD30C1ADBF4A500B6DD13 /* bn_mp_shrink.c in Sources */,
+				2FDD752E1ADEC8B900EB0A1F /* bn_mp_toom_mul.c in Sources */,
 				2F5BD2F71ADBF4A500B6DD13 /* bn_mp_prime_miller_rabin.c in Sources */,
 				2F5BD3251ADBF4A500B6DD13 /* bn_s_mp_sqr.c in Sources */,
 				2F5BD2D21ADBF4A500B6DD13 /* bn_mp_exteuclid.c in Sources */,
@@ -1197,6 +1211,7 @@
 				2F5BD2F21ADBF4A500B6DD13 /* bn_mp_neg.c in Sources */,
 				2F5BD20B1ADBF41200B6DD13 /* mpf_const_0.mm in Sources */,
 				2F5BD2201ADBF41200B6DD13 /* mpf_exch.mm in Sources */,
+				2FDD752D1ADEC8A400EB0A1F /* bn_mp_cnt_lsb.c in Sources */,
 				2F5BD2181ADBF41200B6DD13 /* mpf_const_pi4.mm in Sources */,
 				4722DE271AC825C8003E6A09 /* EquationCell.swift in Sources */,
 				2F5BD22B1ADBF41200B6DD13 /* mpf_mul.mm in Sources */,
@@ -1213,6 +1228,7 @@
 				2F5BD2C01ADBF4A500B6DD13 /* bn_mp_cmp_d.c in Sources */,
 				2F5BD2F11ADBF4A500B6DD13 /* bn_mp_n_root.c in Sources */,
 				2F5BD2341ADBF41200B6DD13 /* mpf_sub.mm in Sources */,
+				2FDD75291ADEC7E100EB0A1F /* bn_reverse.c in Sources */,
 				2F5BD2D01ADBF4A500B6DD13 /* bn_mp_exptmod_fast.c in Sources */,
 				2F5BD3111ADBF4A500B6DD13 /* bn_mp_sub_d.c in Sources */,
 				2F5BD2161ADBF41200B6DD13 /* mpf_const_pi.mm in Sources */,

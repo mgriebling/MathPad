@@ -35,9 +35,9 @@ void Integer::Init()
 
 	Real::Init();
 	
-	Zero = Real::Long(0);
-	One = Real::Long(1);
-	Two = Real::Long(2);
+	Zero = Real(0l);
+	One = Real(1l);
+	Two = Real(2l);
 	
 	for (Cnt = 0; Cnt <= LogicalSize; Cnt++) LogZero[Cnt] = 0;
 }

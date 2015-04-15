@@ -9,7 +9,7 @@ enum fpFormat {Normal, Scientific, Engineering};
 // Angular measure
 enum msAngle {Degrees, Radians, Gradians};
 
-const Real Zero = 0.0;
+const Real Zero(0l);
 
 class Complex {
 public:

@@ -11,7 +11,7 @@
 
 /* Internal inline functions */
 
-//static inline long Min(long X, long Y)	{return (X < Y ? X : Y);}
+static inline long Min(long X, long Y)	{return (X < Y ? X : Y);}
 static inline long Max(long X, long Y)	{return (X > Y ? X : Y);}
 static inline long ABS(long X) {return (X < 0 ? -X : X);}
 //static inline float ABS(float X) {return (X < 0.0 ? -X : X);}
@@ -1368,57 +1368,18 @@ void Real::NumbExpToReal(double a, long n, mp_float *b)
 //	Round(pi);
 //}
 
-void Real::Entier(mp_float *b, const mp_float *arg_a)
+void Real::Entier(mp_float *b, const mp_float *a)
 {
-	mp_float a;
-//	long ia, na, ma, nb, i;
-	
-	if (err != MP_OKAY) {
-		mpf_clear(b);
+	long exp = a->exp;
+	if ((err != MP_OKAY) || mpf_iszero(b) || (exp + a->radix < 1)) {
+		mpf_const_0(b);
 		return;
 	}
-	
-	err = mpf_init_copy((mp_float *)arg_a, &a);
-//	ia = a.exp;
-	
-	
-	
-//	ia = Sign(ONE, a[0]);
-//	na = Min(ENTIER(ABS(a[0])), curMant);
-//	ma = Int(a[1]);
-//	
-//	if (na == 0) {
-//		mpf_clear(b);
-//		return;
-//	}
-//	
-//	if (ma >= curMant) {
-//		puts("*** Entier: Argument is too large!");
-//		err = errArgTooLarge;
-//		return;
-//	}
-//	
-//	nb = Min(Max(ma + 1, 0), na);
-//	if(nb == 0) {
-//		mpf_clear(b);
-//		return;
-//	} else {
-//		b[0] = Sign(nb, ia);
-//		b[1] = ma;
-//		b[nb + 2] = ZERO;
-//		b[nb + 3] = ZERO;
-//		for(i = 2 ; i <= nb + 1 ; i++)
-//			b[i] = a[i];
-//	}
-//	
-//	if(ia == -1) {
-//		for(i = nb + 2 ; i <= na + 1 ; i++) {
-//			if(a[i] != ZERO) {
-//				Sub(b, b, xONE);
-//				return;
-//			}
-//		}
-//	}
+	err = mpf_init_copy((mp_float *)a, b);
+	if (exp >= 0) return;  // number is already an integer
+	err = mp_div_2d((mp_int *)&a->mantissa, (int)-exp, &b->mantissa, NULL);
+	b->exp = 0;
+	err = mpf_normalize(b);
 }
 
 //void Real::RoundInt(float *b, const float *arg_a)
@@ -1985,7 +1946,7 @@ static long GetDigit(long *cc, const char *str, bool *isZero)
 	char ch;
 
 	// SkipBlanks
-	while(str[*cc] == ' ') (*cc)++;
+	while (str[*cc] == ' ') (*cc)++;
 
 	ch = str[*cc];
 	if(isdigit(ch)) {
@@ -2034,8 +1995,9 @@ void Real::toReal(const char *str, mp_float *b)
 	long nexp, es, is, cc, dig, dp;
 	bool isZero;
 	
+	cc = 0;
 	is = GetSign(&cc, str);
-	
+	err = mpf_init_multi(sizeof(double)*8, &s, &f, &e, &b, NULL);
 	err = mpf_const_0(&s);
 	err = mpf_const_d(&f, 1);
 	
@@ -2081,6 +2043,7 @@ void Real::toReal(const char *str, mp_float *b)
 	err = mpf_const_d(&e, nexp);
 	err = mpf_pow(&f, &e, b);		// b = 10^nexp
 	err = mpf_mul(b, &s, b);
+	mpf_clear_multi(&s, &f, &e, NULL);
 }
 
 #define AddChar(C)	{ str[pos] = C; pos++; }

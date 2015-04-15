@@ -171,8 +171,7 @@ Real Complex::ImagPart ()
 
 void Complex::InitComplex()
 {
-	if(initialized)
-		return;
+	if (initialized) return;
 		
 	initialized = true;
 
@@ -180,20 +179,20 @@ void Complex::InitComplex()
 	Integer::Init();
 
 	InitSettings();
-	Zero = Real::Long(0);
-	One = Real::Long(1);
+	Zero = Real(0l);
+	One = Real(1l);
 	Ex1.re = One;
 	Ex1.im = Zero;
 	Ex0.re = Zero;
 	Ex0.im = Zero;
 	
-	ToDegrees = Real::div(Real::Long(180), Real::pi);
-	FromDegrees = Real::div(Real::pi, Real::Long(180));
-	ToGradians = Real::div(Real::Long(200), Real::pi);
-	FromGradians = Real::div(Real::pi, Real::Long(200));
+	ToDegrees = Real::div(Real(180l), Real::pi);
+	FromDegrees = Real::div(Real::pi, Real(180l));
+	ToGradians = Real::div(Real(200l), Real::pi);
+	FromGradians = Real::div(Real::pi, Real(200l));
 	
 	loge = Real::div(One, Real::ln10);
-	log2c = Real::ln(Real::Long(2));
+	log2c = Real::ln(Real(2l));
 }
 
 bool Complex::IsZero(const Real& x)
@@ -338,7 +337,7 @@ void Complex::Conj(Complex& x)
 
 void Complex::PolarMag(Real &A, const Complex& B)
 {
-	Real r, i, h, ONE(1.0);
+	Real r, i, h, ONE(1l);
 	r=Real::abs(B.re); i = Real::abs(B.im);
 	if (Real::cmp(i, r) > 0) {
 		h = i; i = r; r = h;
@@ -685,7 +684,7 @@ void Complex::arccos(Complex& Result, const Complex& x)
 void Complex::arctan(Complex& Result, const Complex& z)
 {
 	Real x, x2, y2, y, yp, t;
-	Real ZERO(0.0), TWO(2.0), HALF(0.5), QUARTER(0.25);
+	Real ZERO(0l), TWO(2l), HALF(0.5), QUARTER(0.25);
 		
 	x = TWO * z.re; y = z.im + One; y = y * y;
 	yp = z.im - One; yp = yp * yp;
@@ -721,7 +720,7 @@ void Complex::cosh(Complex& Result, const Complex& x)
 
 void Complex::tanh(Complex& Result, const Complex& x)
 {
-	Real sin, cos, sinh, cosh, two(2.0), den;
+	Real sin, cos, sinh, cosh, two(2l), den;
 	Real::sinhcosh(two*x.re, sinh, cosh);
 	Real::sincos(two*x.im, sin, cos);
 	den = cosh + cos;
