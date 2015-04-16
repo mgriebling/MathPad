@@ -64,7 +64,7 @@ private:
 	static void ConstrainNum(Real& Number);
 	static void NumToLogical(const Real& Numb, mp_int& logical);
 	static void LogicalToNum(const mp_int& logical, Real& Numb);
-	static void LOp(Real& Result, const Real& op1, LogicalProc Oper, const Real& op2);
+//	static void LOp(Real& Result, const Real& op1, LogicalProc Oper, const Real& op2);
 	static void LOp1(Real& Result, LogicalProc Oper, const Real& op);
 	static void LBit(Real& Result, const Real& number, LogicalProc Oper, short bitnum);
 	static bool Bit(Real& number, short bitnum);

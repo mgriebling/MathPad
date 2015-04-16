@@ -13,12 +13,9 @@ bool Integer::initialized = false;
 
 
 int Integer::MaxBits()
-{	
-	char str[32];
-	sprintf(str, "1E%d", Real::sigDigs);
-	Real max = Real::ToReal(str) - One;	
-	int bits = (int)Real::Short(Real::log(max, Two));
-	return (bits & (~0x3));  // multiple of four bits
+{
+	int bits = (int)Real::numberOfBits();
+	return (bits & (~0x3));					// multiple of four bits
 }
 
 Real Integer::Max ()
@@ -177,29 +174,25 @@ void Integer::LogicalToNum(const mp_int& logical, Real& Numb)
 //	LogicalToNum(Lop, Result);
 //}
 
-void Integer::LBit(Real& Result, const Real& number, LogicalProc Oper, short bitnum)
-{
-	Real inumber(number);
-	ConstrainNum(inumber);
-	
-	if(bitnum > MaxBits())
-	{
-		Result = inumber;
-		return;
-	}
-	
-	LOp(Result, inumber, Oper, Real::power(Two, Real::Long(bitnum)));
-}
+//void Integer::LBit(Real& Result, const Real& number, LogicalProc Oper, short bitnum)
+//{
+//	Real inumber(number);
+//	ConstrainNum(inumber);
+//	
+//	if(bitnum > MaxBits())
+//	{
+//		Result = inumber;
+//		return;
+//	}
+//	
+//	LOp(Result, inumber, Oper, Real::power(Two, Real::Long(bitnum)));
+//}
 
 
 bool Integer::Bit(Real& number, short bitnum)
 {
-	ConstrainNum(number);
-	
 	if (bitnum >= MaxBits()) return false;
-		
-	And(number, number, Real::power(Two, Real::Long(bitnum)));
-	
+	And(number, number, Real::power(Two, Real((long)bitnum)));
 	return !IsZero(number);
 }
 
@@ -234,16 +227,13 @@ void Integer::LRotate(Real& Result, const Real& number, bool Shiftright, short b
 	
 	for(ShiftCnt = 1 ; ShiftCnt <= bits ; ShiftCnt++)
 	{
-		if(Shiftright)
-		{
+		if(Shiftright) {
 			SavedBit = Bit(inumber, 0);
 			
 			inumber = Real::entier(Real::mul(inumber, Half));
 			if(SavedBit)
 				SetBit(inumber, inumber, MaxBits() - 1);
-		}
-		else
-		{
+		} else {
 			SavedBit = Bit(inumber, MaxBits() - 1);
 			
 			inumber = Real::mul(inumber, Two);
@@ -266,7 +256,8 @@ void Integer::LRotate(Real& Result, const Real& number, bool Shiftright, short b
 void Integer::Fib(Real& Result, const Real& number)
 {
 	Real rp(Zero), rn, u = Real::entier(number);
-	if (Real::sign(u) <= 0) Result = Zero;
+	if (Real::sign(u) <= 0)
+		Result = Zero;
 	else {
 		// iterative Fibonacci series
 		Result = One;
@@ -281,46 +272,67 @@ void Integer::Fib(Real& Result, const Real& number)
 
 void Integer::GCD(Real& Result, const Real& op1, const Real& op2)
 {
-	Real nop1 = Real::entier(Real::abs(op1));
-	Real nop2 = Real::entier(Real::abs(op2));
-	while (Real::sign(nop2) != 0) {
-		Mod(Result, nop1, nop2);
-		nop1 = nop2; nop2 = Result;
-	}
-	Result = nop1;
+	mp_int int1 = op1.Integer();
+	mp_int int2 = op2.Integer();
+	mp_gcd(&int1, &int2, &int1);
+	Result = Real(int1);
+	mp_clear_multi(&int2, &int1, NULL);
 }
 
 void Integer::SetBit(Real& Result, const Real& number, short bitnum)
 {
-//	LBit(Result, number, OrSet, bitnum);
+	mp_int int1 = number.Integer();
+	mp_int twoPower;
+	mp_init(&twoPower);
+	mp_2expt(&twoPower, bitnum);
+	mp_or(&twoPower, &int1, &int1);
+	Result = Real(int1);
+	mp_clear_multi(&twoPower, &int1, NULL);
 }
 
 
 void Integer::ClearBit(Real& Result, const Real& number, short bitnum)
 {
-//	LBit(Result, number, AndNotSet, bitnum);
+	mp_int int1 = number.Integer();
+	mp_int twoPower, mask;
+	mp_init_multi(&twoPower, &mask, NULL);
+	mp_2expt(&twoPower, bitnum);		 // twoPower = 2^bitnum
+	mp_2expt(&mask, MaxBits());			 // mask = 2^MaxBits - 1
+	mp_sub_d(&mask, 1, &mask);
+	mp_xor(&twoPower, &mask, &mask);	// twoPower = not(2^bitnum)
+	mp_and(&mask, &int1, &int1);		// finally clear the bit
+	Result = Real(int1);
+	mp_clear_multi(&twoPower, &mask, NULL);
 }
 
 
 void Integer::ToggleBit(Real& Result, const Real& number, short bitnum)
 {
-//	LBit(Result, number, XorSet, bitnum);
+	mp_int int1 = number.Integer();
+	mp_int twoPower;
+	mp_init(&twoPower);
+	mp_2expt(&twoPower, bitnum);
+	mp_xor(&twoPower, &int1, &int1);
+	Result = Real(int1);
+	mp_clear_multi(&twoPower, &int1, NULL);
 }
 
 
 void Integer::And(Real& Result, const Real& op1, const Real& op2)
 {
 	mp_int int1, int2, result;
+	mp_init(&result);
 	int1 = op1.Integer();
 	int2 = op2.Integer();
 	mp_and(&int1, &int2, &result);
 	Result = Real(result);
+	mp_clear_multi(&result, &int1, &int2, NULL);
 }
 
 void Integer::Nand(Real& Result, const Real& op1, const Real& op2)
 {
 	And(Result, op1, op2);
-	// negate output
+	OnesComp(Result, Result);
 }
 
 void Integer::Or(Real& Result, const Real& op1, const Real& op2)
@@ -335,7 +347,7 @@ void Integer::Or(Real& Result, const Real& op1, const Real& op2)
 void Integer::Nor(Real& Result, const Real& op1, const Real& op2)
 {
 	Or(Result, op1, op2);
-	// negate output
+	OnesComp(Result, Result);
 }
 
 void Integer::Xor(Real& Result, const Real& op1, const Real& op2)
@@ -349,42 +361,55 @@ void Integer::Xor(Real& Result, const Real& op1, const Real& op2)
 
 void Integer::Count(Real& Result, const Real& op1)
 {
-	long bcnt = 0;
-	Real number(op1);
-	Logical lop;
-	
-	NumToLogical(number, lop);
-	for (int i = 0 ; i <= LogicalSize ; i++) {
-		for (int j = 0; j < 16; j++)
-			if (lop[i] & (1 << j)) bcnt++;
-	}
-	Result = Real(bcnt);
+//	long bcnt = 0;
+//	Real number(op1);
+//	Logical lop;
+//	
+//	NumToLogical(number, lop);
+//	for (int i = 0 ; i <= LogicalSize ; i++) {
+//		for (int j = 0; j < 16; j++)
+//			if (lop[i] & (1 << j)) bcnt++;
+//	}
+//	Result = Real(bcnt);
+	mp_int int1 = op1.Integer();
+	Result = Real((long)mp_count_bits(&int1));
 }
 
 void Integer::IntDiv(Real& Result, const Real& op1, const Real& op2)
 {
-	Real lop1(op1);
-	Real lop2(op2);
-	ConstrainNum(lop1);
-	ConstrainNum(lop2);
-	Result = Real::entier(Real::div(lop1, lop2));
+//	Real lop1(op1);
+//	Real lop2(op2);
+//	ConstrainNum(lop1);
+//	ConstrainNum(lop2);
+//	Result = Real::entier(Real::div(lop1, lop2));
+	mp_int int1 = op1.Integer();
+	mp_int int2 = op2.Integer();
+	mp_int div;
+	mp_div(&int1, &int2, &div, NULL);
+	Result = Real(div);
 }
 
 
 void Integer::Mod(Real& Result, const Real& op1, const Real& op2)
 {
-	Real lop1(op1);
-	Real lop2(op2);
-	ConstrainNum(lop1);
-	ConstrainNum(lop2);
-	IntDiv(Result, lop1, lop2);
-	Result = Real::sub(lop1, Real::mul(Result, lop2));
+	mp_int int1 = op1.Integer();
+	mp_int int2 = op2.Integer();
+	mp_int div;
+	mp_int mod;
+	mp_div(&int1, &int2, &div, &mod);
+	Result = Real(mod);
 }
 
 
 void Integer::OnesComp(Real& Result, const Real& number)
 {
-	LOp1(Result, NotSet, number);
+	mp_int int1 = number.Integer();
+	mp_int mask;
+	mp_init(&mask);
+	mp_2expt(&mask, MaxBits());		// mask = 2^MaxBits - 1
+	mp_sub_d(&mask, 1, &mask);
+	mp_xor(&int1, &mask, &int1);	// not = mask xor number
+	Result = Real(int1);
 }
 
 

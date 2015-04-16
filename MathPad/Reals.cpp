@@ -106,7 +106,7 @@ Real::Real(mp_int x) {
 	mpf_normalize(&val);
 }
 
-mp_int Real::Integer(void) {
+mp_int Real::Integer(void) const {
 	mp_float n;
 	Entier(&n, &val);
 	return n.mantissa;
@@ -443,20 +443,53 @@ void Real::RealToNumbExp(const mp_float *a, double &b, long &n)
 
 void Real::NumbExpToReal(double a, long n, mp_float *b)
 {
-	// speed up later
-	char nstr[256];
-	mp_float nf;
-	mp_float two;
-	sprintf(nstr, "%f", a);
-	mpf_init_multi(sizeof(double), &nf, &two, b);
-	toReal(nstr, b);
-	if (n != 0) {
-		err = mpf_const_d(&nf, n);
-		err = mpf_const_d(&two, 2);
-		err = mpf_pow(&two, &nf, &nf);
-		err = mpf_mul(&nf, b, b);
+	int exponent;
+	double fraction = frexp(a, &exponent);
+	long radixBits = 31;
+	long radix = 0x80000000;  // 2^radixBits -- could be any radix
+	long digits;
+	long totalBits = Max(numBits, sizeof(double)*8);
+	mp_int result;
+	n += exponent;
+	
+	// handle trivial case
+	if (a == 0) {
+		mpf_init(b, numBits);
+		mpf_const_0(b);
+		return;
 	}
-	mpf_clear_multi(&nf, &two, NULL);
+	
+	// extract digits from the fraction
+	mp_init(&result); mp_zero(&result);
+	while (fraction != 0 && totalBits > 0) {
+		mp_mul_2d(&result, (int)radixBits, &result);  // result = result << radixBits
+		fraction *= radix;							  // fraction = radix * fraction
+		digits = fraction;							  // digits = Integer(fraction)
+		mp_add_d(&result, digits, &result);			  // result = result + digits
+		fraction -= digits;							  // fraction = fraction - digits
+		n -= radixBits;								  // exp = exp - radixBits
+		totalBits -= radixBits;
+	}
+	
+	// form into a floating point number
+	mpf_init(b, numBits);
+	mp_copy(&result, &b->mantissa); mp_clear(&result);
+	b->exp = n;
+	mpf_normalize(b);
+//	
+//	char nstr[256];
+//	mp_float nf;
+//	mp_float two;
+//	sprintf(nstr, "%f", a);
+//	mpf_init_multi(sizeof(double), &nf, &two, b);
+//	toReal(nstr, b);
+//	if (n != 0) {
+//		err = mpf_const_d(&nf, n);
+//		err = mpf_const_d(&two, 2);
+//		err = mpf_pow(&two, &nf, &nf);
+//		err = mpf_mul(&nf, b, b);
+//	}
+//	mpf_clear_multi(&nf, &two, NULL);
 }
 
 //void Real::Add(float *c, const float *arg_a, const float *arg_b)
@@ -1806,7 +1839,7 @@ void Real::SinhCosh(mp_float *sinh, mp_float *cosh, const mp_float *arg_a)
 	mp_float k0, k1, k2;
 	
 	err = mpf_init_copy((mp_float *)arg_a, &a);
-	err = mpf_init_multi(arg_a->radix, &k0, &k1, &k2, sinh, cosh, 0);
+	err = mpf_init_multi(numBits, &k0, &k1, &k2, sinh, cosh, NULL);
 	err = mpf_exp(&a, &k0);
 	err = mpf_inv(&k0, &k1);		// k1 = e^-a
 	err = mpf_add(&k0, &k1, &k2);	// k2 = e^-a + e^a
@@ -1997,7 +2030,7 @@ Real Real::ToReal(const char *str)
 
 int Real::exponent () const
 {
-	const double log2 = 0.301029995663981195;
+	const double log2 = log10(2);
 	double t1 = log2 * val.exp;
 	return (t1 >= ZERO ? int(t1) : int(t1 - ONE));
 }
@@ -2699,6 +2732,10 @@ void Real::Test()
   printf("ENTIER(3.6)="); OutReal(entier(3.6)); puts("");
   printf("ENTIER(-3.6)="); OutReal(entier(-3.6)); puts("");
   printf("69!="); OutReal(factorial(69l)); puts("");
+}
+
+long Real::numberOfBits(void) {
+	return numBits;
 }
 
 void Real::Init()

@@ -180,6 +180,10 @@
 		2FDD752D1ADEC8A400EB0A1F /* bn_mp_cnt_lsb.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD2491ADBF4A500B6DD13 /* bn_mp_cnt_lsb.c */; };
 		2FDD752E1ADEC8B900EB0A1F /* bn_mp_toom_mul.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD29E1ADBF4A500B6DD13 /* bn_mp_toom_mul.c */; };
 		47055B511ACD561A0095C770 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47055B501ACD561A0095C770 /* TitleCell.swift */; };
+		4710E1B41ADFB760002F14ED /* bn_mp_and.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD2421ADBF4A500B6DD13 /* bn_mp_and.c */; };
+		4710E1B51ADFB78C002F14ED /* bn_mp_prime_next_prime.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD27E1ADBF4A500B6DD13 /* bn_mp_prime_next_prime.c */; };
+		4710E1B61ADFB7A0002F14ED /* bn_mp_to_signed_bin_n.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD29A1ADBF4A500B6DD13 /* bn_mp_to_signed_bin_n.c */; };
+		4710E1B71ADFB7A9002F14ED /* bn_mp_toradix_n.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F5BD2A01ADBF4A500B6DD13 /* bn_mp_toradix_n.c */; };
 		4722DE211AC6FBD8003E6A09 /* FunctionKeys.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4722DE201AC6FBD8003E6A09 /* FunctionKeys.xib */; };
 		4722DE231AC70EE6003E6A09 /* Accessory.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4722DE221AC70EE6003E6A09 /* Accessory.xib */; };
 		4722DE251AC822B9003E6A09 /* MathDocTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4722DE241AC822B9003E6A09 /* MathDocTableViewController.swift */; };
@@ -1067,6 +1071,7 @@
 				2F5BD2331ADBF41200B6DD13 /* mpf_sub_d.mm in Sources */,
 				2F5BD2D51ADBF4A500B6DD13 /* bn_mp_gcd.c in Sources */,
 				2FDD75281ADEC7C600EB0A1F /* mpf_cmp_d.mm in Sources */,
+				4710E1B61ADFB7A0002F14ED /* bn_mp_to_signed_bin_n.c in Sources */,
 				2F5BD30D1ADBF4A500B6DD13 /* bn_mp_signed_bin_size.c in Sources */,
 				47FD43FA1AC2C42F00C71213 /* xNumber.swift in Sources */,
 				2FDD752C1ADEC86400EB0A1F /* bn_mp_mul_d.c in Sources */,
@@ -1126,6 +1131,7 @@
 				2F5BD22C1ADBF41200B6DD13 /* mpf_neg.mm in Sources */,
 				2F5BD31E1ADBF4A500B6DD13 /* bn_mp_zero.c in Sources */,
 				47FD440E1AC2C58600C71213 /* Reals.cpp in Sources */,
+				4710E1B51ADFB78C002F14ED /* bn_mp_prime_next_prime.c in Sources */,
 				2F6512D21ACDD75900E3D262 /* graphObject.m in Sources */,
 				2F5BD3071ADBF4A500B6DD13 /* bn_mp_reduce_setup.c in Sources */,
 				2F5BD2EA1ADBF4A500B6DD13 /* bn_mp_montgomery_reduce.c in Sources */,
@@ -1140,6 +1146,7 @@
 				2F5BD2F51ADBF4A500B6DD13 /* bn_mp_prime_is_divisible.c in Sources */,
 				2F5BD2E51ADBF4A500B6DD13 /* bn_mp_lshd.c in Sources */,
 				2F5BD2D71ADBF4A500B6DD13 /* bn_mp_grow.c in Sources */,
+				4710E1B71ADFB7A9002F14ED /* bn_mp_toradix_n.c in Sources */,
 				2F5BD2F01ADBF4A500B6DD13 /* bn_mp_mulmod.c in Sources */,
 				2F5BD2D91ADBF4A500B6DD13 /* bn_mp_init_multi.c in Sources */,
 				47FD43FF1AC2C42F00C71213 /* Equation.swift in Sources */,
@@ -1185,6 +1192,7 @@
 				2F5BD2B91ADBF4A500B6DD13 /* bn_mp_add_d.c in Sources */,
 				2F5BD2ED1ADBF4A500B6DD13 /* bn_mp_mul_2d.c in Sources */,
 				47FD43D31AC2C40400C71213 /* AppDelegate.swift in Sources */,
+				4710E1B41ADFB760002F14ED /* bn_mp_and.c in Sources */,
 				2F5BD21C1ADBF41200B6DD13 /* mpf_cos.mm in Sources */,
 				2F5BD22D1ADBF41200B6DD13 /* mpf_normalize_to.mm in Sources */,
 				2F5BD3131ADBF4A500B6DD13 /* bn_mp_submod.c in Sources */,

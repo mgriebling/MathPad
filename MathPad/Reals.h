@@ -56,6 +56,7 @@ class Real {
 		static Real Long(double x);
 		static Real Copy(const Real& a);
 		static Real ToReal(const char *str);
+		static long numberOfBits(void);
 		
 		// I/O routines
 //		static void Read(const Preference *r, const char *name, Real&x);
