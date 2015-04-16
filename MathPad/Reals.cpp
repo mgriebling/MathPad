@@ -426,8 +426,7 @@ double Real::ipower(double x, short base) {
 //	Round(a);
 //}
 
-void Real::RealToNumbExp(const mp_float *a, double &b, long &n)
-{
+void Real::RealToNumbExp(const mp_float *a, double &b, long &n) {
 	char str[256];
 	
 	if (err != MP_OKAY || mpf_iszero(a)) {
@@ -441,17 +440,14 @@ void Real::RealToNumbExp(const mp_float *a, double &b, long &n)
 	n = 0;
 }
 
-void Real::NumbExpToReal(double a, long n, mp_float *b)
-{
+void Real::NumbExpToReal(double a, long n, mp_float *b) {
 	int exponent;
 	double fraction = frexp(a, &exponent);
 	long radixBits = 31;
 	long radix = 0x80000000;  // 2^radixBits -- could be any radix
 	long digits;
 	long totalBits = Max(numBits, sizeof(double)*8);
-	mp_int result;
-	n += exponent;
-	
+
 	// handle trivial case
 	if (a == 0) {
 		mpf_init(b, numBits);
@@ -460,21 +456,20 @@ void Real::NumbExpToReal(double a, long n, mp_float *b)
 	}
 	
 	// extract digits from the fraction
-	mp_init(&result); mp_zero(&result);
+	n += exponent;
+	mpf_init(b, totalBits);
 	while (fraction != 0 && totalBits > 0) {
-		mp_mul_2d(&result, (int)radixBits, &result);  // result = result << radixBits
-		fraction *= radix;							  // fraction = radix * fraction
-		digits = fraction;							  // digits = Integer(fraction)
-		mp_add_d(&result, digits, &result);			  // result = result + digits
-		fraction -= digits;							  // fraction = fraction - digits
-		n -= radixBits;								  // exp = exp - radixBits
+		mpf_mul_d(b, radix, b);			// result = result << radixBits
+		fraction *= radix;				// fraction = radix * fraction
+		digits = fraction;				// digits = Integer(fraction)
+		mpf_add_d(b, digits, b);		// result = result + digits
+		fraction -= digits;				// fraction = fraction - digits
+		n -= radixBits;					// exp = exp - radixBits
 		totalBits -= radixBits;
 	}
 	
-	// form into a floating point number
-	mpf_init(b, numBits);
-	mp_copy(&result, &b->mantissa); mp_clear(&result);
-	b->exp = n;
+	// adjust the exponent
+	b->exp += n;
 	mpf_normalize(b);
 //	
 //	char nstr[256];
@@ -1026,78 +1021,55 @@ void Real::NumbExpToReal(double a, long n, mp_float *b)
 //	z[0] = ABS(x[0]);
 //}
 
-//void Real::IntPower(float *b, const float *arg_a, long n)
-//{
-//	FixedReal a;
-//	long na, nws, nn;
-//	FixedReal r, t;
-//	
-//	if(err != 0)
-//	{
-//		Zero(b);
-//		return;
-//	}
-//	
-//	copy(arg_a, a);
-//	
-//	na = Min(ENTIER(ABS(a[0])), curMant);
-//	
-//	if(na == 0)
-//	{
-//		if(n >= 0)
-//			Zero(b);
-//		else
-//		{
-//			puts("*** ipower: Argument is zero and n is <= 0.");
-//			err = errIllegalPowerArg;
-//		}
-//		return;
-//	}
-//	
-//	nws = curMant;
-//	curMant++;
-//	nn = ABS(n);
-//	if(nn == 0)
-//	{
-//		copy(xONE, b);
-//		curMant = nws;
-//		return;
-//	}
-//	else if(nn == 1)
-//		copy(a, b);
-//	else if(nn == 2)
-//	{
-//		Mul(t, a, a);
-//		copy(t, b);
-//	}
-//	else
-//	{
-//		copy(xONE, b);
-//		copy(a, r);
-//		while(1)
-//		{
-//			if(ODD(nn))
-//			{
-//				Mul(t, b, r);
-//				copy(t, b);
-//			}
-//			nn /= 2;
-//			if(nn == 0)
-//				break;
-//			Mul(r, r, r);
-//		}
-//	}
-//	
-//	if(n < 0)
-//	{
-//		Div(t, xONE, b);
-//		copy(t, b);
-//	}
-//	
-//	curMant = nws;
-//	Round(b);
-//}
-//
+void Real::IntPower(mp_float *b, const mp_float *arg_a, long n)
+{
+	mp_float a;
+	long na, nws, nn;
+	mp_float r, t;
+	
+	if (err != MP_OKAY) {
+		mpf_init(b, 64); mpf_const_0(b);
+		return;
+	}
+	
+	mpf_init_copy((mp_float *)arg_a, &a);
+	if (na == 0) {
+		if (n >= 0) {
+			mpf_init(b, 64); mpf_const_0(b);
+		} else {
+			puts("*** ipower: Argument is zero and n is <= 0.");
+			err = errIllegalPowerArg;
+		}
+		return;
+	}
+	
+	nn = ABS(n);
+	if (nn == 0) {
+		mpf_init_copy(&one.val, b);
+		return;
+	} else if (nn == 1)
+		mpf_init_copy(&a, b);
+	else if (nn == 2) {
+		mpf_sqr(&a, b);
+	} else {
+		mpf_init_copy(&one.val, b);
+		mpf_init_copy(&a, &r);
+		mpf_init(&t, a.radix);
+		while(1) {
+			if (ODD(nn)) {
+				mpf_mul(b, &r, b);
+			}
+			nn /= 2;
+			if (nn == 0) break;
+			mpf_sqr(&r, &r);
+		}
+	}
+	
+	if(n < 0) {
+		mpf_inv(b, b);
+	}
+}
+
 //long Real::Cmp(const float *a, const float *b)
 //{
 //	long ia, ib, ma, mb, na, nb, i;
@@ -2031,7 +2003,7 @@ Real Real::ToReal(const char *str)
 int Real::exponent () const
 {
 	const double log2 = log10(2);
-	double t1 = log2 * val.exp;
+	double t1 = log2 * (val.radix + val.exp);
 	return (t1 >= ZERO ? int(t1) : int(t1 - ONE));
 }
 
@@ -2109,7 +2081,7 @@ char Real::GetDigit(mp_float *frac, long pos, long digs)
 	long dig = 0;
 	
 	if (digs == 0) return '0';
-	dig = mp_get_int(&frac->mantissa);
+	dig = 0;  // FIX ME -- HOW TO EXTRACT AN INTEGER?
 	err = mpf_sub_d(frac, dig, frac);
 	err = mpf_mul_d(frac, 10, frac);
 	assert(dig < 10);
@@ -2140,10 +2112,18 @@ void Real::ToString(const Real& a, char *str, long n, long dp, char mode)
 	
 	if (digs != 0) {
 		// extract the exponent and remove exponent from number
+		mp_float x = (mp_float )a.val;
+		OutFloat(x);
 		Aexp = a.exponent();
-		err = mpf_const_d(&frac, Aexp);
-		err = mpf_pow(&ten, &frac, &frac);				// frac = 10^Aexp
-		err = mpf_div((mp_float *)&a.val, &frac, &frac);	// a = a / 10^Aexp
+		IntPower(&frac, &ten, -Aexp);
+		OutFloat(frac);
+		if (Aexp < 0) {
+			err = mpf_mul((mp_float *)&a.val, &frac, &frac);	// a = a * 10^Aexp
+		} else {
+			err = mpf_inv(&frac, &frac);
+			err = mpf_mul((mp_float *)&a.val, &frac, &frac);	// a = a / 10^Aexp
+		}
+		OutFloat(frac);
 		err = mpf_abs(&frac, &frac);
 		
 		while (mpf_cmp_d(&frac, 1, &res) == MP_OKAY && res == MP_LT) {
@@ -2170,13 +2150,14 @@ void Real::ToString(const Real& a, char *str, long n, long dp, char mode)
 			round = Max(-Aexp - dp - 1, -sigDigs-1);
 		
 		// round up the number
-		err = mpf_const_d(&scale, round);
-		err = mpf_pow(&scale, &ten, &scale);	// scale = 1 x 10^round
-		err = mpf_mul_d(&scale, 5, &scale);	// scale = 5 x 10^round
-		err = mpf_add(&frac, &scale, &frac);  // frac += 5 x 10^round
+		// BUG HERE - FIX ME
+//		err = mpf_const_d(&scale, round);
+//		err = mpf_pow(&ten, &scale, &scale);	// scale = 1 x 10^round
+//		err = mpf_mul_d(&scale, 5, &scale);		// scale = 5 x 10^round
+//		err = mpf_add(&frac, &scale, &frac);	// frac += 5 x 10^round
 		
 		// normalize again
-		while (mpf_cmp_d(&frac, 1, &res) == MP_OKAY && res == MP_LT) {
+		while (mpf_cmp_d(&frac, 1, &res) == MP_OKAY && (res == MP_LT)) {
 			Aexp--;
 			err = mpf_mul_d(&frac, 10, &frac);
 		}
@@ -2654,10 +2635,18 @@ Real Real::random(void)
 //	}
 //}
 
-void Real::OutReal(const Real& n)
+void Real::OutFloat(mp_float& n) {
+	char str[1024];
+	mp_toradix(&n.mantissa, str, 10);
+	printf("n = %s x 2^%li\n", str, n.exp);
+}
+
+void Real::OutReal(Real& n)
 {
-	char str[256];
+	char str[1024];
 	ToString(n, str, outDigits, 0, 0);
+//	mp_toradix(&n.mantissa, str, 10);
+	printf("n = %s\n", str);
 }
 
 void Real::Test()
@@ -2665,73 +2654,85 @@ void Real::Test()
 	Real s;
 	Real n;
 	Real m;
+	
+	mp_float x, y, a;
+	Real z;
 
-  printf("pi="); OutReal(pi); puts("");
-  printf("ln2="); OutReal(ln2); puts("");
-  printf("ln10="); OutReal(ln10); puts("");
-  printf("eps="); OutReal(eps); puts("");
-  printf("log10(eps)="); OutReal(log(eps, Long(10))); puts("");
-
-  n = "123456789012345678901234567890123456789";
-  m = "0.123456789012345678901234567890123456790";
- 
- 	switch(cmp(n, m))
- 	{
- 		case 0:
- 			printf("n=m");
- 			break;
- 		case 1:
- 			printf("n>m");
- 			break;
- 		default:
- 			printf("n<m");
- 			break;
- 	}
-  puts("");
-  printf("n="); OutReal(n); puts("");
-  printf("m="); OutReal(m); puts("");
-  s =n * m;
-  printf("n*m="); OutReal(s); puts("");
-  s = n + m;
-  printf("n+m="); OutReal(s); puts("");
-  s = n - m;
-  printf("n-m="); OutReal(s); puts("");  
-  s = n / m;
-  printf("n/m="); OutReal(s); puts("");
-  s = Long(1) / Long(3);
-  printf("1/3="); OutReal(s); puts("");
-  printf("1/3+1/3="); OutReal(s + s); puts("");
-  printf("1/3*1/3="); OutReal(s * s); puts("");
-  printf("1/3*3="); OutReal(s * 3l); puts("");
-  n = 2.0;
-  s = power(n, 64l);
-  printf("2^64="); OutReal(s); puts("");
-  n = "1.010E-10";
-  printf("1.010E-10="); OutReal(n); puts("");
-  n = "-12.0E+10";
-  printf("-12.0E+10="); OutReal(n); puts("");
-  n = "0.00045E-10";  
-  printf("0.00045E-10="); OutReal(n); puts("");
-  n = "-12 345 678";  
-  printf("-12 345 678="); OutReal(n); puts("");  
-  n = "1E10000";  
-  printf("1E10000="); OutReal(n); puts("");    
-  sincos(pi, m, n);
-  printf("Sin(pi)="); OutReal(m); puts("");
-  printf("Cos(pi)="); OutReal(n); puts("");
-  sincos(pi / 8l, m, n);
-  printf("Sin(pi/8)="); OutReal(m); puts("");
-  printf("Cos(pi/8)="); OutReal(n); puts("");
-  sincos(1l, m, n);
-  printf("Sin(1)="); OutReal(m); puts("");
-  printf("Cos(1)="); OutReal(n); puts("");   
-  printf("-8^(-1/3)="); OutReal(root(-8l, 3)); puts("");
-  printf("(2^64)^(-1/64)="); OutReal(root(power(2l, 64l), 64)); puts("");
-  printf("4*arctan(1)="); OutReal(Long(4) * arctan(1l)); puts("");
-  printf("arcsin(sin(1))="); OutReal(arcsin(sin(1l))); puts("");
-  printf("ENTIER(3.6)="); OutReal(entier(3.6)); puts("");
-  printf("ENTIER(-3.6)="); OutReal(entier(-3.6)); puts("");
-  printf("69!="); OutReal(factorial(69l)); puts("");
+//	mpf_init_multi(numBits, &x, &y, &a, NULL);
+//	mpf_const_d(&x, 2); mpf_const_d(&y, 10);
+//	mpf_pow(&x, &y, &a);
+//	IntPower(&a, &x, 10);
+//	OutFloat(a);
+	NumbExpToReal(1000.5, 0, &x);
+	z = Real(&x);
+	OutReal(z);
+	
+//  printf("pi="); OutReal(pi); puts("");
+//  printf("ln2="); OutReal(ln2); puts("");
+//  printf("ln10="); OutReal(ln10); puts("");
+//  printf("eps="); OutReal(eps); puts("");
+//  printf("log10(eps)="); OutReal(log(eps, Long(10))); puts("");
+//
+//  n = "123456789012345678901234567890123456789";
+//  m = "0.123456789012345678901234567890123456790";
+// 
+// 	switch(cmp(n, m))
+// 	{
+// 		case 0:
+// 			printf("n=m");
+// 			break;
+// 		case 1:
+// 			printf("n>m");
+// 			break;
+// 		default:
+// 			printf("n<m");
+// 			break;
+// 	}
+//  puts("");
+//  printf("n="); OutReal(n); puts("");
+//  printf("m="); OutReal(m); puts("");
+//  s =n * m;
+//  printf("n*m="); OutReal(s); puts("");
+//  s = n + m;
+//  printf("n+m="); OutReal(s); puts("");
+//  s = n - m;
+//  printf("n-m="); OutReal(s); puts("");  
+//  s = n / m;
+//  printf("n/m="); OutReal(s); puts("");
+//  s = Long(1) / Long(3);
+//  printf("1/3="); OutReal(s); puts("");
+//  printf("1/3+1/3="); OutReal(s + s); puts("");
+//  printf("1/3*1/3="); OutReal(s * s); puts("");
+//  printf("1/3*3="); OutReal(s * 3l); puts("");
+//  n = 2.0;
+//  s = power(n, 64l);
+//  printf("2^64="); OutReal(s); puts("");
+//  n = "1.010E-10";
+//  printf("1.010E-10="); OutReal(n); puts("");
+//  n = "-12.0E+10";
+//  printf("-12.0E+10="); OutReal(n); puts("");
+//  n = "0.00045E-10";  
+//  printf("0.00045E-10="); OutReal(n); puts("");
+//  n = "-12 345 678";  
+//  printf("-12 345 678="); OutReal(n); puts("");  
+//  n = "1E10000";  
+//  printf("1E10000="); OutReal(n); puts("");    
+//  sincos(pi, m, n);
+//  printf("Sin(pi)="); OutReal(m); puts("");
+//  printf("Cos(pi)="); OutReal(n); puts("");
+//  sincos(pi / 8l, m, n);
+//  printf("Sin(pi/8)="); OutReal(m); puts("");
+//  printf("Cos(pi/8)="); OutReal(n); puts("");
+//  sincos(1l, m, n);
+//  printf("Sin(1)="); OutReal(m); puts("");
+//  printf("Cos(1)="); OutReal(n); puts("");   
+//  printf("-8^(-1/3)="); OutReal(root(-8l, 3)); puts("");
+//  printf("(2^64)^(-1/64)="); OutReal(root(power(2l, 64l), 64)); puts("");
+//  printf("4*arctan(1)="); OutReal(Long(4) * arctan(1l)); puts("");
+//  printf("arcsin(sin(1))="); OutReal(arcsin(sin(1l))); puts("");
+//  printf("ENTIER(3.6)="); OutReal(entier(3.6)); puts("");
+//  printf("ENTIER(-3.6)="); OutReal(entier(-3.6)); puts("");
+//  printf("69!="); OutReal(factorial(69l)); puts("");
 }
 
 long Real::numberOfBits(void) {
@@ -2742,7 +2743,7 @@ void Real::Init()
 {
 	if (initialized) return;
 
-	SetDigits(maxDigits);
+	SetDigits(20);
 	mpf_init_multi(numBits, &one.val, &zero.val, &pi.val, &ln2.val, &ln10.val, NULL);
 	err = mpf_const_d(&one.val, 1);
 	err = mpf_const_0(&zero.val);

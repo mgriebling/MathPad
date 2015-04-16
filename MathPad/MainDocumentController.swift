@@ -40,6 +40,10 @@ class MainDocumentController: UITableViewController, UITextFieldDelegate {
 		}
 		self.getExistingDocuments()   // populate the table with existing documents
 		self.navigationItem.leftBarButtonItem?.enabled = objects.count > 0
+		
+		// **** TEMPORARY ****** Test numbers 
+		let x = xNumber(double: 1000.5)
+		println(x)
 	}
 
 	override func didReceiveMemoryWarning() {

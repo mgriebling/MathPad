@@ -111,7 +111,7 @@ class Real {
 		
 	private:		
 		// other internal constants
-		static const bool DEBUG1 = false;     	// set to false in production code
+		static const bool DEBUG1 = true;     	// set to false in production code
 		static double ZERO;
 		static double ONE;
 		static double HALF;
@@ -128,11 +128,6 @@ class Real {
 //		static double invRadix;
 //		static double mprx2;
 //		static double mprxx;
-	
-		// local types
-//		typedef double FixedLReal[maxMant+8];
-//		typedef float FixedReal[maxMant+8];
-//		typedef float Real8[8];
 		
 		// internal number storage
 		mp_float val;
@@ -151,7 +146,8 @@ class Real {
 		static long Int(double x);
 		static double ipower(double x, short base);
 		static void Reduce(double &a, long &exp);
-		static void OutReal(const Real& n);
+		static void OutReal(Real& n);
+		static void OutFloat(mp_float& n);
 		static char GetDigit(mp_float*frac, long pos, long digs);
 		static void Test(void);
 		
@@ -176,7 +172,7 @@ class Real {
 //		static void Div(float *c, const float *a, const float *b);
 //		static void Divd(float *c, const float *a, double b, long n);
 //		static void Abs(float *z, const float *x);
-//		static void IntPower(float *b, const float *a, long n);
+		static void IntPower(mp_float *b, const mp_float *arg_a, long n);
 //		static long Cmp(const float *a, const float *b);
 //		static void Sqrt(float *b, const float *a);
 //		static void Root(float *b, const float *a, long n);
