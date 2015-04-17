@@ -427,17 +427,55 @@ double Real::ipower(double x, short base) {
 //}
 
 void Real::RealToNumbExp(const mp_float *a, double &b, long &n) {
-	char str[256];
+	const long radix = 1000000000000000000;
 	
+	n = 0;  // default exponent
 	if (err != MP_OKAY || mpf_iszero(a)) {
-		b = ZERO; n = 0;
+		b = ZERO;
 		return;
 	}
 	
-	// speed up later
-	ToString(Real((mp_float *)a), str, 0, 0, 0);
-	b = atof(str);
-	n = 0;
+	mp_int ai, rem;
+	long exp = ABS(a->exp);
+	mp_init(&rem);
+	mp_init_size(&ai, (int)a->radix);
+	
+	// reduce the exponent size
+	while (exp > a->radix) {
+		if (a->exp < 0) {
+			n -= a->radix;
+		} else {
+			n += a->radix;
+		}
+		exp -= a->radix;
+	}
+	
+	// reduce the number by the exponent size
+	mp_copy((mp_int *)&a->mantissa, &ai);
+	if (a->exp < 0) {
+		mp_div_2d(&ai, (int)exp, &ai, &rem);
+	} else {
+		mp_mul_2d(&ai, (int)exp, &rem); mp_init_set_int(&ai, 0);
+	}
+	
+	// transfer the whole number bits
+	b = 0;
+	mp_digit digit;
+	while (mp_cmp_d(&ai, 0) == MP_GT) {
+		b *= radix;
+		mp_div_d(&ai, radix, &ai, &digit);
+		b += digit;
+	}
+	
+	// transfer the fractional number bits
+	double f = 0;
+	const long rradix = ipower(2, exp);
+	while (mp_cmp_d(&rem, 0) == MP_GT) {
+		f /= rradix;
+		mp_div_d(&rem, rradix, &rem, &digit);
+		f += digit/(double)rradix;
+	}
+	b += f;
 }
 
 void Real::NumbExpToReal(double a, long n, mp_float *b) {
@@ -471,20 +509,6 @@ void Real::NumbExpToReal(double a, long n, mp_float *b) {
 	// adjust the exponent
 	b->exp += n;
 	mpf_normalize(b);
-//	
-//	char nstr[256];
-//	mp_float nf;
-//	mp_float two;
-//	sprintf(nstr, "%f", a);
-//	mpf_init_multi(sizeof(double), &nf, &two, b);
-//	toReal(nstr, b);
-//	if (n != 0) {
-//		err = mpf_const_d(&nf, n);
-//		err = mpf_const_d(&two, 2);
-//		err = mpf_pow(&two, &nf, &nf);
-//		err = mpf_mul(&nf, b, b);
-//	}
-//	mpf_clear_multi(&nf, &two, NULL);
 }
 
 //void Real::Add(float *c, const float *arg_a, const float *arg_b)
@@ -2657,6 +2681,8 @@ void Real::Test()
 	
 	mp_float x, y, a;
 	Real z;
+	long exponent;
+	double num;
 
 //	mpf_init_multi(numBits, &x, &y, &a, NULL);
 //	mpf_const_d(&x, 2); mpf_const_d(&y, 10);
@@ -2666,8 +2692,10 @@ void Real::Test()
 	NumbExpToReal(1000.5, 0, &x);
 	z = Real(&x);
 	OutReal(z);
+	OutFloat(pi.val);
+	RealToNumbExp(&pi.val, num, exponent);
 	
-//  printf("pi="); OutReal(pi); puts("");
+    printf("pi="); OutReal(pi); puts("");
 //  printf("ln2="); OutReal(ln2); puts("");
 //  printf("ln10="); OutReal(ln10); puts("");
 //  printf("eps="); OutReal(eps); puts("");
